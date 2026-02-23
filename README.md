@@ -1,43 +1,31 @@
-# Astro Starter Kit: Minimal
+# mods-site
 
-```sh
-npm create astro@latest -- --template minimal
+Website for [mods](https://github.com/modshq-org/mods) — the CLI model manager for AI image generation. Browse, search, and discover models at [mods.sh](https://mods.sh).
+
+## What's here
+
+- **Landing page** — product overview, features, install instructions
+- **Model browser** (`/models`) — search, filter by type, sort 100+ models
+- **Model detail pages** (`/models/[id]`) — variants, VRAM requirements, dependencies, install commands
+
+## Development
+
+```bash
+npm install
+npm run dev          # Dev server at localhost:4321
+npm run build        # Production build to ./dist/
+npm run preview      # Preview production build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The `prebuild` step fetches the latest registry data from [mods-registry](https://github.com/modshq-org/mods-registry) before building.
 
-## 🚀 Project Structure
+## Tech stack
 
-Inside of your Astro project, you'll see the following folders and files:
+- [Astro](https://astro.build) 5 — static site generation
+- TypeScript
+- Vanilla CSS with CSS custom properties
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Related
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [mods](https://github.com/modshq-org/mods) — CLI tool
+- [mods-registry](https://github.com/modshq-org/mods-registry) — model manifests
