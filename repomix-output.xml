@@ -1,3 +1,69 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+public/
+  favicon.ico
+  favicon.svg
+src/
+  pages/
+    index.astro
+.gitignore
+astro.config.mjs
+package.json
+README.md
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="public/favicon.svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="6" fill="#7c3aed"/>
+  <text x="16" y="23" text-anchor="middle" font-family="system-ui" font-weight="800" font-size="16" fill="white">m</text>
+</svg>
+</file>
+
+<file path="src/pages/index.astro">
 ---
 const features = [
   {
@@ -76,18 +142,6 @@ const typeColors: Record<string, string> = {
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- Nav -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand"><span class="gradient-text">mods</span></a>
-      <div class="nav-links">
-        <a href="/models" class="nav-link">Models</a>
-        <a href="https://github.com/modshq-org/mods" class="nav-link" target="_blank" rel="noopener">Docs</a>
-        <a href="https://github.com/modshq-org/mods" class="nav-link" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </div>
-  </nav>
-
   <!-- Hero -->
   <section class="hero">
     <div class="container">
@@ -123,7 +177,7 @@ const typeColors: Record<string, string> = {
       </div>
       <div class="hero-actions">
         <a href="#install" class="btn btn-primary">Get Started</a>
-        <a href="https://github.com/modshq-org/mods" class="btn btn-secondary" target="_blank" rel="noopener">
+        <a href="https://github.com/pedropaf/mods" class="btn btn-secondary" target="_blank" rel="noopener">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
         </a>
@@ -203,7 +257,7 @@ const typeColors: Record<string, string> = {
           </div>
         ))}
       </div>
-      <p class="models-count">Browse all {models.length}+ models in the <a href="/models">model library</a></p>
+      <p class="models-count">+ many more in the <a href="https://github.com/pedropaf/mods-registry" target="_blank" rel="noopener">registry</a></p>
     </div>
   </section>
 
@@ -219,7 +273,7 @@ const typeColors: Record<string, string> = {
           </div>
           <p class="install-alt">Or build from source:</p>
           <div class="code-block">
-            <code>git clone https://github.com/modshq-org/mods<br/>cd mods && cargo install --path .</code>
+            <code>git clone https://github.com/pedropaf/mods<br/>cd mods && cargo install --path .</code>
           </div>
         </div>
         <div class="install-card">
@@ -278,10 +332,9 @@ const typeColors: Record<string, string> = {
           <p>Open source model manager for AI image generation.</p>
         </div>
         <div class="footer-links">
-          <a href="/models">Models</a>
-          <a href="https://github.com/modshq-org/mods" target="_blank" rel="noopener">CLI</a>
-          <a href="https://github.com/modshq-org/mods-registry" target="_blank" rel="noopener">Registry</a>
-          <a href="https://github.com/modshq-org/mods/issues" target="_blank" rel="noopener">Issues</a>
+          <a href="https://github.com/pedropaf/mods" target="_blank" rel="noopener">CLI</a>
+          <a href="https://github.com/pedropaf/mods-registry" target="_blank" rel="noopener">Registry</a>
+          <a href="https://github.com/pedropaf/mods/issues" target="_blank" rel="noopener">Issues</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -339,52 +392,9 @@ const typeColors: Record<string, string> = {
     background-clip: text;
   }
 
-  /* Nav */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10, 10, 15, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .nav-brand {
-    font-size: 1.5rem;
-    font-weight: 800;
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 24px;
-  }
-
-  .nav-link {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-
-  .nav-link:hover {
-    color: var(--text);
-  }
-
   /* Hero */
   .hero {
-    padding: 80px 0 80px;
+    padding: 120px 0 80px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -855,3 +865,117 @@ const typeColors: Record<string, string> = {
     .features, .how-it-works, .models, .install-section, .comparison { padding: 64px 0; }
   }
 </style>
+</file>
+
+<file path=".gitignore">
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+</file>
+
+<file path="astro.config.mjs">
+// @ts-check
+import { defineConfig } from 'astro/config';
+
+// https://astro.build/config
+export default defineConfig({
+  site: 'https://mods.sh',
+  build: {
+    assets: '_assets',
+  },
+});
+</file>
+
+<file path="package.json">
+{
+  "name": "mods-site",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.17.1"
+  }
+}
+</file>
+
+<file path="README.md">
+# Astro Starter Kit: Minimal
+
+```sh
+npm create astro@latest -- --template minimal
+```
+
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+
+## 🚀 Project Structure
+
+Inside of your Astro project, you'll see the following folders and files:
+
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
+
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+
+Any static assets, like images, can be placed in the `public/` directory.
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+</file>
+
+<file path="tsconfig.json">
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
+}
+</file>
+
+</files>
