@@ -103,7 +103,7 @@
         "flux",
         "lightweight"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 2600000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
@@ -437,441 +437,10 @@
         "vae",
         "bfl"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 3200000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
-    },
-    {
-      "id": "flux2-dev",
-      "name": "FLUX.2 Dev",
-      "type": "diffusion_model",
-      "architecture": "flux2",
-      "author": "black-forest-labs / Comfy-Org",
-      "license": "flux-2-dev-non-commercial",
-      "homepage": "https://huggingface.co/Comfy-Org/flux2-dev",
-      "description": "FLUX.2 Dev — next-generation image model from Black Forest Labs.\nUp to 4MP photorealistic output with improved lighting, skin, fabric, and hand detail.\nMulti-reference consistency (up to 10 images), improved editing precision,\nbetter visual understanding, and professional-class text rendering.\nUses Mistral 3 Small text encoder and FLUX.2 VAE.\nOpen-source (non-commercial license).\n",
-      "variants": [
-        {
-          "id": "fp8mixed",
-          "file": "flux2_dev_fp8mixed.safetensors",
-          "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/diffusion_models/flux2_dev_fp8mixed.safetensors",
-          "sha256": "VERIFY_flux2_dev_fp8mixed",
-          "size": 12000000000,
-          "format": "safetensors",
-          "precision": "fp8-mixed",
-          "vram_required": 12288,
-          "vram_recommended": 16384,
-          "note": "fp8 mixed precision quantization from Comfy-Org."
-        }
-      ],
-      "requires": [
-        {
-          "id": "flux2-vae",
-          "type": "vae",
-          "reason": "FLUX.2 VAE for decoding latents to images"
-        },
-        {
-          "id": "flux2-mistral-text-encoder",
-          "type": "text_encoder",
-          "reason": "Mistral 3 Small text encoder for prompt processing"
-        }
-      ],
-      "auth": {
-        "provider": "huggingface",
-        "terms_url": "https://huggingface.co/black-forest-labs/FLUX.2-dev",
-        "gated": true
-      },
-      "defaults": {
-        "steps": 20,
-        "cfg": 3.5,
-        "sampler": "euler",
-        "scheduler": "normal"
-      },
-      "tags": [
-        "flux2",
-        "text-to-image",
-        "high-quality",
-        "photorealistic",
-        "multi-reference",
-        "bfl",
-        "comfyui"
-      ],
-      "rating": 4.9,
-      "downloads": 0,
-      "added": "2025-07-01",
-      "updated": "2025-07-01"
-    },
-    {
-      "id": "flux2-klein-4b",
-      "name": "FLUX.2 Klein 4B",
-      "type": "diffusion_model",
-      "architecture": "flux2",
-      "author": "black-forest-labs / Comfy-Org",
-      "license": "flux-2-klein-non-commercial",
-      "homepage": "https://huggingface.co/Comfy-Org/flux2-klein-4B",
-      "description": "FLUX.2 Klein 4B — the fastest model in the FLUX family.\nUnifies text-to-image and image editing in one compact architecture.\nTwo variants: Base (undistilled, best for fine-tuning) and Distilled (4-step, ~1.2s on 5090).\nOnly 8.4 GB VRAM for distilled variant. Supports style transforms, semantic edits,\nobject replacement/removal, multi-reference composition, and iterative edits.\n",
-      "variants": [
-        {
-          "id": "distilled-fp8",
-          "file": "flux-2-klein-4b-fp8.safetensors",
-          "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-4b-fp8/resolve/main/flux-2-klein-4b-fp8.safetensors",
-          "sha256": "VERIFY_flux2_klein_4b_distilled_fp8",
-          "size": 4500000000,
-          "format": "safetensors",
-          "precision": "fp8",
-          "vram_required": 8192,
-          "vram_recommended": 10240,
-          "note": "4-step distilled. ~1.2s on RTX 5090. Best for speed."
-        },
-        {
-          "id": "base-fp8",
-          "file": "flux-2-klein-base-4b-fp8.safetensors",
-          "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-base-4b-fp8/resolve/main/flux-2-klein-base-4b-fp8.safetensors",
-          "sha256": "VERIFY_flux2_klein_4b_base_fp8",
-          "size": 4500000000,
-          "format": "safetensors",
-          "precision": "fp8",
-          "vram_required": 10240,
-          "vram_recommended": 12288,
-          "note": "Undistilled base. Better for fine-tuning and maximum flexibility."
-        }
-      ],
-      "requires": [
-        {
-          "id": "flux2-vae",
-          "type": "vae",
-          "reason": "FLUX.2 VAE for decoding latents to images"
-        },
-        {
-          "id": "flux2-qwen3-4b-text-encoder",
-          "type": "text_encoder",
-          "reason": "Qwen 3 4B text encoder for prompt processing"
-        }
-      ],
-      "auth": {
-        "provider": "huggingface",
-        "terms_url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-4b-fp8",
-        "gated": true
-      },
-      "defaults": {
-        "steps": 4,
-        "cfg": 1.0,
-        "sampler": "euler",
-        "scheduler": "simple"
-      },
-      "tags": [
-        "flux2",
-        "klein",
-        "text-to-image",
-        "image-editing",
-        "fast-inference",
-        "4b",
-        "comfyui"
-      ],
-      "rating": 4.8,
-      "downloads": 0,
-      "added": "2025-07-01",
-      "updated": "2025-07-01"
-    },
-    {
-      "id": "flux2-klein-9b",
-      "name": "FLUX.2 Klein 9B",
-      "type": "diffusion_model",
-      "architecture": "flux",
-      "author": "unsloth / shimmyshimmer",
-      "license": "flux-2-klein-non-commercial",
-      "homepage": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF",
-      "description": "FLUX.2 Klein 9B from Unsloth, available as GGUF quantizations.\nSuccessor to FLUX.1 with improved image quality and editing capabilities.\nSupports text-to-image and image editing workflows.\nUses FLUX.2 VAE and Qwen 3 8B text encoder.\nRequires ComfyUI-GGUF custom node for GGUF variants.\n",
-      "variants": [
-        {
-          "id": "bf16",
-          "file": "flux-2-klein-9b-BF16.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-BF16.gguf",
-          "sha256": "VERIFY_flux2_klein_bf16",
-          "size": 18200000000,
-          "format": "gguf",
-          "precision": "bf16",
-          "vram_required": 20480,
-          "vram_recommended": 24576,
-          "note": "Full precision bf16 GGUF. Best quality."
-        },
-        {
-          "id": "f16",
-          "file": "flux-2-klein-9b-F16.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-F16.gguf",
-          "sha256": "VERIFY_flux2_klein_f16",
-          "size": 18200000000,
-          "format": "gguf",
-          "precision": "f16",
-          "vram_required": 20480,
-          "vram_recommended": 24576,
-          "note": "Full precision fp16 GGUF."
-        },
-        {
-          "id": "gguf-q8-0",
-          "file": "flux-2-klein-9b-Q8_0.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q8_0.gguf",
-          "sha256": "VERIFY_flux2_klein_q8_0",
-          "size": 9980000000,
-          "format": "gguf",
-          "precision": "q8_0",
-          "vram_required": 12288,
-          "vram_recommended": 16384,
-          "note": "GGUF Q8_0 — highest quality quantization."
-        },
-        {
-          "id": "gguf-q6-k",
-          "file": "flux-2-klein-9b-Q6_K.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q6_K.gguf",
-          "sha256": "VERIFY_flux2_klein_q6_k",
-          "size": 7870000000,
-          "format": "gguf",
-          "precision": "q6_k",
-          "vram_required": 10240,
-          "vram_recommended": 12288,
-          "note": "GGUF Q6_K — very good quality/size balance."
-        },
-        {
-          "id": "gguf-q5-k-m",
-          "file": "flux-2-klein-9b-Q5_K_M.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q5_K_M.gguf",
-          "sha256": "VERIFY_flux2_klein_q5_k_m",
-          "size": 7020000000,
-          "format": "gguf",
-          "precision": "q5_k_m",
-          "vram_required": 8192,
-          "vram_recommended": 12288,
-          "note": "GGUF Q5_K_M — recommended for 12GB+ GPUs."
-        },
-        {
-          "id": "gguf-q5-k-s",
-          "file": "flux-2-klein-9b-Q5_K_S.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q5_K_S.gguf",
-          "sha256": "VERIFY_flux2_klein_q5_k_s",
-          "size": 6940000000,
-          "format": "gguf",
-          "precision": "q5_k_s",
-          "vram_required": 8192,
-          "vram_recommended": 12288,
-          "note": "GGUF Q5_K_S — smaller Q5 variant."
-        },
-        {
-          "id": "gguf-q4-k-m",
-          "file": "flux-2-klein-9b-Q4_K_M.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_K_M.gguf",
-          "sha256": "VERIFY_flux2_klein_q4_k_m",
-          "size": 5910000000,
-          "format": "gguf",
-          "precision": "q4_k_m",
-          "vram_required": 8192,
-          "vram_recommended": 10240,
-          "note": "GGUF Q4_K_M — good for 8GB GPUs."
-        },
-        {
-          "id": "gguf-q4-k-s",
-          "file": "flux-2-klein-9b-Q4_K_S.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_K_S.gguf",
-          "sha256": "VERIFY_flux2_klein_q4_k_s",
-          "size": 5830000000,
-          "format": "gguf",
-          "precision": "q4_k_s",
-          "vram_required": 8192,
-          "vram_recommended": 10240,
-          "note": "GGUF Q4_K_S — smaller Q4 variant."
-        },
-        {
-          "id": "gguf-q4-1",
-          "file": "flux-2-klein-9b-Q4_1.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_1.gguf",
-          "sha256": "VERIFY_flux2_klein_q4_1",
-          "size": 6160000000,
-          "format": "gguf",
-          "precision": "q4_1",
-          "vram_required": 8192,
-          "vram_recommended": 10240,
-          "note": "GGUF Q4_1."
-        },
-        {
-          "id": "gguf-q4-0",
-          "file": "flux-2-klein-9b-Q4_0.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_0.gguf",
-          "sha256": "VERIFY_flux2_klein_q4_0",
-          "size": 5620000000,
-          "format": "gguf",
-          "precision": "q4_0",
-          "vram_required": 8192,
-          "vram_recommended": 10240,
-          "note": "GGUF Q4_0."
-        },
-        {
-          "id": "gguf-q3-k-m",
-          "file": "flux-2-klein-9b-Q3_K_M.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q3_K_M.gguf",
-          "sha256": "VERIFY_flux2_klein_q3_k_m",
-          "size": 4770000000,
-          "format": "gguf",
-          "precision": "q3_k_m",
-          "vram_required": 6144,
-          "vram_recommended": 8192,
-          "note": "GGUF Q3_K_M — for 8GB GPUs. Some quality loss."
-        },
-        {
-          "id": "gguf-q3-k-s",
-          "file": "flux-2-klein-9b-Q3_K_S.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q3_K_S.gguf",
-          "sha256": "VERIFY_flux2_klein_q3_k_s",
-          "size": 4690000000,
-          "format": "gguf",
-          "precision": "q3_k_s",
-          "vram_required": 6144,
-          "vram_recommended": 8192,
-          "note": "GGUF Q3_K_S — smaller Q3 variant."
-        },
-        {
-          "id": "gguf-q2-k",
-          "file": "flux-2-klein-9b-Q2_K.gguf",
-          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q2_K.gguf",
-          "sha256": "VERIFY_flux2_klein_q2_k",
-          "size": 3980000000,
-          "format": "gguf",
-          "precision": "q2_k",
-          "vram_required": 6144,
-          "vram_recommended": 8192,
-          "note": "GGUF Q2_K — worst quality but smallest. Noticeable degradation."
-        }
-      ],
-      "requires": [
-        {
-          "id": "flux2-vae",
-          "type": "vae",
-          "reason": "FLUX.2 VAE for decoding latents to images"
-        },
-        {
-          "id": "flux2-qwen3-8b-text-encoder",
-          "type": "text_encoder",
-          "reason": "Qwen 3 8B text encoder for prompt processing"
-        }
-      ],
-      "tags": [
-        "flux",
-        "text-to-image",
-        "image-editing",
-        "gguf",
-        "comfyui",
-        "unsloth"
-      ],
-      "rating": 4.7,
-      "downloads": 0,
-      "added": "2025-07-01",
-      "updated": "2025-07-01",
-      "preview_images": [
-        "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/assets/flux2klein9b.png"
-      ]
-    },
-    {
-      "id": "flux2-mistral-text-encoder",
-      "name": "FLUX.2 Mistral 3 Small Text Encoder",
-      "type": "text_encoder",
-      "architecture": "mistral",
-      "author": "Comfy-Org",
-      "license": "apache-2.0",
-      "homepage": "https://huggingface.co/Comfy-Org/flux2-dev",
-      "description": "Mistral 3 Small text encoder (bf16) for FLUX.2 Dev.\nRequired for FLUX.2 Dev text-to-image generation.\n",
-      "file": {
-        "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/text_encoders/mistral_3_small_flux2_bf16.safetensors",
-        "sha256": "VERIFY_flux2_mistral",
-        "size": 24000000000,
-        "format": "safetensors"
-      },
-      "tags": [
-        "flux2",
-        "text-encoder",
-        "mistral",
-        "dev"
-      ],
-      "rating": 5.0,
-      "downloads": 0,
-      "added": "2025-07-01",
-      "updated": "2025-07-01"
-    },
-    {
-      "id": "flux2-qwen3-4b-text-encoder",
-      "name": "FLUX.2 Qwen 3 4B Text Encoder",
-      "type": "text_encoder",
-      "architecture": "qwen",
-      "author": "Comfy-Org",
-      "license": "apache-2.0",
-      "homepage": "https://huggingface.co/Comfy-Org/flux2-klein-4B",
-      "description": "Qwen 3 4B text encoder for FLUX.2 Klein 4B models.\nRequired for both base and distilled 4B variants.\n",
-      "file": {
-        "url": "https://huggingface.co/Comfy-Org/flux2-klein-4B/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors",
-        "sha256": "VERIFY_flux2_qwen3_4b",
-        "size": 9800000000,
-        "format": "safetensors"
-      },
-      "tags": [
-        "flux2",
-        "text-encoder",
-        "qwen",
-        "klein-4b"
-      ],
-      "rating": 5.0,
-      "downloads": 0,
-      "added": "2025-07-01",
-      "updated": "2025-07-01"
-    },
-    {
-      "id": "flux2-qwen3-8b-text-encoder",
-      "name": "FLUX.2 Qwen 3 8B Text Encoder",
-      "type": "text_encoder",
-      "architecture": "qwen",
-      "author": "Comfy-Org",
-      "license": "apache-2.0",
-      "homepage": "https://huggingface.co/Comfy-Org/flux2-klein-9B",
-      "description": "Qwen 3 8B text encoder (fp8 mixed) for FLUX.2 Klein 9B models.\nRequired for both base and distilled 9B variants.\n",
-      "file": {
-        "url": "https://huggingface.co/Comfy-Org/flux2-klein-9B/resolve/main/split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors",
-        "sha256": "VERIFY_flux2_qwen3_8b",
-        "size": 8500000000,
-        "format": "safetensors"
-      },
-      "tags": [
-        "flux2",
-        "text-encoder",
-        "qwen",
-        "klein-9b",
-        "fp8"
-      ],
-      "rating": 5.0,
-      "downloads": 0,
-      "added": "2025-07-01",
-      "updated": "2025-07-01"
-    },
-    {
-      "id": "flux2-vae",
-      "name": "FLUX.2 VAE",
-      "type": "vae",
-      "architecture": "flux2",
-      "author": "black-forest-labs / Comfy-Org",
-      "license": "apache-2.0",
-      "homepage": "https://huggingface.co/Comfy-Org/flux2-dev",
-      "description": "VAE for all FLUX.2 models (Dev, Klein 4B, Klein 9B).\nDifferent from FLUX.1 VAE — do not mix them.\nShared across all FLUX.2 model variants.\n",
-      "file": {
-        "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors",
-        "sha256": "VERIFY_flux2_vae",
-        "size": 335000000,
-        "format": "safetensors"
-      },
-      "tags": [
-        "flux2",
-        "vae",
-        "bfl"
-      ],
-      "rating": 5.0,
-      "downloads": 0,
-      "added": "2025-07-01",
-      "updated": "2025-07-01"
     },
     {
       "id": "ip-adapter-faceid-sdxl",
@@ -1305,7 +874,7 @@
       ],
       "defaults": {
         "steps": 8,
-        "cfg": 1.0,
+        "cfg": 1,
         "sampler": "euler",
         "scheduler": "simple"
       },
@@ -1435,10 +1004,10 @@
           "note": "Trained specifically for fp8 base model. 4-step, fp32."
         }
       ],
-      "recommended_weight": 1.0,
+      "recommended_weight": 1,
       "weight_range": [
         0.8,
-        1.0
+        1
       ],
       "tags": [
         "qwen",
@@ -1473,7 +1042,7 @@
         "vae",
         "comfyui"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 275000,
       "added": "2025-07-01",
       "updated": "2025-07-01"
@@ -1511,13 +1080,13 @@
       "architecture": "sd15",
       "author": "runwayml",
       "license": "creativeml-openrail-m",
-      "homepage": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5",
+      "homepage": "https://huggingface.co/runwayml/stable-diffusion-v1-5",
       "description": "The original Stable Diffusion 1.5. Lightweight, fast, huge ecosystem\nof LoRAs, embeddings, and ControlNets. 512x512 native resolution.\n",
       "variants": [
         {
           "id": "fp16",
           "file": "v1-5-pruned-emaonly.safetensors",
-          "url": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors",
+          "url": "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors",
           "sha256": "VERIFY_sd15_fp16",
           "size": 4265146304,
           "format": "safetensors",
@@ -1732,7 +1301,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 7.0,
+        "cfg": 7,
         "sampler": "dpmpp_2m",
         "scheduler": "karras"
       },
@@ -1877,7 +1446,7 @@
       ],
       "defaults": {
         "steps": 1,
-        "cfg": 0.0,
+        "cfg": 0,
         "sampler": "euler_ancestral",
         "scheduler": "normal"
       },
@@ -1946,7 +1515,7 @@
         "flux",
         "fp16"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 2400000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
@@ -2185,7 +1754,7 @@
       ],
       "recommended": {
         "steps": 8,
-        "cfg": 0.0,
+        "cfg": 0,
         "sampler": "euler",
         "scheduler": "simple"
       },
@@ -2281,7 +1850,7 @@
         "vae",
         "comfyui"
       ],
-      "rating": 5.0
+      "rating": 5
     }
   ]
 }

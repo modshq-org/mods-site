@@ -32,23 +32,42 @@ const features = [
   }
 ];
 
-const models = [
-  { name: "FLUX.1 Dev", type: "checkpoint", arch: "flux" },
-  { name: "FLUX.1 Schnell", type: "checkpoint", arch: "flux" },
-  { name: "SDXL Base 1.0", type: "checkpoint", arch: "sdxl" },
-  { name: "SDXL Turbo", type: "checkpoint", arch: "sdxl" },
-  { name: "SD 1.5", type: "checkpoint", arch: "sd15" },
-  { name: "SD 2.1", type: "checkpoint", arch: "sd21" },
-  { name: "Z-Image-Turbo", type: "diffusion_model", arch: "z-image" },
-  { name: "Qwen Image Edit", type: "checkpoint", arch: "qwen" },
-  { name: "CLIP-L", type: "text_encoder", arch: "flux" },
-  { name: "T5-XXL (fp8/fp16)", type: "text_encoder", arch: "flux" },
-  { name: "LCM LoRA", type: "lora", arch: "sdxl/sd15" },
-  { name: "ControlNet Canny", type: "controlnet", arch: "sd15/sdxl" },
-  { name: "IP-Adapter", type: "ipadapter", arch: "sdxl" },
-  { name: "4x UltraSharp", type: "upscaler", arch: "universal" },
-  { name: "FLUX Redux", type: "ipadapter", arch: "flux" },
-  { name: "BiRefNet", type: "segmentation", arch: "universal" },
+// Featured model families — hero cards
+const families = [
+  {
+    name: "FLUX",
+    tagline: "State-of-the-art image generation",
+    color: "#7c3aed",
+    models: ["FLUX.1 Dev", "FLUX.1 Schnell", "FLUX 2 Dev", "FLUX 2 Klein", "FLUX Fill", "FLUX Canny", "FLUX Redux"],
+    install: "mods install flux-dev",
+  },
+  {
+    name: "Qwen",
+    tagline: "Multimodal editing & generation",
+    color: "#3b82f6",
+    models: ["Qwen Image Edit", "Qwen Edit Lightning LoRA"],
+    install: "mods install qwen-image-edit",
+  },
+  {
+    name: "Wan",
+    tagline: "Video generation",
+    color: "#14b8a6",
+    models: [],
+    install: "",
+    comingSoon: true,
+  },
+];
+
+// Other notable models
+const moreModels = [
+  { name: "SDXL Base 1.0", type: "checkpoint" },
+  { name: "SD 1.5", type: "checkpoint" },
+  { name: "Z-Image-Turbo", type: "diffusion_model" },
+  { name: "ControlNet Canny", type: "controlnet" },
+  { name: "IP-Adapter", type: "ipadapter" },
+  { name: "4x UltraSharp", type: "upscaler" },
+  { name: "BiRefNet", type: "segmentation" },
+  { name: "LCM LoRA", type: "lora" },
 ];
 
 const typeColors: Record<string, string> = {
@@ -199,19 +218,44 @@ const typeColors: Record<string, string> = {
   <section class="models" id="models">
     <div class="container">
       <h2>Curated Registry</h2>
-      <p class="section-subtitle">Popular models ready to install. All verified with SHA256 hashes.</p>
-      <div class="models-grid">
-        {models.map(m => (
-          <div class="model-card">
-            <span class="model-type" style={`background: ${typeColors[m.type] || '#666'}22; color: ${typeColors[m.type] || '#666'}`}>
-              {m.type.replace('_', ' ')}
-            </span>
-            <h4>{m.name}</h4>
-            <span class="model-arch">{m.arch}</span>
+      <p class="section-subtitle">The models that matter, ready to install with one command.</p>
+
+      <!-- Featured families -->
+      <div class="families-grid">
+        {families.map(f => (
+          <div class={`family-card ${f.comingSoon ? 'coming-soon' : ''}`} style={`--family-color: ${f.color}`}>
+            <div class="family-header">
+              <h3 class="family-name">{f.name}</h3>
+              {f.comingSoon && <span class="coming-badge">Coming Soon</span>}
+            </div>
+            <p class="family-tagline">{f.tagline}</p>
+            {f.models.length > 0 && (
+              <ul class="family-models">
+                {f.models.map(m => <li>{m}</li>)}
+              </ul>
+            )}
+            {f.install && (
+              <div class="family-install">
+                <code><span class="prompt">$</span> {f.install}</code>
+              </div>
+            )}
           </div>
         ))}
       </div>
-      <p class="models-count">Browse all {models.length}+ models in the <a href="/models">model library</a></p>
+
+      <!-- More models row -->
+      <div class="more-models">
+        <h4 class="more-label">Plus {moreModels.length}+ more</h4>
+        <div class="more-chips">
+          {moreModels.map(m => (
+            <span class="more-chip" style={`--chip-bg: ${typeColors[m.type] || '#666'}`}>
+              {m.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <p class="models-count">Browse all 38+ models in the <a href="/models">model library</a></p>
     </div>
   </section>
 
@@ -306,8 +350,8 @@ const typeColors: Record<string, string> = {
     --bg-card: #12121a;
     --bg-card-hover: #1a1a28;
     --border: #1e1e2e;
-    --text: #e4e4ef;
-    --text-dim: #8888a0;
+    --text: #e8e8f0;
+    --text-dim: #a0a0b8;
     --accent: #7c3aed;
     --accent-light: #a78bfa;
     --success: #22c55e;
@@ -381,7 +425,7 @@ const typeColors: Record<string, string> = {
   .nav-link {
     color: var(--text-dim);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 500;
     transition: color 0.2s;
   }
@@ -430,7 +474,7 @@ const typeColors: Record<string, string> = {
   }
 
   .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     color: var(--text-dim);
     max-width: 560px;
     margin: 0 auto 48px;
@@ -558,7 +602,7 @@ const typeColors: Record<string, string> = {
   .section-subtitle {
     text-align: center;
     color: var(--text-dim);
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     margin-bottom: 56px;
   }
 
@@ -595,7 +639,7 @@ const typeColors: Record<string, string> = {
 
   .feature-card p {
     color: var(--text-dim);
-    font-size: 0.95rem;
+    font-size: 1rem;
     line-height: 1.6;
   }
 
@@ -644,52 +688,141 @@ const typeColors: Record<string, string> = {
 
   .step-content p {
     color: var(--text-dim);
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
-  /* Models */
+  /* Models / Families */
   .models {
     border-top: 1px solid var(--border);
   }
 
-  .models-grid {
+  .families-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
   }
 
-  .model-card {
-    padding: 20px;
-    border-radius: 10px;
+  .family-card {
+    padding: 28px;
+    border-radius: 14px;
     border: 1px solid var(--border);
     background: var(--bg-card);
-    transition: all 0.2s;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
   }
 
-  .model-card:hover {
-    border-color: #2e2e40;
+  .family-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--family-color);
+    opacity: 0.7;
+  }
+
+  .family-card:hover {
+    border-color: color-mix(in srgb, var(--family-color) 40%, transparent);
     background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
   }
 
-  .model-type {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 100px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    margin-bottom: 10px;
+  .family-card.coming-soon {
+    opacity: 0.6;
   }
 
-  .model-card h4 {
-    font-size: 1rem;
-    font-weight: 600;
+  .family-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 6px;
   }
 
-  .model-arch {
-    font-size: 0.8rem;
+  .family-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .coming-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .family-tagline {
+    color: var(--text-dim);
+    font-size: 1rem;
+    margin-bottom: 16px;
+  }
+
+  .family-models {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .family-models li {
+    font-size: 0.82rem;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .family-install {
+    padding: 10px 14px;
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--accent-light);
+  }
+
+  .family-install .prompt {
+    color: var(--success);
+  }
+
+  /* More models */
+  .more-models {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .more-label {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .more-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .more-chip {
+    font-size: 0.85rem;
+    padding: 5px 14px;
+    border-radius: 100px;
+    background: color-mix(in srgb, var(--chip-bg) 12%, transparent);
+    color: var(--chip-bg);
+    font-weight: 500;
   }
 
   .models-count {
@@ -790,7 +923,7 @@ const typeColors: Record<string, string> = {
   .comparison-card li {
     padding: 8px 0;
     color: var(--text-dim);
-    font-size: 0.95rem;
+    font-size: 1rem;
     border-bottom: 1px solid var(--border);
   }
 
@@ -859,6 +992,7 @@ const typeColors: Record<string, string> = {
     .hero h1 { font-size: 4rem; }
     .terminal-body { font-size: 0.75rem; overflow-x: auto; }
     .comparison-grid { grid-template-columns: 1fr; }
+    .families-grid { grid-template-columns: 1fr; }
     .footer-content { flex-direction: column; gap: 24px; }
     .features, .how-it-works, .models, .install-section, .comparison { padding: 64px 0; }
   }
