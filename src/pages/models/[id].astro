@@ -1,0 +1,919 @@
+---
+import registry from '../../data/registry.json';
+
+interface RegistryItem {
+  id: string;
+  name: string;
+  type: string;
+  architecture?: string;
+  author: string;
+  license: string;
+  homepage: string;
+  description: string;
+  file?: { url: string; sha256: string; size: number; format: string };
+  variants?: { id: string; label?: string; file: { url: string; sha256: string; size: number; format: string }; vram_required?: number; vram_recommended?: number; note?: string; precision?: string }[];
+  tags: string[];
+  rating: number;
+  downloads: number;
+  added: string;
+  updated: string;
+  requires?: { id: string; type: string; reason: string }[];
+  preview_images?: string[];
+  base_models?: string[];
+  auth?: { provider: string; gated: boolean; terms_url: string };
+  defaults?: Record<string, any>;
+}
+
+export function getStaticPaths() {
+  return (registry.items as RegistryItem[]).map((item) => ({
+    params: { id: item.id },
+    props: { model: item },
+  }));
+}
+
+const { model } = Astro.props as { model: RegistryItem };
+const allItems = registry.items as RegistryItem[];
+
+// Helpers
+function formatSize(bytes: number): string {
+  if (bytes >= 1e9) return `${(bytes / 1e9).toFixed(1)} GB`;
+  if (bytes >= 1e6) return `${(bytes / 1e6).toFixed(0)} MB`;
+  return `${(bytes / 1e3).toFixed(0)} KB`;
+}
+
+function formatDownloads(n: number | undefined): string {
+  if (!n) return '—';
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(0)}K`;
+  return n.toLocaleString();
+}
+
+function formatRating(r: number | undefined): string {
+  if (!r) return '☆☆☆☆☆';
+  const full = Math.floor(r);
+  const half = r - full >= 0.3;
+  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
+}
+
+function getSize(item: RegistryItem): string {
+  if (item.file) return formatSize(item.file.size);
+  if (item.variants && item.variants.length > 0) {
+    const sizes = item.variants.map((v: any) => v.file?.size).filter((s: any) => s > 0);
+    if (sizes.length === 0) return '—';
+    const min = Math.min(...sizes);
+    const max = Math.max(...sizes);
+    if (min === max) return formatSize(min);
+    return `${formatSize(min)}–${formatSize(max)}`;
+  }
+  return '—';
+}
+
+const typeColors: Record<string, string> = {
+  checkpoint: '#3b82f6',
+  diffusion_model: '#8b5cf6',
+  text_encoder: '#06b6d4',
+  lora: '#f59e0b',
+  controlnet: '#10b981',
+  ipadapter: '#ec4899',
+  upscaler: '#f97316',
+  vae: '#6366f1',
+  embedding: '#84cc16',
+  segmentation: '#14b8a6',
+};
+
+const typeLabels: Record<string, string> = {
+  checkpoint: 'Checkpoint',
+  diffusion_model: 'Diffusion Model',
+  text_encoder: 'Text Encoder',
+  lora: 'LoRA',
+  controlnet: 'ControlNet',
+  ipadapter: 'IP-Adapter',
+  upscaler: 'Upscaler',
+  vae: 'VAE',
+  embedding: 'Embedding',
+  segmentation: 'Segmentation',
+};
+
+const typeColor = typeColors[model.type] || '#888';
+const typeLabel = typeLabels[model.type] || model.type;
+const description = model.description || '';
+const descLines = description.split('\n').filter((l: string) => l.trim());
+
+// Resolve dependency models
+const deps = (model.requires || []).map(dep => {
+  const resolved = allItems.find(i => i.id === dep.id);
+  return { ...dep, resolved };
+});
+
+// Find models that depend on this one
+const dependents = allItems.filter(item =>
+  (item.requires || []).some(r => r.id === model.id)
+);
+
+// Install command
+const installCmd = model.variants && model.variants.length > 1
+  ? `mods install ${model.id}`
+  : `mods install ${model.id}`;
+---
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{model.name} — mods registry</title>
+  <meta name="description" content={`Install ${model.name} with mods. ${descLines[0] || ''}`} />
+  <meta property="og:title" content={`${model.name} — mods`} />
+  <meta property="og:description" content={`Install ${model.name} with a single command: mods install ${model.id}`} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={`https://mods.sh/models/${model.id}`} />
+  <link rel="canonical" href={`https://mods.sh/models/${model.id}`} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3341W5L66B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3341W5L66B');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand"><span class="gradient-text">mods</span></a>
+      <div class="nav-links">
+        <a href="/models" class="nav-link active">Models</a>
+        <a href="https://github.com/modshq-org/mods" class="nav-link" target="_blank" rel="noopener">Docs</a>
+        <a href="https://github.com/modshq-org/mods" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a href="/models">Models</a>
+      <span class="sep">/</span>
+      <span>{model.id}</span>
+    </nav>
+
+    <!-- Model Header -->
+    <header class="model-header">
+      <div class="header-top">
+        <span
+          class="type-badge"
+          style={`background: ${typeColor}18; color: ${typeColor}; border-color: ${typeColor}30`}
+        >
+          {typeLabel}
+        </span>
+        {model.auth?.gated && (
+          <span class="gated-badge">🔒 Gated</span>
+        )}
+      </div>
+
+      <h1>{model.name}</h1>
+
+      <div class="header-meta">
+        <span class="author">by <a href={model.homepage} target="_blank" rel="noopener">{model.author}</a></span>
+        <span class="meta-sep">·</span>
+        <span class="rating" title={`${model.rating}/5`}>{formatRating(model.rating)} {model.rating}</span>
+        <span class="meta-sep">·</span>
+        <span class="downloads">{formatDownloads(model.downloads)} downloads</span>
+        <span class="meta-sep">·</span>
+        <span class="size">{getSize(model)}</span>
+        {model.architecture && (
+          <>
+            <span class="meta-sep">·</span>
+            <span class="arch">{model.architecture}</span>
+          </>
+        )}
+      </div>
+    </header>
+
+    <!-- Install Box -->
+    <section class="install-box">
+      <div class="install-label">Install with mods</div>
+      <div class="install-cmd">
+        <code id="install-cmd">{installCmd}</code>
+        <button class="copy-btn" id="copy-btn" title="Copy to clipboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </button>
+      </div>
+      {model.variants && model.variants.length > 1 && (
+        <div class="variant-hint">
+          <div class="variant-default">
+            <span class="default-icon">⚡</span>
+            <span>Running <code>mods install {model.id}</code> without <code>--variant</code> auto-selects the best variant for your GPU VRAM.</span>
+          </div>
+          <div class="variant-list-hint">
+            Available variants: {model.variants.map((v: any) => v.id).join(', ')}
+            <br/>
+            <code class="variant-example">mods install {model.id} --variant {model.variants[0].id}</code>
+          </div>
+        </div>
+      )}
+      {model.auth?.gated && (
+        <div class="gated-notice">
+          <span class="gated-icon">🔒</span>
+          This model requires accepting terms on <a href={model.auth.terms_url} target="_blank" rel="noopener">HuggingFace</a> and running <code>mods auth huggingface</code> first.
+        </div>
+      )}
+    </section>
+
+    <!-- Two-column layout -->
+    <div class="content-grid">
+      <!-- Left: Description + Details -->
+      <div class="content-main">
+        <section class="section">
+          <h2>About</h2>
+          <div class="description">
+            {descLines.map((line: string) => <p>{line}</p>)}
+          </div>
+        </section>
+
+        {model.preview_images && model.preview_images.length > 0 && (
+          <section class="section">
+            <h2>Preview</h2>
+            <div class="preview-grid">
+              {model.preview_images.map((url: string) => (
+                <img src={url} alt={`${model.name} preview`} loading="lazy" class="preview-img" />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {model.variants && model.variants.length > 0 && (
+          <section class="section">
+            <h2>Variants</h2>
+            <div class="variants-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Variant</th>
+                    <th>Format</th>
+                    <th>Size</th>
+                    <th>VRAM</th>
+                    <th>Install</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {model.variants.map((v: any) => (
+                    <tr>
+                      <td class="variant-id">
+                        {v.id}
+                        {v.note && <span class="variant-note" title={v.note}>ⓘ</span>}
+                      </td>
+                      <td>{v.file?.format || v.format || '—'}</td>
+                      <td class="mono">{v.file?.size ? formatSize(v.file.size) : (v.size ? formatSize(v.size) : '—')}</td>
+                      <td class="mono vram-cell">
+                        {v.vram_required
+                          ? `${(v.vram_required / 1024).toFixed(0)}+ GB`
+                          : '—'}
+                      </td>
+                      <td>
+                        <code class="variant-cmd">mods install {model.id} --variant {v.id}</code>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {deps.length > 0 && (
+          <section class="section">
+            <h2>Dependencies</h2>
+            <div class="auto-deps-notice">
+              <span class="auto-deps-icon">📦</span>
+              <span>These models are <strong>automatically installed</strong> when you run <code>mods install {model.id}</code>. No extra steps needed — mods resolves and downloads all dependencies for you.</span>
+            </div>
+            <div class="dep-cards">
+              {deps.map(dep => (
+                <a href={dep.resolved ? `/models/${dep.id}` : '#'} class="dep-card">
+                  <span class="dep-type">{dep.type.replace('_', ' ')}</span>
+                  <span class="dep-name">{dep.resolved?.name || dep.id}</span>
+                  <span class="dep-reason">{dep.reason}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {dependents.length > 0 && (
+          <section class="section">
+            <h2>Used By</h2>
+            <div class="dep-cards">
+              {dependents.map(item => (
+                <a href={`/models/${item.id}`} class="dep-card">
+                  <span class="dep-type">{item.type.replace('_', ' ')}</span>
+                  <span class="dep-name">{item.name}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <!-- Right: Sidebar -->
+      <aside class="content-sidebar">
+        <div class="sidebar-card">
+          <h3>Details</h3>
+          <dl class="details-list">
+            <dt>License</dt>
+            <dd>{model.license}</dd>
+            <dt>Type</dt>
+            <dd>{typeLabel}</dd>
+            {model.architecture && (
+              <>
+                <dt>Architecture</dt>
+                <dd>{model.architecture}</dd>
+              </>
+            )}
+            {model.file?.format && (
+              <>
+                <dt>Format</dt>
+                <dd>{model.file.format}</dd>
+              </>
+            )}
+            <dt>Added</dt>
+            <dd>{model.added}</dd>
+            <dt>Updated</dt>
+            <dd>{model.updated}</dd>
+          </dl>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Tags</h3>
+          <div class="tag-list">
+            {model.tags.map((tag: string) => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Links</h3>
+          <ul class="links-list">
+            <li><a href={model.homepage} target="_blank" rel="noopener">Homepage ↗</a></li>
+            {model.file?.url && (
+              <li><a href={model.file.url} target="_blank" rel="noopener">Direct download ↗</a></li>
+            )}
+            <li><a href={`https://github.com/modshq-org/mods-registry/blob/main/manifests/${model.type === 'diffusion_model' ? 'diffusion_models' : model.type + 's'}/${model.id}.yaml`} target="_blank" rel="noopener">Manifest source ↗</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="gradient-text footer-logo">mods</span>
+          <p>Open source model manager for AI image generation.</p>
+        </div>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/models">Models</a>
+          <a href="https://github.com/modshq-org/mods" target="_blank" rel="noopener">CLI</a>
+          <a href="https://github.com/modshq-org/mods-registry" target="_blank" rel="noopener">Registry</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Built with Rust. Licensed MIT.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const copyBtn = document.getElementById('copy-btn')!;
+    const cmdEl = document.getElementById('install-cmd')!;
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(cmdEl.textContent || '');
+      const svg = copyBtn.querySelector('svg')!;
+      const orig = svg.outerHTML;
+      svg.outerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+      setTimeout(() => { copyBtn.querySelector('svg')!.outerHTML = orig; }, 1500);
+    });
+  </script>
+</body>
+</html>
+
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a28;
+    --border: #1e1e2e;
+    --border-light: #2a2a3e;
+    --text: #e4e4ef;
+    --text-dim: #8888a0;
+    --text-dimmer: #555570;
+    --accent: #7c3aed;
+    --accent-light: #a78bfa;
+    --success: #22c55e;
+    --warning: #eab308;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main { flex: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--accent-light), #c084fc, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Nav */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand { font-size: 1.5rem; font-weight: 800; text-decoration: none; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-link { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover, .nav-link.active { color: var(--accent-light); }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    padding: 20px 0;
+    font-size: 0.85rem;
+    color: var(--text-dimmer);
+  }
+
+  .breadcrumb a {
+    color: var(--accent-light);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover { text-decoration: underline; }
+  .breadcrumb .sep { margin: 0 8px; }
+
+  /* Model Header */
+  .model-header {
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+
+  .gated-badge {
+    font-size: 0.75rem;
+    color: var(--warning);
+    background: rgba(234, 179, 8, 0.1);
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(234, 179, 8, 0.2);
+  }
+
+  .model-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+  }
+
+  .header-meta a { color: var(--accent-light); text-decoration: none; }
+  .header-meta a:hover { text-decoration: underline; }
+  .meta-sep { color: var(--text-dimmer); margin: 0 4px; }
+  .rating { color: var(--warning); }
+  .arch { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dimmer); }
+
+  /* Install Box */
+  .install-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .install-label {
+    font-size: 0.8rem;
+    color: var(--text-dimmer);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .install-cmd {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #0a0a12;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .install-cmd code {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    color: var(--accent-light);
+    font-weight: 500;
+  }
+
+  .copy-btn {
+    background: none;
+    border: none;
+    color: var(--text-dimmer);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .copy-btn:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .variant-hint {
+    margin-top: 12px;
+    font-size: 0.82rem;
+    color: var(--text-dimmer);
+    line-height: 1.8;
+  }
+
+  .variant-default {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(34, 197, 94, 0.06);
+    border: 1px solid rgba(34, 197, 94, 0.15);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+
+  .variant-default code {
+    font-family: var(--font-mono);
+    color: var(--accent-light);
+    font-size: 0.78rem;
+  }
+
+  .default-icon { font-size: 1rem; }
+
+  .variant-list-hint {
+    font-size: 0.82rem;
+    color: var(--text-dimmer);
+    line-height: 1.8;
+  }
+
+  .variant-hint code, .variant-example {
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    font-size: 0.78rem;
+  }
+
+  .variant-note {
+    margin-left: 4px;
+    font-size: 0.7rem;
+    color: var(--text-dimmer);
+    cursor: help;
+  }
+
+  .vram-cell {
+    color: var(--success);
+    font-size: 0.78rem;
+  }
+
+  .auto-deps-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(124, 58, 237, 0.06);
+    border: 1px solid rgba(124, 58, 237, 0.15);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  .auto-deps-notice strong { color: var(--text); }
+  .auto-deps-notice code { font-family: var(--font-mono); color: var(--accent-light); font-size: 0.8rem; }
+  .auto-deps-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+  .gated-notice {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(234, 179, 8, 0.06);
+    border: 1px solid rgba(234, 179, 8, 0.15);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gated-notice a { color: var(--accent-light); }
+  .gated-notice code { font-family: var(--font-mono); color: var(--accent-light); font-size: 0.8rem; }
+
+  /* Content Grid */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    padding-bottom: 64px;
+  }
+
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: left;
+    letter-spacing: -0.01em;
+  }
+
+  .section-note {
+    font-size: 0.85rem;
+    color: var(--text-dimmer);
+    margin-bottom: 14px;
+  }
+
+  .description p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  /* Preview Images */
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .preview-img {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  /* Variants Table */
+  .variants-table {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .variants-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  .variants-table th {
+    background: var(--bg-card);
+    color: var(--text-dimmer);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .variants-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .variants-table tr:last-child td { border-bottom: none; }
+  .variant-id { font-weight: 600; color: var(--text); }
+  .mono { font-family: var(--font-mono); font-size: 0.8rem; }
+  .variant-cmd { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-light); }
+
+  /* Dependency Cards */
+  .dep-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .dep-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .dep-card:hover {
+    border-color: var(--border-light);
+    background: var(--bg-card-hover);
+    transform: translateY(-1px);
+  }
+
+  .dep-type {
+    font-size: 0.7rem;
+    color: var(--text-dimmer);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .dep-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .dep-reason {
+    font-size: 0.78rem;
+    color: var(--text-dimmer);
+  }
+
+  /* Sidebar */
+  .sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .sidebar-card h3 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-dimmer);
+    margin-bottom: 14px;
+  }
+
+  .details-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .details-list dt {
+    color: var(--text-dimmer);
+    font-weight: 500;
+  }
+
+  .details-list dd {
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    color: var(--text-dimmer);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .links-list {
+    list-style: none;
+  }
+
+  .links-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .links-list li:last-child { border-bottom: none; }
+
+  .links-list a {
+    color: var(--accent-light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.15s;
+  }
+
+  .links-list a:hover { color: var(--text); }
+
+  /* Footer */
+  footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .footer-logo { font-size: 1.8rem; font-weight: 800; display: block; margin-bottom: 8px; }
+  .footer-brand p { color: var(--text-dim); font-size: 0.9rem; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent-light); }
+  .footer-bottom { text-align: center; color: var(--text-dim); font-size: 0.8rem; padding-top: 24px; border-top: 1px solid var(--border); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .model-header h1 { font-size: 1.8rem; }
+    .content-grid { grid-template-columns: 1fr; }
+    .content-sidebar { order: -1; }
+    .header-meta { font-size: 0.8rem; }
+    .install-cmd code { font-size: 0.85rem; }
+    .footer-content { flex-direction: column; gap: 24px; }
+  }
+</style>

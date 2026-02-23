@@ -93,8 +93,11 @@ const typeLabels: Record<string, string> = {
   segmentation: 'Segmentation',
 };
 
-// Sort: highest downloads first
+// Sort: highest downloads first (default)
 const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
+
+// Pre-compute sort orders for client-side switching
+// We store added/updated dates as data attributes on cards
 ---
 
 <html lang="en">
@@ -104,6 +107,14 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
   <title>Models — mods registry</title>
   <meta name="description" content="Browse 38+ curated AI models. Checkpoints, LoRAs, VAEs, ControlNets, and more — all installable with a single command." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3341W5L66B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3341W5L66B');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -150,6 +161,18 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
           </button>
         ))}
       </div>
+
+      <!-- Sort dropdown -->
+      <div class="sort-bar">
+        <label class="sort-label" for="sort-select">Sort by</label>
+        <select id="sort-select" class="sort-select">
+          <option value="popular" selected>Most Popular</option>
+          <option value="recent">Recently Added</option>
+          <option value="updated">Recently Updated</option>
+          <option value="rating">Highest Rated</option>
+          <option value="name">A → Z</option>
+        </select>
+      </div>
     </div>
   </header>
 
@@ -166,6 +189,10 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
           data-tags={model.tags.join(' ')}
           data-arch={model.architecture || ''}
           data-author={model.author.toLowerCase()}
+          data-downloads={model.downloads || 0}
+          data-rating={model.rating || 0}
+          data-added={model.added || ''}
+          data-updated={model.updated || ''}
         >
           <div class="card-top">
             <div class="card-header">
@@ -181,7 +208,7 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
             </div>
 
             <h3 class="card-name">
-              <a href={model.homepage} target="_blank" rel="noopener">{model.name}</a>
+              <a href={`/models/${model.id}`}>{model.name}</a>
             </h3>
 
             <p class="card-author">by {model.author}</p>
@@ -267,8 +294,33 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
     const resetBtn = document.getElementById('btn-reset')!;
     const chips = filtersEl.querySelectorAll('.chip');
     const cards = grid.querySelectorAll('.model-card') as NodeListOf<HTMLElement>;
+    const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
 
     let activeType = 'all';
+
+    function sortCards() {
+      const sortBy = sortSelect.value;
+      const cardArray = Array.from(cards);
+
+      cardArray.sort((a, b) => {
+        switch (sortBy) {
+          case 'popular':
+            return (Number(b.dataset.downloads) || 0) - (Number(a.dataset.downloads) || 0);
+          case 'recent':
+            return (b.dataset.added || '').localeCompare(a.dataset.added || '');
+          case 'updated':
+            return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
+          case 'rating':
+            return (Number(b.dataset.rating) || 0) - (Number(a.dataset.rating) || 0);
+          case 'name':
+            return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+          default:
+            return 0;
+        }
+      });
+
+      cardArray.forEach(card => grid.appendChild(card));
+    }
 
     function filterModels() {
       const q = searchInput.value.toLowerCase().trim();
@@ -306,6 +358,12 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
 
     // Search input
     searchInput.addEventListener('input', filterModels);
+
+    // Sort select
+    sortSelect.addEventListener('change', () => {
+      sortCards();
+      filterModels();
+    });
 
     // Filter chips
     chips.forEach(chip => {
@@ -569,6 +627,37 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
     font-size: 0.72rem;
     opacity: 0.6;
   }
+
+  /* Sort bar */
+  .sort-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    padding-bottom: 8px;
+  }
+
+  .sort-label {
+    font-size: 0.82rem;
+    color: var(--text-dimmer);
+    font-weight: 500;
+  }
+
+  .sort-select {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    padding: 6px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .sort-select:hover { border-color: var(--border-light); }
+  .sort-select:focus { border-color: var(--accent); }
 
   /* Model Count */
   .model-count {
