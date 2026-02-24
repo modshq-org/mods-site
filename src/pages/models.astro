@@ -93,8 +93,8 @@ const typeLabels: Record<string, string> = {
   segmentation: 'Segmentation',
 };
 
-// Sort: highest downloads first (default)
-const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
+// Sort: recently updated first (default)
+const sorted = [...items].sort((a, b) => (b.updated || '').localeCompare(a.updated || ''));
 
 // Pre-compute sort orders for client-side switching
 // We store added/updated dates as data attributes on cards
@@ -105,7 +105,7 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Models — mods registry</title>
-  <meta name="description" content="Browse 38+ curated AI models. Checkpoints, LoRAs, VAEs, ControlNets, and more — all installable with a single command." />
+  <meta name="description" content={`Browse ${items.length} AI models. Checkpoints, LoRAs, VAEs, ControlNets, and more — all installable with a single command.`} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3341W5L66B"></script>
@@ -138,7 +138,7 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
     <div class="container">
       <h1>Model Library</h1>
       <p class="page-subtitle">
-        {items.length} curated models for Stable Diffusion, FLUX, SDXL &amp; more.
+        {items.length} models for FLUX, Wan 2.2, LTX-Video, Stable Diffusion &amp; more.
         <br/>Install any model with <code>mods install &lt;name&gt;</code>
       </p>
 
@@ -166,9 +166,9 @@ const sorted = [...items].sort((a, b) => b.downloads - a.downloads);
       <div class="sort-bar">
         <label class="sort-label" for="sort-select">Sort by</label>
         <select id="sort-select" class="sort-select">
-          <option value="popular" selected>Most Popular</option>
+          <option value="updated" selected>Recently Updated</option>
+          <option value="popular">Most Popular</option>
           <option value="recent">Recently Added</option>
-          <option value="updated">Recently Updated</option>
           <option value="rating">Highest Rated</option>
           <option value="name">A → Z</option>
         </select>

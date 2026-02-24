@@ -1,4 +1,7 @@
 ---
+import registry from '../data/registry.json';
+const modelCount = registry.items.length;
+
 const features = [
   {
     icon: "📦",
@@ -23,7 +26,7 @@ const features = [
   {
     icon: "🔍",
     title: "Search & Discover",
-    description: "Browse 38+ curated models. Filter by type, architecture, tags, or rating."
+    description: `Browse ${modelCount} models and growing. Filter by type, architecture, tags, or rating.`
   },
   {
     icon: "🩺",
@@ -38,15 +41,15 @@ const families = [
     name: "FLUX",
     tagline: "State-of-the-art image generation",
     color: "#7c3aed",
-    models: ["FLUX.1 Dev", "FLUX.1 Schnell", "FLUX 2 Dev", "FLUX 2 Klein", "FLUX Fill", "FLUX Canny", "FLUX Redux"],
-    install: "mods install flux-dev",
+    models: ["FLUX.1 Dev", "FLUX.1 Schnell", "FLUX.2 Dev", "FLUX.2 Klein 4B", "FLUX.2 Klein 9B", "FLUX Fill Dev", "FLUX Canny Dev", "FLUX Redux Dev"],
+    install: "mods install flux2-dev",
   },
   {
     name: "Qwen",
     tagline: "Multimodal editing & generation",
     color: "#3b82f6",
-    models: ["Qwen Image Edit", "Qwen Edit Lightning LoRA"],
-    install: "mods install qwen-image-edit",
+    models: ["Qwen Image", "Qwen Image Edit", "Qwen Image Edit Lightning LoRA"],
+    install: "mods install qwen-image",
   },
   {
     name: "Wan 2.2",
@@ -68,12 +71,12 @@ const families = [
 const moreModels = [
   { name: "SDXL Base 1.0", type: "checkpoint" },
   { name: "SD 1.5", type: "checkpoint" },
-  { name: "Z-Image-Turbo", type: "diffusion_model" },
-  { name: "ControlNet Canny", type: "controlnet" },
-  { name: "IP-Adapter", type: "ipadapter" },
+  { name: "Z-Image Turbo", type: "diffusion_model" },
+  { name: "ControlNets", type: "controlnet" },
+  { name: "IP-Adapters", type: "ipadapter" },
   { name: "4x UltraSharp", type: "upscaler" },
   { name: "BiRefNet", type: "segmentation" },
-  { name: "LCM LoRA", type: "lora" },
+  { name: "LCM LoRAs", type: "lora" },
 ];
 
 const typeColors: Record<string, string> = {
@@ -94,7 +97,7 @@ const typeColors: Record<string, string> = {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>mods — Model Manager for AI Image Generation</title>
-  <meta name="description" content="The package manager for AI models. Install, manage, and share Stable Diffusion, FLUX, and SDXL models with a single command." />
+  <meta name="description" content="The ollama for image generation. Install, manage, and share Stable Diffusion, FLUX, Wan 2.2, and LTX-Video models with a single command." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3341W5L66B"></script>
@@ -193,7 +196,7 @@ const typeColors: Record<string, string> = {
             <div class="step-terminal">
               <code><span class="prompt">$</span> mods search flux</code>
             </div>
-            <p>Browse 38+ curated models across checkpoints, LoRAs, VAEs, ControlNets, and more.</p>
+            <p>Browse {modelCount} models across checkpoints, LoRAs, VAEs, ControlNets, and more.</p>
           </div>
         </div>
         <div class="step">
@@ -223,8 +226,8 @@ const typeColors: Record<string, string> = {
   <!-- Models -->
   <section class="models" id="models">
     <div class="container">
-      <h2>Curated Registry</h2>
-      <p class="section-subtitle">The models that matter, ready to install with one command.</p>
+      <h2>Model Registry</h2>
+      <p class="section-subtitle">{modelCount} models and growing. Image, video, upscalers, LoRAs — all one command away.</p>
 
       <!-- Featured families -->
       <div class="families-grid">
@@ -251,7 +254,7 @@ const typeColors: Record<string, string> = {
 
       <!-- More models row -->
       <div class="more-models">
-        <h4 class="more-label">Plus {moreModels.length}+ more</h4>
+        <h4 class="more-label">Plus {modelCount - families.reduce((s, f) => s + f.models.length, 0)}+ more</h4>
         <div class="more-chips">
           {moreModels.map(m => (
             <span class="more-chip" style={`--chip-bg: ${typeColors[m.type] || '#666'}`}>
@@ -261,7 +264,7 @@ const typeColors: Record<string, string> = {
         </div>
       </div>
 
-      <p class="models-count">Browse all 38+ models in the <a href="/models">model library</a></p>
+      <p class="models-count">Browse all {modelCount} models in the <a href="/models">model library</a></p>
     </div>
   </section>
 

@@ -65,7 +65,7 @@
       "scale_factor": 2,
       "file": {
         "url": "https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/BSRGANx2.pth",
-        "sha256": "VERIFY_bsrganx2",
+        "sha256": "eef929a6e8c39f68d8c921bd9d5fd2ae7202f32d982acf514e235a18f7f3d4f6",
         "size": 71849987,
         "format": "pth"
       },
@@ -103,7 +103,7 @@
         "flux",
         "lightweight"
       ],
-      "rating": 5,
+      "rating": 5.0,
       "downloads": 2600000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
@@ -124,8 +124,8 @@
       },
       "file": {
         "url": "https://huggingface.co/black-forest-labs/FLUX.1-Canny-dev/resolve/main/flux1-canny-dev.safetensors",
-        "sha256": "VERIFY_flux_canny_dev",
-        "size": 23800000000,
+        "sha256": "996876670169591cb412b937fbd46ea14cbed6933aef17c48a2dcd9685c98cdb",
+        "size": 23803351736,
         "format": "safetensors"
       },
       "requires": [
@@ -171,7 +171,7 @@
       "preprocessor": "depth_midas",
       "file": {
         "url": "https://huggingface.co/InstantX/FLUX.1-dev-Controlnet-Union/resolve/main/diffusion_pytorch_model.safetensors",
-        "sha256": "VERIFY_flux_depth_cn",
+        "sha256": "0ec7deeff0e8d407744dbc96ce867b842ff11d51cc0c6132a3bd271091f041e1",
         "size": 6596901888,
         "format": "safetensors"
       },
@@ -200,7 +200,7 @@
           "id": "fp16",
           "file": "flux1-dev.safetensors",
           "url": "https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors",
-          "sha256": "VERIFY_flux1_dev_fp16",
+          "sha256": "4610115bb0c89560703c892c59ac2742fa821e60ef5871b33493ba544683abd7",
           "size": 23802932552,
           "format": "safetensors",
           "precision": "fp16",
@@ -211,7 +211,7 @@
           "id": "fp8",
           "file": "flux1-dev-fp8-e4m3fn.safetensors",
           "url": "https://huggingface.co/Kijai/flux-fp8/resolve/main/flux1-dev-fp8-e4m3fn.safetensors",
-          "sha256": "VERIFY_flux1_dev_fp8",
+          "sha256": "e2c62660c9d75e928da6c0b9930993190f152f3c5c6f0cca69e77c21db87dd58",
           "size": 11903959040,
           "format": "safetensors",
           "precision": "fp8-e4m3fn",
@@ -279,8 +279,8 @@
       },
       "file": {
         "url": "https://huggingface.co/black-forest-labs/FLUX.1-Fill-dev/resolve/main/flux1-fill-dev.safetensors",
-        "sha256": "VERIFY_flux_fill_dev",
-        "size": 23800000000,
+        "sha256": "03e289f530df51d014f48e675a9ffa2141bc003259bf5f25d75b957e920a41ca",
+        "size": 23804922408,
         "format": "safetensors"
       },
       "requires": [
@@ -327,8 +327,8 @@
       },
       "file": {
         "url": "https://huggingface.co/black-forest-labs/FLUX.1-Redux-dev/resolve/main/flux1-redux-dev.safetensors",
-        "sha256": "VERIFY_flux_redux_dev",
-        "size": 135266304,
+        "sha256": "a1b3bdcb4bdc58ce04874b9ca776d61fc3e914bb6beab41efb63e4e2694dca45",
+        "size": 129063232,
         "format": "safetensors"
       },
       "tags": [
@@ -356,8 +356,8 @@
           "id": "fp16",
           "file": "flux1-schnell.safetensors",
           "url": "https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/flux1-schnell.safetensors",
-          "sha256": "VERIFY_flux1_schnell_fp16",
-          "size": 23802932552,
+          "sha256": "9403429e0052277ac2a87ad800adece5481eecefd9ed334e1f348723621d2a0a",
+          "size": 23782506688,
           "format": "safetensors",
           "precision": "fp16",
           "vram_required": 24576,
@@ -367,7 +367,7 @@
           "id": "fp8",
           "file": "flux1-schnell-fp8-e4m3fn.safetensors",
           "url": "https://huggingface.co/Kijai/flux-fp8/resolve/main/flux1-schnell-fp8-e4m3fn.safetensors",
-          "sha256": "VERIFY_flux1_schnell_fp8",
+          "sha256": "722c8f4c3a7a57f7c08998ef273e142e2f4362e0de704bc5848fa8adfbbfb96c",
           "size": 11903959040,
           "format": "safetensors",
           "precision": "fp8-e4m3fn",
@@ -437,10 +437,635 @@
         "vae",
         "bfl"
       ],
-      "rating": 5,
+      "rating": 5.0,
       "downloads": 3200000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
+    },
+    {
+      "id": "flux2-dev",
+      "name": "FLUX.2 Dev",
+      "type": "diffusion_model",
+      "architecture": "flux2",
+      "author": "black-forest-labs / Comfy-Org / unsloth",
+      "license": "flux-2-dev-non-commercial",
+      "homepage": "https://huggingface.co/Comfy-Org/flux2-dev",
+      "description": "FLUX.2 Dev — next-generation image model from Black Forest Labs.\nUp to 4MP photorealistic output with improved lighting, skin, fabric, and hand detail.\nMulti-reference consistency (up to 10 images), improved editing precision,\nbetter visual understanding, and professional-class text rendering.\nUses Mistral 3 Small text encoder and FLUX.2 VAE.\nOpen-source (non-commercial license).\n",
+      "variants": [
+        {
+          "id": "fp8mixed",
+          "file": "flux2_dev_fp8mixed.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/diffusion_models/flux2_dev_fp8mixed.safetensors",
+          "sha256": "2f159bd5e5a9511d9470e23f303b5e44da33c6c7ee037f29777679178a3430ac",
+          "size": 12000000000,
+          "format": "safetensors",
+          "precision": "fp8-mixed",
+          "vram_required": 12288,
+          "vram_recommended": 16384,
+          "note": "fp8 mixed precision quantization from Comfy-Org."
+        },
+        {
+          "id": "bf16",
+          "file": "flux2-dev-BF16.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-dev-GGUF/resolve/main/flux2-dev-BF16.gguf",
+          "sha256": "98cdfcb10d6ed5a860f7169fb234138560cda4af158a70848d155d203f0acac4",
+          "size": 64446616544,
+          "format": "gguf",
+          "precision": "bf16",
+          "vram_required": 65536,
+          "vram_recommended": 65536,
+          "note": "Full precision bf16 GGUF. Best quality, requires high-end GPU."
+        },
+        {
+          "id": "gguf-q8-0",
+          "file": "flux2-dev-Q8_0.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-dev-GGUF/resolve/main/flux2-dev-Q8_0.gguf",
+          "sha256": "09d005300dd8dcbbd489bb75ada6254145c84c2c9c3d7cc1829e3c5dedcb42ce",
+          "size": 35002602464,
+          "format": "gguf",
+          "precision": "q8_0",
+          "vram_required": 36864,
+          "vram_recommended": 40960,
+          "note": "GGUF Q8_0 — highest quality quantization."
+        },
+        {
+          "id": "gguf-q6-k",
+          "file": "flux2-dev-Q6_K.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-dev-GGUF/resolve/main/flux2-dev-Q6_K.gguf",
+          "sha256": "0a662e0303d65b7da4741c7bc54bbccd4d7fc17b23e71ced36d177467f4a0ef1",
+          "size": 27396232160,
+          "format": "gguf",
+          "precision": "q6_k",
+          "vram_required": 28672,
+          "vram_recommended": 32768,
+          "note": "GGUF Q6_K — very good quality/size balance."
+        },
+        {
+          "id": "gguf-q5-k-m",
+          "file": "flux2-dev-Q5_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-dev-GGUF/resolve/main/flux2-dev-Q5_K_M.gguf",
+          "sha256": "da8438ae213aa141cec9803551af576abb678715a2d92c9a14712c8692f9908d",
+          "size": 23926887392,
+          "format": "gguf",
+          "precision": "q5_k_m",
+          "vram_required": 24576,
+          "vram_recommended": 28672,
+          "note": "GGUF Q5_K_M — recommended for 24GB+ GPUs."
+        },
+        {
+          "id": "gguf-q4-k-m",
+          "file": "flux2-dev-Q4_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-dev-GGUF/resolve/main/flux2-dev-Q4_K_M.gguf",
+          "sha256": "5f7ac6649e2f5e21a49a6f83931a67530bd887e2d34379c3da1d0f0406501de1",
+          "size": 19959731168,
+          "format": "gguf",
+          "precision": "q4_k_m",
+          "vram_required": 20480,
+          "vram_recommended": 24576,
+          "note": "GGUF Q4_K_M — good for 24GB GPUs."
+        },
+        {
+          "id": "gguf-q3-k-m",
+          "file": "flux2-dev-Q3_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-dev-GGUF/resolve/main/flux2-dev-Q3_K_M.gguf",
+          "sha256": "f7bff7c167402f917cdb77c0c619a833415233f2739c67501abc01003e44f57a",
+          "size": 15829783520,
+          "format": "gguf",
+          "precision": "q3_k_m",
+          "vram_required": 16384,
+          "vram_recommended": 20480,
+          "note": "GGUF Q3_K_M — for 16GB GPUs. Some quality loss."
+        },
+        {
+          "id": "gguf-q2-k",
+          "file": "flux2-dev-Q2_K.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-dev-GGUF/resolve/main/flux2-dev-Q2_K.gguf",
+          "sha256": "fcbae186d445c80b216387bb596179813f5c9d480e22c820750b6a04be1fb20d",
+          "size": 12858250208,
+          "format": "gguf",
+          "precision": "q2_k",
+          "vram_required": 14336,
+          "vram_recommended": 16384,
+          "note": "GGUF Q2_K — smallest, noticeable quality loss."
+        }
+      ],
+      "requires": [
+        {
+          "id": "flux2-vae",
+          "type": "vae",
+          "reason": "FLUX.2 VAE for decoding latents to images"
+        },
+        {
+          "id": "flux2-mistral-text-encoder",
+          "type": "text_encoder",
+          "reason": "Mistral 3 Small text encoder for prompt processing"
+        }
+      ],
+      "auth": {
+        "provider": "huggingface",
+        "terms_url": "https://huggingface.co/black-forest-labs/FLUX.2-dev",
+        "gated": true
+      },
+      "defaults": {
+        "steps": 20,
+        "cfg": 3.5,
+        "sampler": "euler",
+        "scheduler": "normal"
+      },
+      "tags": [
+        "flux2",
+        "text-to-image",
+        "high-quality",
+        "photorealistic",
+        "multi-reference",
+        "gguf",
+        "bfl",
+        "comfyui"
+      ],
+      "rating": 4.9,
+      "downloads": 0,
+      "added": "2025-07-01",
+      "updated": "2026-02-23"
+    },
+    {
+      "id": "flux2-klein-4b",
+      "name": "FLUX.2 Klein 4B",
+      "type": "diffusion_model",
+      "architecture": "flux2",
+      "author": "black-forest-labs / Comfy-Org / unsloth",
+      "license": "flux-2-klein-non-commercial",
+      "homepage": "https://huggingface.co/Comfy-Org/flux2-klein-4B",
+      "description": "FLUX.2 Klein 4B — the fastest model in the FLUX family.\nUnifies text-to-image and image editing in one compact architecture.\nTwo variants: Base (undistilled, best for fine-tuning) and Distilled (4-step, ~1.2s on 5090).\nOnly 8.4 GB VRAM for distilled variant. Supports style transforms, semantic edits,\nobject replacement/removal, multi-reference composition, and iterative edits.\n",
+      "variants": [
+        {
+          "id": "distilled-fp8",
+          "file": "flux-2-klein-4b-fp8.safetensors",
+          "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-4b-fp8/resolve/main/flux-2-klein-4b-fp8.safetensors",
+          "sha256": "15005cf50d1361f75c61f7d213d7969063e2aaea7523beefe5d1e085d173568d",
+          "size": 4500000000,
+          "format": "safetensors",
+          "precision": "fp8",
+          "vram_required": 8192,
+          "vram_recommended": 10240,
+          "note": "4-step distilled. ~1.2s on RTX 5090. Best for speed."
+        },
+        {
+          "id": "base-fp8",
+          "file": "flux-2-klein-base-4b-fp8.safetensors",
+          "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-base-4b-fp8/resolve/main/flux-2-klein-base-4b-fp8.safetensors",
+          "sha256": "14cf50adf6e3837c4454b79520a5c73a8977bce4a7bb210eeb910ce59acbb83d",
+          "size": 4500000000,
+          "format": "safetensors",
+          "precision": "fp8",
+          "vram_required": 10240,
+          "vram_recommended": 12288,
+          "note": "Undistilled base. Better for fine-tuning and maximum flexibility."
+        },
+        {
+          "id": "bf16",
+          "file": "flux-2-klein-4b-BF16.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-BF16.gguf",
+          "sha256": "45e92cdad39270a6b4c6055daad75f5817c5ec81a93a7622082342b45e26a53c",
+          "size": 7751115328,
+          "format": "gguf",
+          "precision": "bf16",
+          "vram_required": 10240,
+          "vram_recommended": 12288,
+          "note": "Full precision bf16 GGUF. Best quality."
+        },
+        {
+          "id": "gguf-q8-0",
+          "file": "flux-2-klein-4b-Q8_0.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-Q8_0.gguf",
+          "sha256": "24a812e8f9b640e21c784164ea48571d8017ca22873696f4badeeabb006d509c",
+          "size": 4300644928,
+          "format": "gguf",
+          "precision": "q8_0",
+          "vram_required": 6144,
+          "vram_recommended": 8192,
+          "note": "GGUF Q8_0 — highest quality quantization."
+        },
+        {
+          "id": "gguf-q6-k",
+          "file": "flux-2-klein-4b-Q6_K.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-Q6_K.gguf",
+          "sha256": "fb3b5430d9229f982616c7db084deff1db5035d0cb6558f2d4f704cfe5e609e2",
+          "size": 3409273408,
+          "format": "gguf",
+          "precision": "q6_k",
+          "vram_required": 6144,
+          "vram_recommended": 8192,
+          "note": "GGUF Q6_K — very good quality/size balance."
+        },
+        {
+          "id": "gguf-q5-k-m",
+          "file": "flux-2-klein-4b-Q5_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-Q5_K_M.gguf",
+          "sha256": "58c01c75fee2272eadb127f53e26dd05a5a8e7f812e37c36fa44603301f91e54",
+          "size": 3073368640,
+          "format": "gguf",
+          "precision": "q5_k_m",
+          "vram_required": 6144,
+          "vram_recommended": 8192,
+          "note": "GGUF Q5_K_M — recommended for 8GB GPUs."
+        },
+        {
+          "id": "gguf-q4-k-m",
+          "file": "flux-2-klein-4b-Q4_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-Q4_K_M.gguf",
+          "sha256": "0b25d143c8469b342bc5af3bce92b783bf6b0636d285f7b2f75e38af63af9a15",
+          "size": 2604311104,
+          "format": "gguf",
+          "precision": "q4_k_m",
+          "vram_required": 4096,
+          "vram_recommended": 6144,
+          "note": "GGUF Q4_K_M — good for 6GB GPUs."
+        },
+        {
+          "id": "gguf-q3-k-m",
+          "file": "flux-2-klein-4b-Q3_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-Q3_K_M.gguf",
+          "sha256": "0f27104f7b5842b7bfd5909645c60208cbb6b8d43f5d65f58b085f45ed18c9e1",
+          "size": 2124489280,
+          "format": "gguf",
+          "precision": "q3_k_m",
+          "vram_required": 4096,
+          "vram_recommended": 6144,
+          "note": "GGUF Q3_K_M — for 6GB GPUs. Some quality loss."
+        },
+        {
+          "id": "gguf-q2-k",
+          "file": "flux-2-klein-4b-Q2_K.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-4B-GGUF/resolve/main/flux-2-klein-4b-Q2_K.gguf",
+          "sha256": "681423838cec5788fb2d6227a2d79a254f72cebba75806811fb408181970eaef",
+          "size": 1827807808,
+          "format": "gguf",
+          "precision": "q2_k",
+          "vram_required": 4096,
+          "vram_recommended": 6144,
+          "note": "GGUF Q2_K — smallest, noticeable quality loss."
+        }
+      ],
+      "requires": [
+        {
+          "id": "flux2-vae",
+          "type": "vae",
+          "reason": "FLUX.2 VAE for decoding latents to images"
+        },
+        {
+          "id": "flux2-qwen3-4b-text-encoder",
+          "type": "text_encoder",
+          "reason": "Qwen 3 4B text encoder for prompt processing"
+        }
+      ],
+      "auth": {
+        "provider": "huggingface",
+        "terms_url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-4b-fp8",
+        "gated": true
+      },
+      "defaults": {
+        "steps": 4,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple"
+      },
+      "tags": [
+        "flux2",
+        "klein",
+        "text-to-image",
+        "image-editing",
+        "fast-inference",
+        "gguf",
+        "4b",
+        "comfyui"
+      ],
+      "rating": 4.8,
+      "downloads": 0,
+      "added": "2025-07-01",
+      "updated": "2026-02-23"
+    },
+    {
+      "id": "flux2-klein-9b",
+      "name": "FLUX.2 Klein 9B",
+      "type": "diffusion_model",
+      "architecture": "flux",
+      "author": "black-forest-labs / unsloth",
+      "license": "flux-2-klein-non-commercial",
+      "homepage": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF",
+      "description": "FLUX.2 Klein 9B — mid-size model in the FLUX.2 Klein family.\nSuccessor to FLUX.1 with improved image quality and editing capabilities.\nSupports text-to-image and image editing workflows.\nUses FLUX.2 VAE and Qwen 3 8B text encoder.\nAvailable as BFL fp8 safetensors (distilled + base) and GGUF quantizations.\nRequires ComfyUI-GGUF custom node for GGUF variants.\n",
+      "variants": [
+        {
+          "id": "distilled-fp8",
+          "file": "flux-2-klein-9b-fp8.safetensors",
+          "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-9b-fp8/resolve/main/flux-2-klein-9b-fp8.safetensors",
+          "sha256": "865ba09f5b4c3cbd3468a4bd3acb9fcb2f8740c54317482f0bcd4ed1d3655cee",
+          "size": 9433061528,
+          "format": "safetensors",
+          "precision": "fp8",
+          "vram_required": 12288,
+          "vram_recommended": 16384,
+          "note": "4-step distilled fp8 from BFL. Fast inference."
+        },
+        {
+          "id": "base-fp8",
+          "file": "flux-2-klein-base-9b-fp8.safetensors",
+          "url": "https://huggingface.co/black-forest-labs/FLUX.2-klein-base-9b-fp8/resolve/main/flux-2-klein-base-9b-fp8.safetensors",
+          "sha256": "a9f5028c24a7a96f4f45beb883aad287d9bccc246227a6803edc898ddda42cf4",
+          "size": 9567278472,
+          "format": "safetensors",
+          "precision": "fp8",
+          "vram_required": 14336,
+          "vram_recommended": 16384,
+          "note": "Undistilled base fp8 from BFL. Better for fine-tuning."
+        },
+        {
+          "id": "bf16",
+          "file": "flux-2-klein-9b-BF16.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-BF16.gguf",
+          "sha256": "d4a80a1885c8b952d8f8d171ab3d1cac166ae7223d5ff4b5ee2d40932ce9fd58",
+          "size": 18200000000,
+          "format": "gguf",
+          "precision": "bf16",
+          "vram_required": 20480,
+          "vram_recommended": 24576,
+          "note": "Full precision bf16 GGUF. Best quality."
+        },
+        {
+          "id": "f16",
+          "file": "flux-2-klein-9b-F16.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-F16.gguf",
+          "sha256": "f82a83fd13542f3d6ac76e67e1fe60c08cdceddab856337f1b9ec534d9b5ca6f",
+          "size": 18200000000,
+          "format": "gguf",
+          "precision": "f16",
+          "vram_required": 20480,
+          "vram_recommended": 24576,
+          "note": "Full precision fp16 GGUF."
+        },
+        {
+          "id": "gguf-q8-0",
+          "file": "flux-2-klein-9b-Q8_0.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q8_0.gguf",
+          "sha256": "824b14b3d89f62779db9bcfe6af9084a52e1a3880e7ff93d50943969f9e25b27",
+          "size": 9980000000,
+          "format": "gguf",
+          "precision": "q8_0",
+          "vram_required": 12288,
+          "vram_recommended": 16384,
+          "note": "GGUF Q8_0 — highest quality quantization."
+        },
+        {
+          "id": "gguf-q6-k",
+          "file": "flux-2-klein-9b-Q6_K.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q6_K.gguf",
+          "sha256": "e19f643ba4b66ed5b779bc6283f0629363cabb0490cb06823cadb30a549eda5d",
+          "size": 7870000000,
+          "format": "gguf",
+          "precision": "q6_k",
+          "vram_required": 10240,
+          "vram_recommended": 12288,
+          "note": "GGUF Q6_K — very good quality/size balance."
+        },
+        {
+          "id": "gguf-q5-k-m",
+          "file": "flux-2-klein-9b-Q5_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q5_K_M.gguf",
+          "sha256": "bac097be5094c7c3fba993a1e57c6bb9cfc1dd0b33d608cc419311334aa4d015",
+          "size": 7020000000,
+          "format": "gguf",
+          "precision": "q5_k_m",
+          "vram_required": 8192,
+          "vram_recommended": 12288,
+          "note": "GGUF Q5_K_M — recommended for 12GB+ GPUs."
+        },
+        {
+          "id": "gguf-q5-k-s",
+          "file": "flux-2-klein-9b-Q5_K_S.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q5_K_S.gguf",
+          "sha256": "5cd600987443bafb0c04ccde87f5e7b083a8fcab26cdd8c8f2b331dde25cd010",
+          "size": 6940000000,
+          "format": "gguf",
+          "precision": "q5_k_s",
+          "vram_required": 8192,
+          "vram_recommended": 12288,
+          "note": "GGUF Q5_K_S — smaller Q5 variant."
+        },
+        {
+          "id": "gguf-q4-k-m",
+          "file": "flux-2-klein-9b-Q4_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_K_M.gguf",
+          "sha256": "262df1a3a98bc328911e03d4d0f5d7e3b1397477a2c485b24509b6d115259aef",
+          "size": 5910000000,
+          "format": "gguf",
+          "precision": "q4_k_m",
+          "vram_required": 8192,
+          "vram_recommended": 10240,
+          "note": "GGUF Q4_K_M — good for 8GB GPUs."
+        },
+        {
+          "id": "gguf-q4-k-s",
+          "file": "flux-2-klein-9b-Q4_K_S.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_K_S.gguf",
+          "sha256": "ee1c0373abb438f1fda472ac15775a0b538bf6f464ec978eaaf8a2a96a42cac3",
+          "size": 5830000000,
+          "format": "gguf",
+          "precision": "q4_k_s",
+          "vram_required": 8192,
+          "vram_recommended": 10240,
+          "note": "GGUF Q4_K_S — smaller Q4 variant."
+        },
+        {
+          "id": "gguf-q4-1",
+          "file": "flux-2-klein-9b-Q4_1.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_1.gguf",
+          "sha256": "96c219d318d3ef9000159a11a6098e46da30a03848fdd375b7dfa3fc84199895",
+          "size": 6160000000,
+          "format": "gguf",
+          "precision": "q4_1",
+          "vram_required": 8192,
+          "vram_recommended": 10240,
+          "note": "GGUF Q4_1."
+        },
+        {
+          "id": "gguf-q4-0",
+          "file": "flux-2-klein-9b-Q4_0.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q4_0.gguf",
+          "sha256": "3d5e58acdf68308bddf325a6f7045c0c36a9bce6832bb8a59f5ce193ddf979f5",
+          "size": 5620000000,
+          "format": "gguf",
+          "precision": "q4_0",
+          "vram_required": 8192,
+          "vram_recommended": 10240,
+          "note": "GGUF Q4_0."
+        },
+        {
+          "id": "gguf-q3-k-m",
+          "file": "flux-2-klein-9b-Q3_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q3_K_M.gguf",
+          "sha256": "93ed5cf37c8dd0b379cfe4cd3feaa03683d8a56492a62baa5ecbbab232277573",
+          "size": 4770000000,
+          "format": "gguf",
+          "precision": "q3_k_m",
+          "vram_required": 6144,
+          "vram_recommended": 8192,
+          "note": "GGUF Q3_K_M — for 8GB GPUs. Some quality loss."
+        },
+        {
+          "id": "gguf-q3-k-s",
+          "file": "flux-2-klein-9b-Q3_K_S.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q3_K_S.gguf",
+          "sha256": "41f9255c4eda7abf6b06a50826a88e70090a523d0c65785487ae300e9f8d4362",
+          "size": 4690000000,
+          "format": "gguf",
+          "precision": "q3_k_s",
+          "vram_required": 6144,
+          "vram_recommended": 8192,
+          "note": "GGUF Q3_K_S — smaller Q3 variant."
+        },
+        {
+          "id": "gguf-q2-k",
+          "file": "flux-2-klein-9b-Q2_K.gguf",
+          "url": "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/flux-2-klein-9b-Q2_K.gguf",
+          "sha256": "0bcc795ca67361e53db3ceeceda02fd58bf117d20ee8cc30b257cc06f6a3027f",
+          "size": 3980000000,
+          "format": "gguf",
+          "precision": "q2_k",
+          "vram_required": 6144,
+          "vram_recommended": 8192,
+          "note": "GGUF Q2_K — worst quality but smallest. Noticeable degradation."
+        }
+      ],
+      "requires": [
+        {
+          "id": "flux2-vae",
+          "type": "vae",
+          "reason": "FLUX.2 VAE for decoding latents to images"
+        },
+        {
+          "id": "flux2-qwen3-8b-text-encoder",
+          "type": "text_encoder",
+          "reason": "Qwen 3 8B text encoder for prompt processing"
+        }
+      ],
+      "tags": [
+        "flux",
+        "text-to-image",
+        "image-editing",
+        "gguf",
+        "comfyui",
+        "unsloth"
+      ],
+      "rating": 4.7,
+      "downloads": 0,
+      "added": "2025-07-01",
+      "updated": "2026-02-23",
+      "preview_images": [
+        "https://huggingface.co/unsloth/FLUX.2-klein-9B-GGUF/resolve/main/assets/flux2klein9b.png"
+      ]
+    },
+    {
+      "id": "flux2-mistral-text-encoder",
+      "name": "FLUX.2 Mistral 3 Small Text Encoder",
+      "type": "text_encoder",
+      "architecture": "mistral",
+      "author": "Comfy-Org",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Comfy-Org/flux2-dev",
+      "description": "Mistral 3 Small text encoder (bf16) for FLUX.2 Dev.\nRequired for FLUX.2 Dev text-to-image generation.\n",
+      "file": {
+        "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/text_encoders/mistral_3_small_flux2_bf16.safetensors",
+        "sha256": "a8711134ac2d06dd36b03914220ee54a43e7dd9a23eecbeca25107d78eed3382",
+        "size": 24000000000,
+        "format": "safetensors"
+      },
+      "tags": [
+        "flux2",
+        "text-encoder",
+        "mistral",
+        "dev"
+      ],
+      "rating": 5.0,
+      "downloads": 0,
+      "added": "2025-07-01",
+      "updated": "2025-07-01"
+    },
+    {
+      "id": "flux2-qwen3-4b-text-encoder",
+      "name": "FLUX.2 Qwen 3 4B Text Encoder",
+      "type": "text_encoder",
+      "architecture": "qwen",
+      "author": "Comfy-Org",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Comfy-Org/flux2-klein-4B",
+      "description": "Qwen 3 4B text encoder for FLUX.2 Klein 4B models.\nRequired for both base and distilled 4B variants.\n",
+      "file": {
+        "url": "https://huggingface.co/Comfy-Org/flux2-klein-4B/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors",
+        "sha256": "f459cd74b7868799ea82f97601a650afcedc399596dc262f302e3505761c9995",
+        "size": 9800000000,
+        "format": "safetensors"
+      },
+      "tags": [
+        "flux2",
+        "text-encoder",
+        "qwen",
+        "klein-4b"
+      ],
+      "rating": 5.0,
+      "downloads": 0,
+      "added": "2025-07-01",
+      "updated": "2025-07-01"
+    },
+    {
+      "id": "flux2-qwen3-8b-text-encoder",
+      "name": "FLUX.2 Qwen 3 8B Text Encoder",
+      "type": "text_encoder",
+      "architecture": "qwen",
+      "author": "Comfy-Org",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Comfy-Org/flux2-klein-9B",
+      "description": "Qwen 3 8B text encoder (fp8 mixed) for FLUX.2 Klein 9B models.\nRequired for both base and distilled 9B variants.\n",
+      "file": {
+        "url": "https://huggingface.co/Comfy-Org/flux2-klein-9B/resolve/main/split_files/text_encoders/qwen_3_8b_fp8mixed.safetensors",
+        "sha256": "334d028c0191eb19d32a26f45a2e426d0a33284b33d5da5595f402c206419105",
+        "size": 8500000000,
+        "format": "safetensors"
+      },
+      "tags": [
+        "flux2",
+        "text-encoder",
+        "qwen",
+        "klein-9b",
+        "fp8"
+      ],
+      "rating": 5.0,
+      "downloads": 0,
+      "added": "2025-07-01",
+      "updated": "2025-07-01"
+    },
+    {
+      "id": "flux2-vae",
+      "name": "FLUX.2 VAE",
+      "type": "vae",
+      "architecture": "flux2",
+      "author": "black-forest-labs / Comfy-Org",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Comfy-Org/flux2-dev",
+      "description": "VAE for all FLUX.2 models (Dev, Klein 4B, Klein 9B).\nDifferent from FLUX.1 VAE — do not mix them.\nShared across all FLUX.2 model variants.\n",
+      "file": {
+        "url": "https://huggingface.co/Comfy-Org/flux2-dev/resolve/main/split_files/vae/flux2-vae.safetensors",
+        "sha256": "bb534d41e8e6f92dc8636b914489b7167aeb950418183ffc10768c573185683a",
+        "size": 335000000,
+        "format": "safetensors"
+      },
+      "tags": [
+        "flux2",
+        "vae",
+        "bfl"
+      ],
+      "rating": 5.0,
+      "downloads": 0,
+      "added": "2025-07-01",
+      "updated": "2025-07-01"
     },
     {
       "id": "ip-adapter-faceid-sdxl",
@@ -456,7 +1081,7 @@
       ],
       "file": {
         "url": "https://huggingface.co/h94/IP-Adapter-FaceID/resolve/main/ip-adapter-faceid_sdxl.bin",
-        "sha256": "VERIFY_ip_adapter_faceid_sdxl",
+        "sha256": "b924b678ef4ca408577e51faa08a4d281e3411fca24cb84a080a3751d65ed697",
         "size": 1148846080,
         "format": "bin"
       },
@@ -563,6 +1188,399 @@
       "updated": "2024-06-01"
     },
     {
+      "id": "ltx-2-19b",
+      "name": "LTX-2 19B",
+      "type": "diffusion_model",
+      "architecture": "ltxv",
+      "author": "Lightricks",
+      "license": "ltx-video",
+      "homepage": "https://huggingface.co/Lightricks/LTX-Video-2-19B-DEV",
+      "description": "LTX-2 19B parameter video generation model. Supports text-to-video,\nimage-to-video, video-to-video, and audio generation. Available in\nfull precision and multiple GGUF quantizations.\n",
+      "variants": [
+        {
+          "id": "bf16",
+          "file": "ltx-2-19b-dev-BF16.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-BF16.gguf",
+          "sha256": "832e923e7a727a696e080b2de14c62268e47c79242d1197bf43a86ef65db2267",
+          "size": 37771979232,
+          "format": "gguf",
+          "precision": "bf16",
+          "vram_required": 40960
+        },
+        {
+          "id": "gguf-q8-0",
+          "file": "ltx-2-19b-dev-Q8_0.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-Q8_0.gguf",
+          "sha256": "3e377af6930a0795e464e62e40daa0044427dda6c204d03e9c3a00351ef83dc1",
+          "size": 20407560672,
+          "format": "gguf",
+          "vram_required": 24576
+        },
+        {
+          "id": "gguf-q6-k",
+          "file": "ltx-2-19b-dev-Q6_K.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-Q6_K.gguf",
+          "sha256": "2fe65f4a86f3a24537df06d5a0f180f5f848ba4764487c4488677cfec7c2bff8",
+          "size": 15966448096,
+          "format": "gguf",
+          "vram_required": 20480
+        },
+        {
+          "id": "gguf-q5-k-m",
+          "file": "ltx-2-19b-dev-Q5_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-Q5_K_M.gguf",
+          "sha256": "ce643ae23089dbaaa37ddeacd6b51cc975970fe875d2aea7a99da4565aab8892",
+          "size": 14335388128,
+          "format": "gguf",
+          "vram_required": 16384
+        },
+        {
+          "id": "gguf-q4-k-m",
+          "file": "ltx-2-19b-dev-Q4_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-Q4_K_M.gguf",
+          "sha256": "e3332ee9e6e1a84b7cb5a558a3ebd63891487a7ce285a284ee9d1c48d41463d7",
+          "size": 12840118752,
+          "format": "gguf",
+          "vram_required": 16384
+        },
+        {
+          "id": "gguf-q4-k-s",
+          "file": "ltx-2-19b-dev-Q4_K_S.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-Q4_K_S.gguf",
+          "sha256": "8028cfc03abf5dff618c1511b025f3e15ea73be03e315d971f8d20e50bee1e0f",
+          "size": 11855505888,
+          "format": "gguf",
+          "vram_required": 12288
+        },
+        {
+          "id": "gguf-q3-k-m",
+          "file": "ltx-2-19b-dev-Q3_K_M.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-Q3_K_M.gguf",
+          "sha256": "a7d0975088816493ca97500739f66e272b151f04e33d13b469f0b272aa2c6cd4",
+          "size": 10117491168,
+          "format": "gguf",
+          "vram_required": 12288
+        },
+        {
+          "id": "gguf-q2-k",
+          "file": "ltx-2-19b-dev-Q2_K.gguf",
+          "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/ltx-2-19b-dev-Q2_K.gguf",
+          "sha256": "93958494c70d5f594abc7b775aeb46f6eef7c5e2d06558b8414491cb8ffb7d05",
+          "size": 8097016288,
+          "format": "gguf",
+          "vram_required": 10240
+        }
+      ],
+      "requires": [
+        {
+          "id": "ltx-2-text-encoder",
+          "type": "text_encoder",
+          "reason": "LTX-2 embeddings connector for prompt processing"
+        },
+        {
+          "id": "ltx-2-vae",
+          "type": "vae",
+          "reason": "LTX-2 video VAE for decoding"
+        }
+      ],
+      "tags": [
+        "ltx",
+        "ltx-2",
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "19b"
+      ],
+      "rating": 4.8,
+      "downloads": 450000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "ltx-2-text-encoder",
+      "name": "LTX-2 Embeddings Connector",
+      "type": "text_encoder",
+      "architecture": "ltxv",
+      "author": "Lightricks",
+      "license": "ltx-video",
+      "homepage": "https://huggingface.co/unsloth/LTX-2-GGUF",
+      "description": "Embeddings connector / text encoder for LTX-2 19B video model.\n",
+      "file": {
+        "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/text_encoders/ltx-2-19b-dev_embeddings_connectors.safetensors",
+        "sha256": "50a1bd5e4cbbe35e1c87867b6dc693eb784ccd8e7c8fdb8d054a238a90bf8af1",
+        "size": 2862981904,
+        "format": "safetensors"
+      },
+      "tags": [
+        "ltx",
+        "ltx-2",
+        "text-encoder",
+        "video"
+      ],
+      "rating": 4.7,
+      "downloads": 300000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "ltx-2-vae",
+      "name": "LTX-2 Video VAE",
+      "type": "vae",
+      "architecture": "ltxv",
+      "author": "Lightricks",
+      "license": "ltx-video",
+      "homepage": "https://huggingface.co/unsloth/LTX-2-GGUF",
+      "description": "Video VAE for LTX-2 19B model. Handles video encoding/decoding.\n",
+      "file": {
+        "url": "https://huggingface.co/unsloth/LTX-2-GGUF/resolve/main/vae/ltx-2-19b-dev_video_vae.safetensors",
+        "sha256": "54cb4c1dd7e74c3ea940617bcdc738779b0372f0a30acd1b3054149e741c2b7a",
+        "size": 2445007026,
+        "format": "safetensors"
+      },
+      "tags": [
+        "ltx",
+        "ltx-2",
+        "vae",
+        "video"
+      ],
+      "rating": 4.7,
+      "downloads": 300000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "ltx-video-13b",
+      "name": "LTX-Video 13B",
+      "type": "diffusion_model",
+      "architecture": "ltxv",
+      "author": "Lightricks",
+      "license": "ltx-video",
+      "homepage": "https://huggingface.co/Lightricks/LTX-Video",
+      "description": "LTX-Video 13B parameter model (v0.9.8). Higher quality than the 2B version.\nIncludes distilled variant for faster inference. Supports text-to-video,\nimage-to-video, and multi-frame control.\n",
+      "variants": [
+        {
+          "id": "fp16",
+          "file": "ltxv-13b-0.9.8-distilled.safetensors",
+          "url": "https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-distilled.safetensors",
+          "sha256": "2c5f814744f04d8118e0b5bbfc0742655b51e41a6c090da66fde2936d651a9c9",
+          "size": 28579183564,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 32768
+        },
+        {
+          "id": "fp8",
+          "file": "ltxv-13b-0.9.8-distilled-fp8.safetensors",
+          "url": "https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-distilled-fp8.safetensors",
+          "sha256": "111a3d07baa17f520e98b571e7916139ae0865c9a24b7534529d6b9e74264db3",
+          "size": 15694280140,
+          "format": "safetensors",
+          "precision": "fp8",
+          "vram_required": 16384
+        },
+        {
+          "id": "dev-fp16",
+          "file": "ltxv-13b-0.9.8-dev.safetensors",
+          "url": "https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-dev.safetensors",
+          "sha256": "56b39a874ef9d0c7ad4099954f0ee4fa7e600ce83a24b3736f9e12223e7c71be",
+          "size": 28579183340,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 32768
+        },
+        {
+          "id": "dev-fp8",
+          "file": "ltxv-13b-0.9.8-dev-fp8.safetensors",
+          "url": "https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltxv-13b-0.9.8-dev-fp8.safetensors",
+          "sha256": "b281bbb53b76d25a02285c148212b32daa6a57dfa46ce804c9bddba46f948c94",
+          "size": 15694279916,
+          "format": "safetensors",
+          "precision": "fp8",
+          "vram_required": 16384
+        }
+      ],
+      "requires": [
+        {
+          "id": "t5-xxl-fp16",
+          "type": "text_encoder",
+          "reason": "T5-XXL for prompt processing",
+          "optional_variant": "t5-xxl-fp8"
+        }
+      ],
+      "tags": [
+        "ltx",
+        "ltx-video",
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "13b"
+      ],
+      "rating": 4.7,
+      "downloads": 520000,
+      "added": "2025-04-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "ltx-video-2b",
+      "name": "LTX-Video 2B",
+      "type": "checkpoint",
+      "architecture": "ltxv",
+      "author": "Lightricks",
+      "license": "ltx-video",
+      "homepage": "https://huggingface.co/Lightricks/LTX-Video",
+      "description": "Efficient 2B parameter video generation model by Lightricks. Fast inference,\nsupports text-to-video and image-to-video. Works best with long, descriptive prompts.\n",
+      "file": {
+        "url": "https://huggingface.co/Lightricks/LTX-Video/resolve/main/ltx-video-2b-v0.9.5.safetensors",
+        "sha256": "720d15c9f19f7d0f6b2a92bbbc34410e2cfb2f6856a100b38f734fbf973d4adf",
+        "size": 6340729500,
+        "format": "safetensors"
+      },
+      "requires": [
+        {
+          "id": "t5-xxl-fp16",
+          "type": "text_encoder",
+          "reason": "T5-XXL for prompt processing",
+          "optional_variant": "t5-xxl-fp8"
+        }
+      ],
+      "tags": [
+        "ltx",
+        "ltx-video",
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "efficient"
+      ],
+      "rating": 4.6,
+      "downloads": 1400000,
+      "added": "2024-12-01",
+      "updated": "2025-04-01"
+    },
+    {
+      "id": "qwen-image",
+      "name": "Qwen Image",
+      "type": "diffusion_model",
+      "architecture": "qwen-image",
+      "author": "Qwen / city96",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Qwen/Qwen-Image",
+      "description": "Qwen Image — 20B parameter text-to-image generation model by Qwen (Alibaba).\nBased on Qwen 2.5 VL architecture. Generates high-quality images from text prompts.\nThis is the base text-to-image model, distinct from Qwen Image Edit which is\nspecialized for image editing tasks. Apache 2.0 license — free for commercial use.\nGGUF variants require the ComfyUI-GGUF custom node.\n",
+      "variants": [
+        {
+          "id": "bf16",
+          "file": "qwen-image-BF16.gguf",
+          "url": "https://huggingface.co/city96/Qwen-Image-gguf/resolve/main/qwen-image-BF16.gguf",
+          "sha256": "ebb2508748bc52ee5756fa5f43a4da1818bd495a3068c8d1021909f004976107",
+          "size": 40872114720,
+          "format": "gguf",
+          "precision": "bf16",
+          "vram_required": 40960,
+          "vram_recommended": 49152,
+          "note": "Full precision bf16 GGUF. Best quality, needs A100 40GB+."
+        },
+        {
+          "id": "gguf-q8-0",
+          "file": "qwen-image-Q8_0.gguf",
+          "url": "https://huggingface.co/city96/Qwen-Image-gguf/resolve/main/qwen-image-Q8_0.gguf",
+          "sha256": "d4e13114622b523027ec358e4d806f5c3db34dbcbeafaf0ce2420999a343f81d",
+          "size": 21761817120,
+          "format": "gguf",
+          "precision": "q8_0",
+          "vram_required": 24576,
+          "vram_recommended": 32768,
+          "note": "GGUF Q8_0 — best quantized quality."
+        },
+        {
+          "id": "gguf-q6-k",
+          "file": "qwen-image-Q6_K.gguf",
+          "url": "https://huggingface.co/city96/Qwen-Image-gguf/resolve/main/qwen-image-Q6_K.gguf",
+          "sha256": "1a35a094d6da1f1b170afcd93174db71d2d74adc5f1c99b3595961be507e99a5",
+          "size": 16824990240,
+          "format": "gguf",
+          "precision": "q6_k",
+          "vram_required": 20480,
+          "vram_recommended": 24576,
+          "note": "GGUF Q6_K — great quality/size balance."
+        },
+        {
+          "id": "gguf-q5-k-m",
+          "file": "qwen-image-Q5_K_M.gguf",
+          "url": "https://huggingface.co/city96/Qwen-Image-gguf/resolve/main/qwen-image-Q5_K_M.gguf",
+          "sha256": "196c8c14aaef4febd18432e8775104313439b842b9383d0b7d0d1c13f7eeca55",
+          "size": 14934899232,
+          "format": "gguf",
+          "precision": "q5_k_m",
+          "vram_required": 16384,
+          "vram_recommended": 20480,
+          "note": "GGUF Q5_K_M — recommended for 16GB+ GPUs."
+        },
+        {
+          "id": "gguf-q4-k-m",
+          "file": "qwen-image-Q4_K_M.gguf",
+          "url": "https://huggingface.co/city96/Qwen-Image-gguf/resolve/main/qwen-image-Q4_K_M.gguf",
+          "sha256": "a3cb9363825152ce6b7430d5cd7fe47dc84cbe6a30c6baffa1ba32b938c1e866",
+          "size": 13065746976,
+          "format": "gguf",
+          "precision": "q4_k_m",
+          "vram_required": 12288,
+          "vram_recommended": 16384,
+          "note": "GGUF Q4_K_M — good for 12GB GPUs."
+        },
+        {
+          "id": "gguf-q3-k-m",
+          "file": "qwen-image-Q3_K_M.gguf",
+          "url": "https://huggingface.co/city96/Qwen-Image-gguf/resolve/main/qwen-image-Q3_K_M.gguf",
+          "sha256": "f08d9e2cdc411cff1ca228eb5e8ea4c449a285d92545f81d4007100064b2c017",
+          "size": 9679567392,
+          "format": "gguf",
+          "precision": "q3_k_m",
+          "vram_required": 10240,
+          "vram_recommended": 12288,
+          "note": "GGUF Q3_K_M — budget option. Uses dynamic precision on first/last layers."
+        },
+        {
+          "id": "gguf-q2-k",
+          "file": "qwen-image-Q2_K.gguf",
+          "url": "https://huggingface.co/city96/Qwen-Image-gguf/resolve/main/qwen-image-Q2_K.gguf",
+          "sha256": "ab2ae71efaa260f45b6f503af18dd560c24b499e4ef674821bcb56dc312badfe",
+          "size": 7062518304,
+          "format": "gguf",
+          "precision": "q2_k",
+          "vram_required": 8192,
+          "vram_recommended": 10240,
+          "note": "GGUF Q2_K — smallest. Dynamic precision keeps it usable."
+        }
+      ],
+      "requires": [
+        {
+          "id": "qwen-image-vae",
+          "type": "vae",
+          "reason": "Qwen Image VAE for decoding latents"
+        },
+        {
+          "id": "qwen-image-clip",
+          "type": "text_encoder",
+          "reason": "Qwen 2.5 VL 7B text/vision encoder for prompt processing"
+        }
+      ],
+      "defaults": {
+        "steps": 30,
+        "cfg": 7.0
+      },
+      "tags": [
+        "qwen",
+        "text-to-image",
+        "20b",
+        "gguf",
+        "high-quality",
+        "comfyui"
+      ],
+      "rating": 4.8,
+      "downloads": 12000,
+      "added": "2026-02-24",
+      "updated": "2026-02-24"
+    },
+    {
       "id": "qwen-image-clip",
       "name": "Qwen 2.5 VL 7B Text Encoder",
       "type": "text_encoder",
@@ -588,7 +1606,7 @@
           "id": "bf16",
           "file": "qwen_2.5_vl_7b.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b.safetensors",
-          "sha256": "VERIFY_qwen_clip_bf16",
+          "sha256": "7dc87a9c61db8168b119859940bce41cf3f737784e8c43d8e71a9f9720fa4051",
           "size": 17825792000,
           "format": "safetensors",
           "precision": "bf16",
@@ -623,7 +1641,7 @@
           "id": "bf16",
           "file": "qwen_image_bf16.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_bf16.safetensors",
-          "sha256": "VERIFY_qwen_image_bf16",
+          "sha256": "106966bb02e7f08a19b56d74db2491793aeadc740c993bcdb7d0e9dcbc9d94ab",
           "size": 43927101440,
           "format": "safetensors",
           "precision": "bf16",
@@ -635,7 +1653,7 @@
           "id": "fp8-hq",
           "file": "qwen_image_fp8_hq.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_fp8_hq.safetensors",
-          "sha256": "VERIFY_qwen_image_fp8_hq",
+          "sha256": "83717dba9759964b678b82258fb775d713661743b37661c13dee4f256109dcac",
           "size": 24373903360,
           "format": "safetensors",
           "precision": "fp8-e4m3fn",
@@ -647,7 +1665,7 @@
           "id": "fp8-mixed",
           "file": "qwen_image_fp8mixed.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_fp8mixed.safetensors",
-          "sha256": "VERIFY_qwen_image_fp8mixed",
+          "sha256": "c2e20d799a317959b2cc7f270bf174df801cbb0b2a00b5e4549ecf78220cf6fb",
           "size": 22011707392,
           "format": "safetensors",
           "precision": "fp8-e4m3fn",
@@ -659,7 +1677,7 @@
           "id": "fp8",
           "file": "qwen_image_fp8_e4m3fn.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_fp8_e4m3fn.safetensors",
-          "sha256": "VERIFY_qwen_image_fp8",
+          "sha256": "3c291b78a18ea30fc99c3301385ec9c7481a5102b8da5cf5449f725c5ff5ac5f",
           "size": 21902483456,
           "format": "safetensors",
           "precision": "fp8-e4m3fn",
@@ -671,7 +1689,7 @@
           "id": "nvfp4",
           "file": "qwen_image_nvfp4.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_nvfp4.safetensors",
-          "sha256": "VERIFY_qwen_image_nvfp4",
+          "sha256": "e194b9c5c2aa18606532e5ffa92d91c5e3ad16dde382cd6801149398b9e3bc25",
           "size": 21260902400,
           "format": "safetensors",
           "precision": "nvfp4",
@@ -683,7 +1701,7 @@
           "id": "2512-bf16",
           "file": "qwen_image_2512_bf16.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_2512_bf16.safetensors",
-          "sha256": "VERIFY_qwen_image_2512_bf16",
+          "sha256": "3c27bbc92757da35e0963bc75c8635feeab41ee6adaae93d159c397d1b39cc98",
           "size": 43927101440,
           "format": "safetensors",
           "precision": "bf16",
@@ -695,7 +1713,7 @@
           "id": "2512-fp8",
           "file": "qwen_image_2512_fp8_e4m3fn.safetensors",
           "url": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_2512_fp8_e4m3fn.safetensors",
-          "sha256": "VERIFY_qwen_image_2512_fp8",
+          "sha256": "f07f1483dc9b19752b6032576a82c94b6e6cce3e0cad77ae27e928b7072b1c05",
           "size": 21902483456,
           "format": "safetensors",
           "precision": "fp8-e4m3fn",
@@ -707,7 +1725,7 @@
           "id": "gguf-q8-0",
           "file": "Qwen_Image_Edit-Q8_0.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q8_0.gguf",
-          "sha256": "VERIFY_qwen_gguf_q8_0",
+          "sha256": "e875c08781c562182cdc64939aab70ccfae3c44d9484e3c3d9429bad8682cf71",
           "size": 23405215744,
           "format": "gguf",
           "precision": "q8_0",
@@ -719,7 +1737,7 @@
           "id": "gguf-q6-k",
           "file": "Qwen_Image_Edit-Q6_K.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q6_K.gguf",
-          "sha256": "VERIFY_qwen_gguf_q6_k",
+          "sha256": "2a6952b23262b881dfb681791482f00cbd4dc2f59016e55c14a09d5c2a9cc8b2",
           "size": 18039808000,
           "format": "gguf",
           "precision": "q6_k",
@@ -731,7 +1749,7 @@
           "id": "gguf-q5-k-m",
           "file": "Qwen_Image_Edit-Q5_K_M.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q5_K_M.gguf",
-          "sha256": "VERIFY_qwen_gguf_q5_k_m",
+          "sha256": "b398a64e4334c2d8cae676ce64534a38d3ebdd3d0878b57071620485e56211ce",
           "size": 16000204800,
           "format": "gguf",
           "precision": "q5_k_m",
@@ -743,7 +1761,7 @@
           "id": "gguf-q5-k-s",
           "file": "Qwen_Image_Edit-Q5_K_S.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q5_K_S.gguf",
-          "sha256": "VERIFY_qwen_gguf_q5_k_s",
+          "sha256": "286571d761951e43853a1cec129c741cc7f541fb70b203f4131c84cafd8585f0",
           "size": 15140249600,
           "format": "gguf",
           "precision": "q5_k_s",
@@ -755,7 +1773,7 @@
           "id": "gguf-q5-0",
           "file": "Qwen_Image_Edit-Q5_0.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q5_0.gguf",
-          "sha256": "VERIFY_qwen_gguf_q5_0",
+          "sha256": "a8ace3d71b9b8e87859b330923f2d40421116a4548ad5fff180fad730cb29352",
           "size": 15461882880,
           "format": "gguf",
           "precision": "q5_0",
@@ -767,7 +1785,7 @@
           "id": "gguf-q5-1",
           "file": "Qwen_Image_Edit-Q5_1.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q5_1.gguf",
-          "sha256": "VERIFY_qwen_gguf_q5_1",
+          "sha256": "4006179697444691f31e0fbb7a8beb6d373d1a0d6ff4f34a2e3efa5e8d9c0f85",
           "size": 16536027136,
           "format": "gguf",
           "precision": "q5_1",
@@ -779,7 +1797,7 @@
           "id": "gguf-q4-k-m",
           "file": "Qwen_Image_Edit-Q4_K_M.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q4_K_M.gguf",
-          "sha256": "VERIFY_qwen_gguf_q4_k_m",
+          "sha256": "bee346224c34ec00991aa1d75a0fd4c259c4ac375ad346edf4c3fff7ec30be1c",
           "size": 14066032640,
           "format": "gguf",
           "precision": "q4_k_m",
@@ -791,7 +1809,7 @@
           "id": "gguf-q4-k-s",
           "file": "Qwen_Image_Edit-Q4_K_S.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q4_K_S.gguf",
-          "sha256": "VERIFY_qwen_gguf_q4_k_s",
+          "sha256": "44301250d40bfbe53c9d2b62028bab576c52605b471b1a11ea0f9f1036b19743",
           "size": 12994428928,
           "format": "gguf",
           "precision": "q4_k_s",
@@ -803,7 +1821,7 @@
           "id": "gguf-q4-0",
           "file": "Qwen_Image_Edit-Q4_0.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q4_0.gguf",
-          "sha256": "VERIFY_qwen_gguf_q4_0",
+          "sha256": "40d9298d5a7881afdf62e9bfa9581cbbe435fb2038448dde8f0a127a48c49fbb",
           "size": 12776923136,
           "format": "gguf",
           "precision": "q4_0",
@@ -815,7 +1833,7 @@
           "id": "gguf-q4-1",
           "file": "Qwen_Image_Edit-Q4_1.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q4_1.gguf",
-          "sha256": "VERIFY_qwen_gguf_q4_1",
+          "sha256": "55ed396b0ed764a5f237b87307ec0679e4d59b71e984ef61ea89d46457017eb5",
           "size": 13743095808,
           "format": "gguf",
           "precision": "q4_1",
@@ -827,7 +1845,7 @@
           "id": "gguf-q3-k-m",
           "file": "Qwen_Image_Edit-Q3_K_M.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q3_K_M.gguf",
-          "sha256": "VERIFY_qwen_gguf_q3_k_m",
+          "sha256": "056411f536e5b6ef6efa08d3c773911d9ec0945dbfce9be0f43c5519c525b3ee",
           "size": 10394116096,
           "format": "gguf",
           "precision": "q3_k_m",
@@ -839,7 +1857,7 @@
           "id": "gguf-q3-k-s",
           "file": "Qwen_Image_Edit-Q3_K_S.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q3_K_S.gguf",
-          "sha256": "VERIFY_qwen_gguf_q3_k_s",
+          "sha256": "c2e82411c73d1cc98db87bfc640381eb211f9c28ba57e943e3fe71283cf97cf6",
           "size": 9609625600,
           "format": "gguf",
           "precision": "q3_k_s",
@@ -851,7 +1869,7 @@
           "id": "gguf-q2-k",
           "file": "Qwen_Image_Edit-Q2_K.gguf",
           "url": "https://huggingface.co/QuantStack/Qwen-Image-Edit-GGUF/resolve/main/Qwen_Image_Edit-Q2_K.gguf",
-          "sha256": "VERIFY_qwen_gguf_q2_k",
+          "sha256": "a449446a0fedad1949032f32f70ef5f8514e699ad0c3f27d8ab04b9f87b6d992",
           "size": 7580321792,
           "format": "gguf",
           "precision": "q2_k",
@@ -874,7 +1892,7 @@
       ],
       "defaults": {
         "steps": 8,
-        "cfg": 1,
+        "cfg": 1.0,
         "sampler": "euler",
         "scheduler": "simple"
       },
@@ -917,7 +1935,7 @@
           "id": "edit-8step-v1-bf16",
           "file": "Qwen-Image-Edit-Lightning-8steps-V1.0-bf16.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-Lightning-8steps-V1.0-bf16.safetensors",
-          "sha256": "VERIFY_qwen_lightning_edit_8s_v1_bf16",
+          "sha256": "10b750b221b36c9d9f3a3d693f0489714a63b7ba84c45606de5c96ed367156d7",
           "size": 912680960,
           "format": "safetensors",
           "precision": "bf16",
@@ -927,7 +1945,7 @@
           "id": "edit-4step-v1",
           "file": "Qwen-Image-Edit-Lightning-4steps-V1.0.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-Lightning-4steps-V1.0.safetensors",
-          "sha256": "VERIFY_qwen_lightning_edit_4s_v1",
+          "sha256": "376a95559695f41bfa97349f6232e78193e05d404cc507c2cdfdaae58632bb4b",
           "size": 1825361920,
           "format": "safetensors",
           "precision": "fp32",
@@ -947,7 +1965,7 @@
           "id": "gen-8step-v2",
           "file": "Qwen-Image-Lightning-8steps-V2.0.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-8steps-V2.0.safetensors",
-          "sha256": "VERIFY_qwen_lightning_gen_8s_v2",
+          "sha256": "47e96584c92ce971dc3e3db8626e065d2765924f29c637ccbdac79adc1d2c562",
           "size": 1825361920,
           "format": "safetensors",
           "precision": "fp32",
@@ -957,7 +1975,7 @@
           "id": "gen-8step-v2-bf16",
           "file": "Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-8steps-V2.0-bf16.safetensors",
-          "sha256": "VERIFY_qwen_lightning_gen_8s_v2_bf16",
+          "sha256": "4d8ffbd8c5ddc8637cf7b1e1e987ffb58b9146b972d09ce2002f3f29cf6fc17d",
           "size": 912680960,
           "format": "safetensors",
           "precision": "bf16",
@@ -967,7 +1985,7 @@
           "id": "gen-4step-v2",
           "file": "Qwen-Image-Lightning-4steps-V2.0.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V2.0.safetensors",
-          "sha256": "VERIFY_qwen_lightning_gen_4s_v2",
+          "sha256": "d06a178e7f47d4f6127284815bf93fc152f6c420a9c8ae370ec7d213f244a535",
           "size": 1825361920,
           "format": "safetensors",
           "precision": "fp32",
@@ -977,7 +1995,7 @@
           "id": "gen-4step-v2-bf16",
           "file": "Qwen-Image-Lightning-4steps-V2.0-bf16.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V2.0-bf16.safetensors",
-          "sha256": "VERIFY_qwen_lightning_gen_4s_v2_bf16",
+          "sha256": "e8ca961a24c5dd7744eb0c8c2af152ce9b366f8cfabdaaca96d72acbca868f5d",
           "size": 912680960,
           "format": "safetensors",
           "precision": "bf16",
@@ -987,7 +2005,7 @@
           "id": "fp8-gen-4step-v1-bf16",
           "file": "Qwen-Image-fp8-e4m3fn-Lightning-4steps-V1.0-bf16.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-fp8-e4m3fn-Lightning-4steps-V1.0-bf16.safetensors",
-          "sha256": "VERIFY_qwen_lightning_fp8_4s_v1_bf16",
+          "sha256": "a900d5b842a25451fbdd14361cf730a0870f2df5221cbadee855ff3ac91a7bdc",
           "size": 912680960,
           "format": "safetensors",
           "precision": "bf16",
@@ -997,17 +2015,17 @@
           "id": "fp8-gen-4step-v1-fp32",
           "file": "Qwen-Image-fp8-e4m3fn-Lightning-4steps-V1.0-fp32.safetensors",
           "url": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-fp8-e4m3fn-Lightning-4steps-V1.0-fp32.safetensors",
-          "sha256": "VERIFY_qwen_lightning_fp8_4s_v1_fp32",
+          "sha256": "acafb9d389bb2ec78d94276da4ff2897ecc7436bef283d81d041199a03a17e03",
           "size": 1825361920,
           "format": "safetensors",
           "precision": "fp32",
           "note": "Trained specifically for fp8 base model. 4-step, fp32."
         }
       ],
-      "recommended_weight": 1,
+      "recommended_weight": 1.0,
       "weight_range": [
         0.8,
-        1
+        1.0
       ],
       "tags": [
         "qwen",
@@ -1042,7 +2060,7 @@
         "vae",
         "comfyui"
       ],
-      "rating": 5,
+      "rating": 5.0,
       "downloads": 275000,
       "added": "2025-07-01",
       "updated": "2025-07-01"
@@ -1080,14 +2098,14 @@
       "architecture": "sd15",
       "author": "runwayml",
       "license": "creativeml-openrail-m",
-      "homepage": "https://huggingface.co/runwayml/stable-diffusion-v1-5",
+      "homepage": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5",
       "description": "The original Stable Diffusion 1.5. Lightweight, fast, huge ecosystem\nof LoRAs, embeddings, and ControlNets. 512x512 native resolution.\n",
       "variants": [
         {
           "id": "fp16",
           "file": "v1-5-pruned-emaonly.safetensors",
-          "url": "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors",
-          "sha256": "VERIFY_sd15_fp16",
+          "url": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors",
+          "sha256": "2ac63bfb6186057d88b65c3aa47ec90fd8d9aa3269164fc37fed1cb6f1a1efd0",
           "size": 4265146304,
           "format": "safetensors",
           "precision": "fp16",
@@ -1164,9 +2182,9 @@
       "homepage": "https://huggingface.co/stabilityai/sd-vae-ft-mse",
       "description": "Fine-tuned VAE for Stable Diffusion 1.5. Produces sharper, more\ndetailed outputs compared to the default VAE. MSE-optimized.\n",
       "file": {
-        "url": "https://huggingface.co/stabilityai/sd-vae-ft-mse/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors",
-        "sha256": "VERIFY_sd_vae_ft_mse",
-        "size": 334695950,
+        "url": "https://huggingface.co/stabilityai/sd-vae-ft-mse/resolve/main/diffusion_pytorch_model.safetensors",
+        "sha256": "a1d993488569e928462932c8c38a0760b874d166399b14414135bd9c42df5815",
+        "size": 334643276,
         "format": "safetensors"
       },
       "tags": [
@@ -1255,7 +2273,7 @@
       "preprocessor": "openpose",
       "file": {
         "url": "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth",
-        "sha256": "VERIFY_sd15_controlnet_openpose",
+        "sha256": "8383832959b1e8b37660c5f236ab449c0d760a9df1db4c481cb881debf110d21",
         "size": 1557135360,
         "format": "pth"
       },
@@ -1301,7 +2319,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 7,
+        "cfg": 7.0,
         "sampler": "dpmpp_2m",
         "scheduler": "karras"
       },
@@ -1347,7 +2365,7 @@
           "id": "fp32",
           "file": "diffusion_pytorch_model.safetensors",
           "url": "https://huggingface.co/diffusers/controlnet-canny-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors",
-          "sha256": "VERIFY_sdxl_controlnet_canny_fp32",
+          "sha256": "661481e7dbef1c09faa589c334b9d6d6595e2b7c85c77dbd8e0ec7f2a2ab2d75",
           "size": 5004279808,
           "format": "safetensors",
           "precision": "fp32",
@@ -1429,7 +2447,7 @@
           "id": "fp32",
           "file": "sd_xl_turbo_1.0.safetensors",
           "url": "https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0.safetensors",
-          "sha256": "VERIFY_sdxl_turbo_fp32",
+          "sha256": "d1bc2e4175e6ed0d0e8de98c42671384b8467b9bbdbcf558b4df66a427823d74",
           "size": 13902070784,
           "format": "safetensors",
           "precision": "fp32",
@@ -1446,7 +2464,7 @@
       ],
       "defaults": {
         "steps": 1,
-        "cfg": 0,
+        "cfg": 0.0,
         "sampler": "euler_ancestral",
         "scheduler": "normal"
       },
@@ -1501,7 +2519,7 @@
           "id": "fp16",
           "file": "t5xxl_fp16.safetensors",
           "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors",
-          "sha256": "VERIFY_t5xxl_fp16",
+          "sha256": "eb88d1baeef3a46f6b723f62a69e91a116a34c60b0c0a32c9571d43551615213",
           "size": 9787849216,
           "format": "safetensors",
           "precision": "fp16",
@@ -1515,7 +2533,7 @@
         "flux",
         "fp16"
       ],
-      "rating": 5,
+      "rating": 5.0,
       "downloads": 2400000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
@@ -1555,6 +2573,410 @@
       "updated": "2024-08-01"
     },
     {
+      "id": "umt5-xxl",
+      "name": "UMT5-XXL Text Encoder",
+      "type": "text_encoder",
+      "architecture": "umt5",
+      "author": "Comfy-Org",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged",
+      "description": "UMT5-XXL multilingual text encoder for Wan 2.1/2.2 video generation models.\nHandles prompt encoding for all Wan model variants.\n",
+      "variants": [
+        {
+          "id": "fp16",
+          "file": "umt5_xxl_fp16.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp16.safetensors",
+          "sha256": "7b8850f1961e1cf8a77cca4c964a358d303f490833c6c087d0cff4b2f99db2af",
+          "size": 11366399385,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 24576
+        },
+        {
+          "id": "fp8",
+          "file": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+          "sha256": "c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68",
+          "size": 6735906897,
+          "format": "safetensors",
+          "precision": "fp8-e4m3fn",
+          "vram_required": 8192
+        }
+      ],
+      "tags": [
+        "umt5",
+        "text-encoder",
+        "wan",
+        "multilingual",
+        "video"
+      ],
+      "rating": 4.8,
+      "downloads": 1500000,
+      "added": "2025-03-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "wan21-vae",
+      "name": "Wan 2.1 VAE",
+      "type": "vae",
+      "architecture": "wan",
+      "author": "Wan-AI",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged",
+      "description": "VAE for Wan 2.1/2.2 14B video generation models. Compact 254 MB VAE\nused by the T2V and I2V 14B models.\n",
+      "file": {
+        "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors",
+        "sha256": "2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b",
+        "size": 253815318,
+        "format": "safetensors"
+      },
+      "tags": [
+        "wan",
+        "wan2.1",
+        "wan2.2",
+        "vae",
+        "video"
+      ],
+      "rating": 4.8,
+      "downloads": 1200000,
+      "added": "2025-03-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "wan22-i2v-high-noise-14b",
+      "name": "Wan 2.2 I2V 14B",
+      "type": "diffusion_model",
+      "architecture": "wan",
+      "author": "Wan-AI",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Wan-AI/Wan2.2-I2V-A14B",
+      "description": "Wan 2.2 14B image-to-video model (high-noise expert). Converts static images\ninto dynamic videos with smooth motion. Uses MoE architecture with separate\nhigh-noise and low-noise experts.\n",
+      "variants": [
+        {
+          "id": "fp16",
+          "file": "wan2.2_i2v_high_noise_14B_fp16.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp16.safetensors",
+          "sha256": "c21c21efa368d529a982a7d89dd11d86608b5937cae9a125d0ffe5491918a100",
+          "size": 28577914792,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 32768
+        },
+        {
+          "id": "fp8",
+          "file": "wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_high_noise_14B_fp8_scaled.safetensors",
+          "sha256": "6122e79d55e0f235698d11d657f3b196c5273c830da00b2b013c5a048d5e6a42",
+          "size": 14294742832,
+          "format": "safetensors",
+          "precision": "fp8-e4m3fn",
+          "vram_required": 16384
+        }
+      ],
+      "requires": [
+        {
+          "id": "wan22-i2v-low-noise-14b",
+          "type": "diffusion_model",
+          "reason": "Low-noise expert — required for Wan 2.2 MoE architecture"
+        },
+        {
+          "id": "umt5-xxl",
+          "type": "text_encoder",
+          "reason": "UMT5-XXL text encoder for prompt processing"
+        },
+        {
+          "id": "wan21-vae",
+          "type": "vae",
+          "reason": "Wan 2.1 VAE for video decoding"
+        }
+      ],
+      "defaults": {
+        "steps": 30,
+        "cfg": 5.0
+      },
+      "tags": [
+        "wan",
+        "wan2.2",
+        "video",
+        "image-to-video",
+        "14b",
+        "moe",
+        "high-quality"
+      ],
+      "rating": 4.9,
+      "downloads": 720000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "wan22-i2v-low-noise-14b",
+      "name": "Wan 2.2 I2V Low Noise Expert 14B",
+      "type": "diffusion_model",
+      "architecture": "wan",
+      "author": "Wan-AI",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Wan-AI/Wan2.2-I2V-A14B",
+      "description": "Low-noise expert for Wan 2.2 14B image-to-video MoE architecture.\nUsed together with the high-noise expert for video generation.\n",
+      "variants": [
+        {
+          "id": "fp16",
+          "file": "wan2.2_i2v_low_noise_14B_fp16.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_low_noise_14B_fp16.safetensors",
+          "sha256": "edb89340c8a6fbf1a70e76a839ae01eaf7d289f05ea1ebd6b1a3fc6f533826e9",
+          "size": 28577914792,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 32768
+        },
+        {
+          "id": "fp8",
+          "file": "wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_i2v_low_noise_14B_fp8_scaled.safetensors",
+          "sha256": "5471a457b6ac404202a5fbe6c11595a3d5641fc766b00f38763f72303fffc21e",
+          "size": 14294742832,
+          "format": "safetensors",
+          "precision": "fp8-e4m3fn",
+          "vram_required": 16384
+        }
+      ],
+      "tags": [
+        "wan",
+        "wan2.2",
+        "video",
+        "image-to-video",
+        "14b",
+        "moe",
+        "low-noise"
+      ],
+      "rating": 4.9,
+      "downloads": 600000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "wan22-t2v-high-noise-14b",
+      "name": "Wan 2.2 T2V 14B",
+      "type": "diffusion_model",
+      "architecture": "wan",
+      "author": "Wan-AI",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B",
+      "description": "Wan 2.2 14B text-to-video model (high-noise expert). Uses MoE architecture\nwith separate high-noise and low-noise experts for cinematic-quality video.\nInstall this to get the full T2V 14B pipeline with all dependencies.\n",
+      "variants": [
+        {
+          "id": "fp16",
+          "file": "wan2.2_t2v_high_noise_14B_fp16.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_high_noise_14B_fp16.safetensors",
+          "sha256": "c793e1515320fc8883ac8f97e2a45270c35edd8c4e334a6d42d3e95455bd8da2",
+          "size": 28577095592,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 32768
+        },
+        {
+          "id": "fp8",
+          "file": "wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors",
+          "sha256": "cad711ae211c8b23455ec68cd6a190a33a3d874234a77eb57266d73f8f0e6c9f",
+          "size": 14293923632,
+          "format": "safetensors",
+          "precision": "fp8-e4m3fn",
+          "vram_required": 16384
+        }
+      ],
+      "requires": [
+        {
+          "id": "wan22-t2v-low-noise-14b",
+          "type": "diffusion_model",
+          "reason": "Low-noise expert — required for Wan 2.2 MoE architecture"
+        },
+        {
+          "id": "umt5-xxl",
+          "type": "text_encoder",
+          "reason": "UMT5-XXL text encoder for prompt processing"
+        },
+        {
+          "id": "wan21-vae",
+          "type": "vae",
+          "reason": "Wan 2.1 VAE for video decoding"
+        }
+      ],
+      "defaults": {
+        "steps": 30,
+        "cfg": 5.0
+      },
+      "tags": [
+        "wan",
+        "wan2.2",
+        "video",
+        "text-to-video",
+        "14b",
+        "moe",
+        "high-quality"
+      ],
+      "rating": 4.9,
+      "downloads": 780000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "wan22-t2v-low-noise-14b",
+      "name": "Wan 2.2 T2V Low Noise Expert 14B",
+      "type": "diffusion_model",
+      "architecture": "wan",
+      "author": "Wan-AI",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Wan-AI/Wan2.2-T2V-A14B",
+      "description": "Low-noise expert for Wan 2.2 14B text-to-video MoE architecture.\nUsed together with the high-noise expert for video generation.\n",
+      "variants": [
+        {
+          "id": "fp16",
+          "file": "wan2.2_t2v_low_noise_14B_fp16.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp16.safetensors",
+          "sha256": "431d1613ffa809ae1f735b661a01788c6d74991f51efd01f45d5aee955ccd224",
+          "size": 28577095592,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 32768
+        },
+        {
+          "id": "fp8",
+          "file": "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
+          "sha256": "e71b96d7c82e638694c5e7fb98fac4bfb0e4ddc5fbbb4b1df40da8f0f1278a97",
+          "size": 14293923632,
+          "format": "safetensors",
+          "precision": "fp8-e4m3fn",
+          "vram_required": 16384
+        }
+      ],
+      "tags": [
+        "wan",
+        "wan2.2",
+        "video",
+        "text-to-video",
+        "14b",
+        "moe",
+        "low-noise"
+      ],
+      "rating": 4.9,
+      "downloads": 680000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "wan22-ti2v-5b",
+      "name": "Wan 2.2 TI2V 5B",
+      "type": "diffusion_model",
+      "architecture": "wan",
+      "author": "Wan-AI",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B",
+      "description": "Wan 2.2 hybrid text-to-video and image-to-video 5B model. Fits on 8GB VRAM\nwith ComfyUI native offloading. Single model handles both T2V and I2V tasks.\nApache 2.0 license — free for commercial use.\n",
+      "variants": [
+        {
+          "id": "fp16",
+          "file": "wan2.2_ti2v_5B_fp16.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors",
+          "sha256": "456f901338bd9eadbded3828b819109a9b68e8a525ca5cf8d0049a69fcfeca1e",
+          "size": 9999658848,
+          "format": "safetensors",
+          "precision": "fp16",
+          "vram_required": 10240
+        },
+        {
+          "id": "gguf-q8-0",
+          "file": "Wan2.2-TI2V-5B-Q8_0.gguf",
+          "url": "https://huggingface.co/QuantStack/Wan2.2-TI2V-5B-GGUF/resolve/main/Wan2.2-TI2V-5B-Q8_0.gguf",
+          "sha256": "57bece983817ab2f957546683bb670f13be7d99022d45674840cd999a050ea8f",
+          "size": 5400179040,
+          "format": "gguf",
+          "vram_required": 8192
+        },
+        {
+          "id": "gguf-q5-k-m",
+          "file": "Wan2.2-TI2V-5B-Q5_K_M.gguf",
+          "url": "https://huggingface.co/QuantStack/Wan2.2-TI2V-5B-GGUF/resolve/main/Wan2.2-TI2V-5B-Q5_K_M.gguf",
+          "sha256": "4424633a876511b9be58a41119f7c9d762ea92b3cb74649cdb43cac850e42dba",
+          "size": 3810603360,
+          "format": "gguf",
+          "vram_required": 6144
+        },
+        {
+          "id": "gguf-q4-k-m",
+          "file": "Wan2.2-TI2V-5B-Q4_K_M.gguf",
+          "url": "https://huggingface.co/QuantStack/Wan2.2-TI2V-5B-GGUF/resolve/main/Wan2.2-TI2V-5B-Q4_K_M.gguf",
+          "sha256": "95b19697b7f98e65b0a543640e9ca7b4dfec32e2a6e3731e8e10708be52655e2",
+          "size": 3433116000,
+          "format": "gguf",
+          "vram_required": 5120
+        },
+        {
+          "id": "gguf-q3-k-m",
+          "file": "Wan2.2-TI2V-5B-Q3_K_M.gguf",
+          "url": "https://huggingface.co/QuantStack/Wan2.2-TI2V-5B-GGUF/resolve/main/Wan2.2-TI2V-5B-Q3_K_M.gguf",
+          "sha256": "93cab80a36db70e9f2152915870d6cb9bdc7fdbf61811153222b5251b92839e6",
+          "size": 2547790176,
+          "format": "gguf",
+          "vram_required": 4096
+        }
+      ],
+      "requires": [
+        {
+          "id": "umt5-xxl",
+          "type": "text_encoder",
+          "reason": "UMT5-XXL text encoder for prompt processing"
+        },
+        {
+          "id": "wan22-vae",
+          "type": "vae",
+          "reason": "Wan 2.2 VAE for video decoding"
+        }
+      ],
+      "defaults": {
+        "steps": 30,
+        "cfg": 5.0
+      },
+      "tags": [
+        "wan",
+        "wan2.2",
+        "video",
+        "text-to-video",
+        "image-to-video",
+        "5b"
+      ],
+      "rating": 4.8,
+      "downloads": 920000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
+      "id": "wan22-vae",
+      "name": "Wan 2.2 VAE",
+      "type": "vae",
+      "architecture": "wan",
+      "author": "Wan-AI",
+      "license": "apache-2.0",
+      "homepage": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged",
+      "description": "VAE for Wan 2.2 video generation models. New high-compression VAE\nused by the 5B TI2V model. 1.4 GB.\n",
+      "file": {
+        "url": "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors",
+        "sha256": "e40321bd36b9709991dae2530eb4ac303dd168276980d3e9bc4b6e2b75fed156",
+        "size": 1409400960,
+        "format": "safetensors"
+      },
+      "tags": [
+        "wan",
+        "wan2.2",
+        "vae",
+        "video"
+      ],
+      "rating": 4.8,
+      "downloads": 850000,
+      "added": "2025-06-01",
+      "updated": "2025-06-01"
+    },
+    {
       "id": "z-image-text-encoder",
       "name": "Z-Image Qwen 3 4B Text Encoder",
       "type": "text_encoder",
@@ -1580,7 +3002,7 @@
           "id": "fp8-mixed",
           "file": "qwen_3_4b_fp8_mixed.safetensors",
           "url": "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b_fp8_mixed.safetensors",
-          "sha256": "VERIFY_z_image_qwen3_4b_fp8_mixed",
+          "sha256": "6cbe9dd2d57e7b59146d40aafeb6ed18d84c9f0e2169636109e56b55be6aadf6",
           "size": 6044237824,
           "format": "safetensors",
           "precision": "fp8-e4m3fn",
@@ -1592,7 +3014,7 @@
           "id": "fp4-mixed",
           "file": "qwen_3_4b_fp4_mixed.safetensors",
           "url": "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b_fp4_mixed.safetensors",
-          "sha256": "VERIFY_z_image_qwen3_4b_fp4_mixed",
+          "sha256": "fff344328a4fd638d3ab7a73f6cb4570ee9d269dab51e74a532d6267d5ed9ae3",
           "size": 3736076288,
           "format": "safetensors",
           "precision": "fp4",
@@ -1635,7 +3057,7 @@
           "id": "nvfp4",
           "file": "z_image_turbo_nvfp4.safetensors",
           "url": "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/diffusion_models/z_image_turbo_nvfp4.safetensors",
-          "sha256": "VERIFY_z_image_turbo_nvfp4",
+          "sha256": "6eabbfe5ae5a0c9b22cefffc83d5968f9f1ee77d68f32defe179ee7603e1470e",
           "size": 4843151360,
           "format": "safetensors",
           "precision": "nvfp4",
@@ -1671,7 +3093,7 @@
           "id": "gguf-q5-k-m",
           "file": "z_image_turbo-Q5_K_M.gguf",
           "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q5_K_M.gguf",
-          "sha256": "VERIFY_z_image_gguf_q5_k_m",
+          "sha256": "ea1b2f30b28fd52c73e631f0823494bf013f642d937e0ee1bdec4c1f1abc0103",
           "size": 5926789120,
           "format": "gguf",
           "precision": "q5_k_m",
@@ -1683,7 +3105,7 @@
           "id": "gguf-q5-k-s",
           "file": "z_image_turbo-Q5_K_S.gguf",
           "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q5_K_S.gguf",
-          "sha256": "VERIFY_z_image_gguf_q5_k_s",
+          "sha256": "f00f7063d0d300cb9efbe82764edae2e956b34cd65220faa5f56cafff03065b5",
           "size": 5572034560,
           "format": "gguf",
           "precision": "q5_k_s",
@@ -1695,7 +3117,7 @@
           "id": "gguf-q4-k-m",
           "file": "z_image_turbo-Q4_K_M.gguf",
           "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q4_K_M.gguf",
-          "sha256": "VERIFY_z_image_gguf_q4_k_m",
+          "sha256": "8e2673db987bdc9248c336053ee773fb454eea3d3ef551b639f19812b6273503",
           "size": 5346283520,
           "format": "gguf",
           "precision": "q4_k_m",
@@ -1707,7 +3129,7 @@
           "id": "gguf-q4-k-s",
           "file": "z_image_turbo-Q4_K_S.gguf",
           "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q4_K_S.gguf",
-          "sha256": "VERIFY_z_image_gguf_q4_k_s",
+          "sha256": "49cdba8a5db6ab01b8bed5fbb6796eacb83ed68cc2cc6f446d6bb0ec5fba982a",
           "size": 5003804672,
           "format": "gguf",
           "precision": "q4_k_s",
@@ -1719,7 +3141,7 @@
           "id": "gguf-q3-k-m",
           "file": "z_image_turbo-Q3_K_M.gguf",
           "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q3_K_M.gguf",
-          "sha256": "VERIFY_z_image_gguf_q3_k_m",
+          "sha256": "e660e8d66c1f41c8f2861d674a09492f64b97cd1c2c4e6ea0f39e9ceee02b969",
           "size": 4424990720,
           "format": "gguf",
           "precision": "q3_k_m",
@@ -1731,7 +3153,7 @@
           "id": "gguf-q3-k-s",
           "file": "z_image_turbo-Q3_K_S.gguf",
           "url": "https://huggingface.co/jayn7/Z-Image-Turbo-GGUF/resolve/main/z_image_turbo-Q3_K_S.gguf",
-          "sha256": "VERIFY_z_image_gguf_q3_k_s",
+          "sha256": "3d281cc0878d8a1f7184a63eef2ef13a0495bb9aaa25140886bf1068a13fc252",
           "size": 4069449728,
           "format": "gguf",
           "precision": "q3_k_s",
@@ -1754,7 +3176,7 @@
       ],
       "recommended": {
         "steps": 8,
-        "cfg": 0,
+        "cfg": 0.0,
         "sampler": "euler",
         "scheduler": "simple"
       },
@@ -1817,7 +3239,7 @@
       "file": {
         "name": "z_image_turbo_distill_patch_lora_bf16.safetensors",
         "url": "https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/loras/z_image_turbo_distill_patch_lora_bf16.safetensors",
-        "sha256": "VERIFY_z_image_distill_lora",
+        "sha256": "7247e6ad300373aacf1233d206223381727d9a9d19af1f2ff9db54ff1668a814",
         "size": 166723584,
         "format": "safetensors"
       },
@@ -1850,7 +3272,7 @@
         "vae",
         "comfyui"
       ],
-      "rating": 5
+      "rating": 5.0
     }
   ]
 }
