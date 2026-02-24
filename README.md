@@ -1,6 +1,6 @@
 # mods-site
 
-Website for [mods](https://github.com/modshq-org/mods) — the CLI model manager for AI image generation. Browse, search, and discover models at [mods.sh](https://mods.sh).
+Website for [mods](https://github.com/modshq-org/mods) — the CLI model manager for AI image generation. Browse, search, and discover models at [mods.pedroalonso.net](https://mods.pedroalonso.net).
 
 ## What's here
 

@@ -127,6 +127,7 @@ const vramTable = [
           <a href="#vram-selection">VRAM Selection</a>
           <a href="#config-files">Config Files</a>
           <a href="#supported-tools">Supported Tools</a>
+          <a href="#faq">FAQ</a>
         </div>
       </div>
     </aside>
@@ -140,7 +141,7 @@ const vramTable = [
       <section id="installation">
         <h2>Installation</h2>
         <div class="code-block">
-          <code>curl -fsSL https://mods.sh/install | sh</code>
+          <code>curl -fsSL https://raw.githubusercontent.com/modshq-org/mods/main/install.sh | sh</code>
         </div>
         <p class="section-text">Or build from source:</p>
         <div class="code-block">
@@ -296,6 +297,51 @@ const vramTable = [
             <h3>Other tools</h3>
             <p>Want to add support for another tool? Contributions welcome — see <a href="https://github.com/modshq-org/mods/blob/main/CONTRIBUTING.md" class="inline-link">CONTRIBUTING.md</a> for how to add a folder layout mapping.</p>
           </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq">
+        <h2>FAQ</h2>
+
+        <div class="faq-item">
+          <h3>What if <code>mods init</code> doesn't detect my ComfyUI?</h3>
+          <p>You can manually link any tool installation with <code>mods link</code>:</p>
+          <div class="code-block"><code><span class="prompt">$</span> mods link --comfyui /path/to/ComfyUI</code></div>
+          <p>This works for any location, including portable or manually installed setups.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How do I download gated models like Flux Dev?</h3>
+          <p>Some models on HuggingFace require accepting license terms. Mods handles this:</p>
+          <div class="code-block"><code><span class="prompt">$</span> mods auth huggingface</code></div>
+          <p>This stores your HuggingFace token in <code>~/.mods/auth.yaml</code>. You'll also need to accept the model's terms on HuggingFace before downloading. Mods will tell you exactly which URL to visit.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Can I override the auto-selected variant?</h3>
+          <p>Yes. Mods picks the largest variant that fits your GPU by default, but you can always override:</p>
+          <div class="code-block"><code><span class="prompt">$</span> mods install flux-dev --variant fp8</code></div>
+          <p>This is useful if you prefer faster inference over max quality — for example, fp8 on a 24GB card gives roughly 2x speed with minimal quality loss.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Where are my models stored?</h3>
+          <p>Models live in a content-addressed store at <code>~/mods/store/</code> by default. Change it with:</p>
+          <div class="code-block"><code><span class="prompt">$</span> mods config storage.root /path/to/new/location</code></div>
+          <p>Check current disk usage with <code>mods space</code>.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How much disk space do I need?</h3>
+          <p>It depends on which models you install. A typical Flux setup (checkpoint + VAE + text encoders) is ~30GB. Run <code>mods install --dry-run</code> to see download sizes before committing, and <code>mods space</code> to see current usage.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Something seems broken — how do I diagnose it?</h3>
+          <p>Run the health check:</p>
+          <div class="code-block"><code><span class="prompt">$</span> mods doctor</code></div>
+          <p>This checks for broken symlinks, missing dependencies, and other issues. Add <code>--verify-hashes</code> to also verify file integrity (slower for large files).</p>
         </div>
       </section>
     </main>
@@ -816,6 +862,48 @@ const vramTable = [
     color: #eab308;
     vertical-align: middle;
     margin-left: 8px;
+  }
+
+  /* FAQ */
+  .faq-item {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    margin-bottom: 16px;
+  }
+
+  .faq-item h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .faq-item h3 code {
+    font-family: var(--font-mono);
+    color: var(--accent-light);
+    font-size: 0.9rem;
+  }
+
+  .faq-item p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  .faq-item p:last-child {
+    margin-bottom: 0;
+  }
+
+  .faq-item code {
+    font-family: var(--font-mono);
+    color: var(--accent-light);
+    font-size: 0.82rem;
+  }
+
+  .faq-item .code-block {
+    margin-bottom: 10px;
   }
 
   .inline-link {

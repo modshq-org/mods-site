@@ -103,7 +103,7 @@
         "flux",
         "lightweight"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 2600000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
@@ -562,7 +562,7 @@
         "vae",
         "bfl"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 3200000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
@@ -850,7 +850,7 @@
       },
       "defaults": {
         "steps": 4,
-        "cfg": 1.0,
+        "cfg": 1,
         "sampler": "euler",
         "scheduler": "simple"
       },
@@ -1109,7 +1109,7 @@
         "mistral",
         "dev"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 0,
       "added": "2025-07-01",
       "updated": "2025-07-01"
@@ -1135,7 +1135,7 @@
         "qwen",
         "klein-4b"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 0,
       "added": "2025-07-01",
       "updated": "2025-07-01"
@@ -1162,7 +1162,7 @@
         "klein-9b",
         "fp8"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 0,
       "added": "2025-07-01",
       "updated": "2025-07-01"
@@ -1187,7 +1187,7 @@
         "vae",
         "bfl"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 0,
       "added": "2025-07-01",
       "updated": "2025-07-01"
@@ -1690,7 +1690,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 7.0
+        "cfg": 7
       },
       "tags": [
         "qwen",
@@ -2017,7 +2017,7 @@
       ],
       "defaults": {
         "steps": 8,
-        "cfg": 1.0,
+        "cfg": 1,
         "sampler": "euler",
         "scheduler": "simple"
       },
@@ -2147,10 +2147,10 @@
           "note": "Trained specifically for fp8 base model. 4-step, fp32."
         }
       ],
-      "recommended_weight": 1.0,
+      "recommended_weight": 1,
       "weight_range": [
         0.8,
-        1.0
+        1
       ],
       "tags": [
         "qwen",
@@ -2185,7 +2185,7 @@
         "vae",
         "comfyui"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 275000,
       "added": "2025-07-01",
       "updated": "2025-07-01"
@@ -2444,7 +2444,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 7.0,
+        "cfg": 7,
         "sampler": "dpmpp_2m",
         "scheduler": "karras"
       },
@@ -2589,7 +2589,7 @@
       ],
       "defaults": {
         "steps": 1,
-        "cfg": 0.0,
+        "cfg": 0,
         "sampler": "euler_ancestral",
         "scheduler": "normal"
       },
@@ -2658,7 +2658,7 @@
         "flux",
         "fp16"
       ],
-      "rating": 5.0,
+      "rating": 5,
       "downloads": 2400000,
       "added": "2024-08-01",
       "updated": "2024-08-01"
@@ -2837,7 +2837,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 5.0
+        "cfg": 5
       },
       "tags": [
         "wan",
@@ -2932,7 +2932,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 5.0
+        "cfg": 5
       },
       "tags": [
         "wan",
@@ -3043,7 +3043,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 5.0
+        "cfg": 5
       },
       "tags": [
         "wan",
@@ -3175,7 +3175,7 @@
       ],
       "defaults": {
         "steps": 30,
-        "cfg": 5.0
+        "cfg": 5
       },
       "tags": [
         "wan",
@@ -3416,7 +3416,7 @@
       ],
       "recommended": {
         "steps": 8,
-        "cfg": 0.0,
+        "cfg": 0,
         "sampler": "euler",
         "scheduler": "simple"
       },
@@ -3512,7 +3512,7 @@
         "vae",
         "comfyui"
       ],
-      "rating": 5.0
+      "rating": 5
     }
   ]
 }
