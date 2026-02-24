@@ -1,0 +1,250 @@
+{
+  "commands": [
+    {
+      "args": [],
+      "description": "Interactive first-run setup — detect tools, configure storage",
+      "flags": [],
+      "name": "init",
+      "usage": "mods init"
+    },
+    {
+      "args": [
+        {
+          "description": "Model ID from the registry (e.g., flux-dev, realistic-skin-v3)",
+          "name": "id",
+          "required": true
+        }
+      ],
+      "description": "Install a model, LoRA, VAE, or other asset (with dependency resolution)",
+      "flags": [
+        {
+          "description": "Force a specific variant (e.g., fp16, fp8, gguf-q4)",
+          "is_bool": false,
+          "name": "--variant"
+        },
+        {
+          "description": "Show what would be installed without doing it",
+          "is_bool": true,
+          "name": "--dry-run"
+        },
+        {
+          "description": "Force re-download even if files already exist",
+          "is_bool": true,
+          "name": "--force"
+        }
+      ],
+      "name": "install",
+      "usage": "mods install <id> [flags]"
+    },
+    {
+      "args": [
+        {
+          "description": "Model ID to uninstall",
+          "name": "id",
+          "required": true
+        }
+      ],
+      "description": "Remove an installed model",
+      "flags": [
+        {
+          "description": "Force removal even if other items depend on this",
+          "is_bool": true,
+          "name": "--force"
+        }
+      ],
+      "name": "uninstall",
+      "usage": "mods uninstall <id> [flags]"
+    },
+    {
+      "args": [],
+      "description": "List installed models",
+      "flags": [
+        {
+          "description": "Filter by asset type (checkpoint, lora, vae, text_encoder, etc.)",
+          "is_bool": false,
+          "name": "--type",
+          "short": "-t"
+        }
+      ],
+      "name": "list",
+      "usage": "mods list [flags]"
+    },
+    {
+      "args": [
+        {
+          "description": "Model ID to inspect",
+          "name": "id",
+          "required": true
+        }
+      ],
+      "description": "Show detailed info about a model",
+      "flags": [],
+      "name": "info",
+      "usage": "mods info <id>"
+    },
+    {
+      "args": [
+        {
+          "description": "Search query",
+          "name": "query",
+          "required": true
+        }
+      ],
+      "description": "Search the registry",
+      "flags": [
+        {
+          "description": "Filter by asset type",
+          "is_bool": false,
+          "name": "--type",
+          "short": "-t"
+        },
+        {
+          "description": "Filter by compatible base model",
+          "is_bool": false,
+          "name": "--for"
+        },
+        {
+          "description": "Filter by tag",
+          "is_bool": false,
+          "name": "--tag"
+        },
+        {
+          "description": "Minimum rating",
+          "is_bool": false,
+          "name": "--min-rating"
+        }
+      ],
+      "name": "search",
+      "usage": "mods search <query> [flags]"
+    },
+    {
+      "args": [],
+      "description": "Show disk usage breakdown",
+      "flags": [],
+      "name": "space",
+      "usage": "mods space"
+    },
+    {
+      "args": [],
+      "description": "Check for broken symlinks, missing deps, corrupt files",
+      "flags": [
+        {
+          "description": "Also verify SHA256 hashes (slow for large files)",
+          "is_bool": true,
+          "name": "--verify-hashes"
+        }
+      ],
+      "name": "doctor",
+      "usage": "mods doctor [flags]"
+    },
+    {
+      "args": [
+        {
+          "description": "Config key to view or set (e.g., storage.root)",
+          "name": "key",
+          "required": false
+        },
+        {
+          "description": "New value (required when setting a key)",
+          "name": "value",
+          "required": false
+        }
+      ],
+      "description": "View or update configuration (e.g., storage.root, gpu.vram_mb)",
+      "flags": [],
+      "name": "config",
+      "usage": "mods config [key] [value]"
+    },
+    {
+      "args": [],
+      "description": "Garbage collect — remove unreferenced files from the store",
+      "flags": [],
+      "name": "gc",
+      "usage": "mods gc"
+    },
+    {
+      "args": [],
+      "description": "Link an existing tool's model folder into mods",
+      "flags": [
+        {
+          "description": "Path to ComfyUI installation",
+          "is_bool": false,
+          "name": "--comfyui"
+        },
+        {
+          "description": "Path to A1111 installation",
+          "is_bool": false,
+          "name": "--a1111"
+        }
+      ],
+      "name": "link",
+      "usage": "mods link [flags]"
+    },
+    {
+      "args": [
+        {
+          "description": "Auth provider: huggingface or civitai",
+          "name": "provider",
+          "required": true
+        }
+      ],
+      "description": "Configure authentication (HuggingFace, Civitai)",
+      "flags": [],
+      "name": "auth",
+      "usage": "mods auth <provider>"
+    },
+    {
+      "args": [],
+      "description": "Fetch latest registry index",
+      "flags": [],
+      "name": "update",
+      "usage": "mods update"
+    },
+    {
+      "args": [],
+      "description": "Export installed state to a lock file",
+      "flags": [],
+      "name": "export",
+      "usage": "mods export"
+    },
+    {
+      "args": [
+        {
+          "description": "Path to mods.lock file",
+          "name": "path",
+          "required": true
+        }
+      ],
+      "description": "Import and install from a lock file",
+      "flags": [],
+      "name": "import",
+      "usage": "mods import <path>"
+    },
+    {
+      "args": [
+        {
+          "description": "Filter by asset type",
+          "name": "type",
+          "required": false
+        }
+      ],
+      "description": "Show popular/trending models",
+      "flags": [
+        {
+          "description": "Filter by compatible base model",
+          "is_bool": false,
+          "name": "--for"
+        },
+        {
+          "default": "week",
+          "description": "Time period: day, week, month",
+          "is_bool": false,
+          "name": "--period"
+        }
+      ],
+      "name": "popular",
+      "usage": "mods popular [type] [flags]"
+    }
+  ],
+  "version": "0.1.0"
+}

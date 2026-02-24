@@ -1,190 +1,25 @@
 ---
-const commands = [
-  {
-    name: "init",
-    description: "Interactive first-run setup. Auto-detects ComfyUI, A1111, and InvokeAI installations, configures storage root, and scans for existing models.",
-    usage: "mods init",
-    flags: [],
-    examples: [
-      { cmd: "mods init", desc: "Run the setup wizard" },
-    ],
-  },
-  {
-    name: "install",
-    description: "Install a model with automatic dependency resolution. Downloads the model, its required VAE, text encoders, and any other dependencies. Auto-selects the best variant for your GPU's VRAM.",
-    usage: "mods install <id> [flags]",
-    flags: [
-      { name: "--variant <v>", desc: "Force a specific variant (e.g., fp16, fp8, gguf-q4)" },
-      { name: "--dry-run", desc: "Show install plan without downloading" },
-      { name: "--force", desc: "Re-download even if files already exist" },
-    ],
-    examples: [
-      { cmd: "mods install flux-dev", desc: "Install with auto-selected variant" },
-      { cmd: "mods install flux-dev --variant fp8", desc: "Force the fp8 variant" },
-      { cmd: "mods install sdxl-base-1.0 --dry-run", desc: "Preview what would be installed" },
-    ],
-  },
-  {
-    name: "uninstall",
-    description: "Remove an installed model. Warns if other models depend on it. Removes symlinks from all targets. Store files are cleaned up on next garbage collection.",
-    usage: "mods uninstall <id> [flags]",
-    flags: [
-      { name: "--force", desc: "Remove even if other models depend on this" },
-    ],
-    examples: [
-      { cmd: "mods uninstall realistic-skin-v3", desc: "Remove a LoRA" },
-      { cmd: "mods uninstall flux-vae --force", desc: "Remove even with dependents" },
-    ],
-  },
-  {
-    name: "list",
-    description: "Show all installed models in a table with name, type, variant, size, and ID.",
-    usage: "mods list [flags]",
-    flags: [
-      { name: "-t, --type <type>", desc: "Filter by asset type (checkpoint, lora, vae, text_encoder, controlnet, upscaler, embedding, ipadapter)" },
-    ],
-    examples: [
-      { cmd: "mods list", desc: "Show all installed models" },
-      { cmd: "mods list -t lora", desc: "Show only LoRAs" },
-      { cmd: "mods list --type text_encoder", desc: "Show only text encoders" },
-    ],
-  },
-  {
-    name: "info",
-    description: "Show detailed information about a model: all available variants, VRAM requirements, dependencies, description, and tags. If installed, shows location and disk usage.",
-    usage: "mods info <id>",
-    flags: [],
-    examples: [
-      { cmd: "mods info flux-dev", desc: "View all details for FLUX.1 Dev" },
-    ],
-  },
-  {
-    name: "search",
-    description: "Search the registry index. Matches against model name, ID, tags, and description.",
-    usage: "mods search <query> [flags]",
-    flags: [
-      { name: "-t, --type <type>", desc: "Filter by asset type" },
-      { name: "--for <model>", desc: "Filter by compatible base model" },
-      { name: "--tag <tag>", desc: "Filter by tag" },
-      { name: "--min-rating <n>", desc: "Minimum rating threshold" },
-    ],
-    examples: [
-      { cmd: "mods search flux", desc: "Find all Flux-related models" },
-      { cmd: "mods search realistic --type lora", desc: "Search LoRAs only" },
-      { cmd: "mods search controlnet --for flux-dev", desc: "ControlNets compatible with Flux" },
-    ],
-  },
-  {
-    name: "link",
-    description: "Adopt existing models from a tool's folder into mods. Scans for model files, matches them against the registry by hash, moves matched files into the content-addressed store, and replaces them with symlinks. Your tool keeps working — symlinks are transparent.",
-    usage: "mods link [flags]",
-    flags: [
-      { name: "--comfyui <path>", desc: "Path to ComfyUI installation" },
-      { name: "--a1111 <path>", desc: "Path to A1111/SD WebUI installation" },
-    ],
-    examples: [
-      { cmd: "mods link --comfyui ~/ComfyUI", desc: "Adopt ComfyUI models" },
-      { cmd: "mods link --a1111 ~/stable-diffusion-webui", desc: "Adopt A1111 models" },
-    ],
-  },
-  {
-    name: "config",
-    description: "View or update mods configuration. When changing storage.root, automatically migrates store files, updates all symlinks, and rewrites database paths.",
-    usage: "mods config [key] [value]",
-    flags: [],
-    examples: [
-      { cmd: "mods config", desc: "Show all configuration" },
-      { cmd: "mods config storage.root", desc: "Show current storage location" },
-      { cmd: "mods config storage.root /mnt/data/mods", desc: "Move store to another disk" },
-      { cmd: "mods config gpu.vram_mb 24576", desc: "Override GPU VRAM detection" },
-    ],
-    keys: [
-      { name: "storage.root", desc: "Where mods stores model files (default: ~/mods)" },
-      { name: "gpu.vram_mb", desc: "Manual VRAM override in MB (auto-detected if unset)" },
-    ],
-  },
-  {
-    name: "doctor",
-    description: "Run diagnostics on your installation. Checks symlink integrity, store file existence, and file size correctness. Use --verify-hashes for full SHA256 verification (slow for large files).",
-    usage: "mods doctor [flags]",
-    flags: [
-      { name: "--verify-hashes", desc: "Also verify SHA256 hashes (slow for large files)" },
-    ],
-    examples: [
-      { cmd: "mods doctor", desc: "Quick health check (symlinks + file sizes)" },
-      { cmd: "mods doctor --verify-hashes", desc: "Full integrity verification" },
-    ],
-  },
-  {
-    name: "space",
-    description: "Show disk usage breakdown by model type and individual models. Helps identify large models and cleanup candidates.",
-    usage: "mods space",
-    flags: [],
-    examples: [
-      { cmd: "mods space", desc: "View disk usage breakdown" },
-    ],
-  },
-  {
-    name: "gc",
-    description: "Garbage collect — remove files in the store that aren't referenced by any installed model. Shows space recovered and requires confirmation.",
-    usage: "mods gc",
-    flags: [],
-    examples: [
-      { cmd: "mods gc", desc: "Clean up unreferenced store files" },
-    ],
-  },
-  {
-    name: "auth",
-    description: "Configure authentication for gated model providers. Tokens are stored in ~/.mods/auth.yaml.",
-    usage: "mods auth <provider>",
-    flags: [],
-    examples: [
-      { cmd: "mods auth huggingface", desc: "Set up HuggingFace token" },
-      { cmd: "mods auth civitai", desc: "Set up Civitai API key" },
-    ],
-  },
-  {
-    name: "update",
-    description: "Fetch the latest registry index from the server. Does not auto-upgrade installed models.",
-    usage: "mods update",
-    flags: [],
-    examples: [
-      { cmd: "mods update", desc: "Fetch latest model registry" },
-    ],
-  },
-  {
-    name: "export",
-    description: "Generate a mods.lock file listing all installed models with exact variants and SHA256 hashes. Shareable for reproducible environments.",
-    usage: "mods export",
-    flags: [],
-    examples: [
-      { cmd: "mods export", desc: "Generate mods.lock" },
-    ],
-  },
-  {
-    name: "import",
-    description: "Install everything from a lock file. Reproduces an exact model environment.",
-    usage: "mods import <path>",
-    flags: [],
-    examples: [
-      { cmd: "mods import mods.lock", desc: "Install from lock file" },
-    ],
-  },
-  {
-    name: "popular",
-    description: "Show trending models from the registry. Useful for discovering new models.",
-    usage: "mods popular [type] [flags]",
-    flags: [
-      { name: "--for <model>", desc: "Filter by compatible base model" },
-      { name: "--period <p>", desc: "Time period: day, week, month (default: week)" },
-    ],
-    examples: [
-      { cmd: "mods popular", desc: "Show trending models this week" },
-      { cmd: "mods popular lora --for flux-dev", desc: "Trending Flux LoRAs" },
-      { cmd: "mods popular --period month", desc: "Top models this month" },
-    ],
-  },
-];
+import cli from '../data/cli.json';
+
+// Auto-generated from `mods cli-schema`
+const commands = cli.commands.map(cmd => {
+  // Format flag display names: --flag for bools, --flag <value> for value flags
+  const flags = cmd.flags.map(f => {
+    const displayName = f.is_bool
+      ? (f.short ? `${f.short}, ${f.name}` : f.name)
+      : (f.short ? `${f.short}, ${f.name} <value>` : `${f.name} <value>`);
+    const desc = f.default ? `${f.description} (default: ${f.default})` : f.description;
+    return { name: displayName, desc };
+  });
+
+  return {
+    name: cmd.name,
+    description: cmd.description,
+    usage: cmd.usage,
+    args: cmd.args,
+    flags,
+  };
+});
 
 const concepts = [
   {
@@ -355,7 +190,7 @@ const vramTable = [
         ))}
       </section>
 
-      <!-- Commands -->
+      <!-- Commands (auto-generated from cli.json) -->
       <section id="commands">
         <h2>Commands</h2>
         {commands.map(c => (
@@ -367,6 +202,21 @@ const vramTable = [
               <span class="usage-label">Usage</span>
               <code>{c.usage}</code>
             </div>
+
+            {c.args && c.args.length > 0 && (
+              <div class="flags-table">
+                <div class="flags-header">
+                  <span>Argument</span>
+                  <span>Description</span>
+                </div>
+                {c.args.map(a => (
+                  <div class="flag-row">
+                    <code>{a.required ? `<${a.name}>` : `[${a.name}]`}</code>
+                    <span>{a.description}</span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {c.flags.length > 0 && (
               <div class="flags-table">
@@ -382,31 +232,6 @@ const vramTable = [
                 ))}
               </div>
             )}
-
-            {c.keys && (
-              <div class="flags-table">
-                <div class="flags-header">
-                  <span>Key</span>
-                  <span>Description</span>
-                </div>
-                {c.keys.map(k => (
-                  <div class="flag-row">
-                    <code>{k.name}</code>
-                    <span>{k.desc}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div class="examples">
-              <span class="examples-label">Examples</span>
-              {c.examples.map(e => (
-                <div class="example-row">
-                  <div class="code-block"><code><span class="prompt">$</span> {e.cmd}</code></div>
-                  <span class="example-desc">{e.desc}</span>
-                </div>
-              ))}
-            </div>
           </div>
         ))}
       </section>
