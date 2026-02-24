@@ -1,0 +1,1057 @@
+---
+const commands = [
+  {
+    name: "init",
+    description: "Interactive first-run setup. Auto-detects ComfyUI, A1111, and InvokeAI installations, configures storage root, and scans for existing models.",
+    usage: "mods init",
+    flags: [],
+    examples: [
+      { cmd: "mods init", desc: "Run the setup wizard" },
+    ],
+  },
+  {
+    name: "install",
+    description: "Install a model with automatic dependency resolution. Downloads the model, its required VAE, text encoders, and any other dependencies. Auto-selects the best variant for your GPU's VRAM.",
+    usage: "mods install <id> [flags]",
+    flags: [
+      { name: "--variant <v>", desc: "Force a specific variant (e.g., fp16, fp8, gguf-q4)" },
+      { name: "--dry-run", desc: "Show install plan without downloading" },
+      { name: "--force", desc: "Re-download even if files already exist" },
+    ],
+    examples: [
+      { cmd: "mods install flux-dev", desc: "Install with auto-selected variant" },
+      { cmd: "mods install flux-dev --variant fp8", desc: "Force the fp8 variant" },
+      { cmd: "mods install sdxl-base-1.0 --dry-run", desc: "Preview what would be installed" },
+    ],
+  },
+  {
+    name: "uninstall",
+    description: "Remove an installed model. Warns if other models depend on it. Removes symlinks from all targets. Store files are cleaned up on next garbage collection.",
+    usage: "mods uninstall <id> [flags]",
+    flags: [
+      { name: "--force", desc: "Remove even if other models depend on this" },
+    ],
+    examples: [
+      { cmd: "mods uninstall realistic-skin-v3", desc: "Remove a LoRA" },
+      { cmd: "mods uninstall flux-vae --force", desc: "Remove even with dependents" },
+    ],
+  },
+  {
+    name: "list",
+    description: "Show all installed models in a table with name, type, variant, size, and ID.",
+    usage: "mods list [flags]",
+    flags: [
+      { name: "-t, --type <type>", desc: "Filter by asset type (checkpoint, lora, vae, text_encoder, controlnet, upscaler, embedding, ipadapter)" },
+    ],
+    examples: [
+      { cmd: "mods list", desc: "Show all installed models" },
+      { cmd: "mods list -t lora", desc: "Show only LoRAs" },
+      { cmd: "mods list --type text_encoder", desc: "Show only text encoders" },
+    ],
+  },
+  {
+    name: "info",
+    description: "Show detailed information about a model: all available variants, VRAM requirements, dependencies, description, and tags. If installed, shows location and disk usage.",
+    usage: "mods info <id>",
+    flags: [],
+    examples: [
+      { cmd: "mods info flux-dev", desc: "View all details for FLUX.1 Dev" },
+    ],
+  },
+  {
+    name: "search",
+    description: "Search the registry index. Matches against model name, ID, tags, and description.",
+    usage: "mods search <query> [flags]",
+    flags: [
+      { name: "-t, --type <type>", desc: "Filter by asset type" },
+      { name: "--for <model>", desc: "Filter by compatible base model" },
+      { name: "--tag <tag>", desc: "Filter by tag" },
+      { name: "--min-rating <n>", desc: "Minimum rating threshold" },
+    ],
+    examples: [
+      { cmd: "mods search flux", desc: "Find all Flux-related models" },
+      { cmd: "mods search realistic --type lora", desc: "Search LoRAs only" },
+      { cmd: "mods search controlnet --for flux-dev", desc: "ControlNets compatible with Flux" },
+    ],
+  },
+  {
+    name: "link",
+    description: "Adopt existing models from a tool's folder into mods. Scans for model files, matches them against the registry by hash, moves matched files into the content-addressed store, and replaces them with symlinks. Your tool keeps working — symlinks are transparent.",
+    usage: "mods link [flags]",
+    flags: [
+      { name: "--comfyui <path>", desc: "Path to ComfyUI installation" },
+      { name: "--a1111 <path>", desc: "Path to A1111/SD WebUI installation" },
+    ],
+    examples: [
+      { cmd: "mods link --comfyui ~/ComfyUI", desc: "Adopt ComfyUI models" },
+      { cmd: "mods link --a1111 ~/stable-diffusion-webui", desc: "Adopt A1111 models" },
+    ],
+  },
+  {
+    name: "config",
+    description: "View or update mods configuration. When changing storage.root, automatically migrates store files, updates all symlinks, and rewrites database paths.",
+    usage: "mods config [key] [value]",
+    flags: [],
+    examples: [
+      { cmd: "mods config", desc: "Show all configuration" },
+      { cmd: "mods config storage.root", desc: "Show current storage location" },
+      { cmd: "mods config storage.root /mnt/data/mods", desc: "Move store to another disk" },
+      { cmd: "mods config gpu.vram_mb 24576", desc: "Override GPU VRAM detection" },
+    ],
+    keys: [
+      { name: "storage.root", desc: "Where mods stores model files (default: ~/mods)" },
+      { name: "gpu.vram_mb", desc: "Manual VRAM override in MB (auto-detected if unset)" },
+    ],
+  },
+  {
+    name: "doctor",
+    description: "Run diagnostics on your installation. Checks symlink integrity, store file existence, and file size correctness. Use --verify-hashes for full SHA256 verification (slow for large files).",
+    usage: "mods doctor [flags]",
+    flags: [
+      { name: "--verify-hashes", desc: "Also verify SHA256 hashes (slow for large files)" },
+    ],
+    examples: [
+      { cmd: "mods doctor", desc: "Quick health check (symlinks + file sizes)" },
+      { cmd: "mods doctor --verify-hashes", desc: "Full integrity verification" },
+    ],
+  },
+  {
+    name: "space",
+    description: "Show disk usage breakdown by model type and individual models. Helps identify large models and cleanup candidates.",
+    usage: "mods space",
+    flags: [],
+    examples: [
+      { cmd: "mods space", desc: "View disk usage breakdown" },
+    ],
+  },
+  {
+    name: "gc",
+    description: "Garbage collect — remove files in the store that aren't referenced by any installed model. Shows space recovered and requires confirmation.",
+    usage: "mods gc",
+    flags: [],
+    examples: [
+      { cmd: "mods gc", desc: "Clean up unreferenced store files" },
+    ],
+  },
+  {
+    name: "auth",
+    description: "Configure authentication for gated model providers. Tokens are stored in ~/.mods/auth.yaml.",
+    usage: "mods auth <provider>",
+    flags: [],
+    examples: [
+      { cmd: "mods auth huggingface", desc: "Set up HuggingFace token" },
+      { cmd: "mods auth civitai", desc: "Set up Civitai API key" },
+    ],
+  },
+  {
+    name: "update",
+    description: "Fetch the latest registry index from the server. Does not auto-upgrade installed models.",
+    usage: "mods update",
+    flags: [],
+    examples: [
+      { cmd: "mods update", desc: "Fetch latest model registry" },
+    ],
+  },
+  {
+    name: "export",
+    description: "Generate a mods.lock file listing all installed models with exact variants and SHA256 hashes. Shareable for reproducible environments.",
+    usage: "mods export",
+    flags: [],
+    examples: [
+      { cmd: "mods export", desc: "Generate mods.lock" },
+    ],
+  },
+  {
+    name: "import",
+    description: "Install everything from a lock file. Reproduces an exact model environment.",
+    usage: "mods import <path>",
+    flags: [],
+    examples: [
+      { cmd: "mods import mods.lock", desc: "Install from lock file" },
+    ],
+  },
+  {
+    name: "popular",
+    description: "Show trending models from the registry. Useful for discovering new models.",
+    usage: "mods popular [type] [flags]",
+    flags: [
+      { name: "--for <model>", desc: "Filter by compatible base model" },
+      { name: "--period <p>", desc: "Time period: day, week, month (default: week)" },
+    ],
+    examples: [
+      { cmd: "mods popular", desc: "Show trending models this week" },
+      { cmd: "mods popular lora --for flux-dev", desc: "Trending Flux LoRAs" },
+      { cmd: "mods popular --period month", desc: "Top models this month" },
+    ],
+  },
+];
+
+const concepts = [
+  {
+    title: "Content-Addressed Storage",
+    body: "Models are stored by SHA256 hash in <code>~/mods/store/</code>. A single file on disk can be symlinked into multiple tools. This means no duplicate 24GB files across ComfyUI and A1111.",
+  },
+  {
+    title: "Symlink Strategy",
+    body: "When you install a model, mods downloads it to the store, then creates symlinks in your tool's model folders. Symlinks are transparent — your tools see normal files. On Windows, mods falls back to hard links if symlinks require admin privileges.",
+  },
+  {
+    title: "Dependency Resolution",
+    body: "Manifests declare dependencies. Installing a checkpoint automatically installs its required VAE, text encoders, and other assets. The resolver handles transitive dependencies and skips already-installed items.",
+  },
+  {
+    title: "Variant Selection",
+    body: "Models come in variants (fp16, fp8, GGUF quantizations). Mods detects your GPU VRAM and picks the largest variant that fits. Dependencies can constrain variants too — a checkpoint can require the fp8 text encoder to avoid VRAM overflow.",
+  },
+  {
+    title: "Adopting Existing Models",
+    body: "<code>mods link</code> scans your existing model folders, hashes files, and matches them against the registry. Matched files are moved into the store and replaced with symlinks. Unrecognized files are left untouched.",
+  },
+];
+
+const configFiles = [
+  {
+    path: "~/.mods/config.yaml",
+    desc: "Main configuration: storage root, tool targets, GPU override.",
+    example: `storage:\n  root: ~/mods\ntargets:\n  - path: ~/ComfyUI\n    type: comfyui\n    symlink: true\n  - path: ~/stable-diffusion-webui\n    type: a1111\n    symlink: true\n# gpu:\n#   vram_mb: 24576`,
+  },
+  {
+    path: "~/.mods/auth.yaml",
+    desc: "Authentication tokens for gated model providers.",
+    example: `huggingface:\n  token: "hf_..."\ncivitai:\n  api_key: "..."`,
+  },
+  {
+    path: "~/.mods/state.db",
+    desc: "SQLite database tracking installed models, symlinks, and dependencies.",
+    example: null,
+  },
+  {
+    path: "~/.mods/index.json",
+    desc: "Local cache of the registry index. Updated via mods update.",
+    example: null,
+  },
+];
+
+const vramTable = [
+  { vram: "24GB+", variant: "fp16", notes: "Full quality, no compromises" },
+  { vram: "12–23GB", variant: "fp8", notes: "Slight quality reduction, half the VRAM" },
+  { vram: "8–11GB", variant: "gguf-q4", notes: "Quantized, needs GGUF loader node" },
+  { vram: "< 8GB", variant: "gguf-q2", notes: "Lower quality, but functional" },
+];
+---
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Docs — mods</title>
+  <meta name="description" content="Full CLI reference and documentation for mods, the model manager for AI image generation." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3341W5L66B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3341W5L66B');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand"><span class="gradient-text">mods</span></a>
+      <div class="nav-links">
+        <a href="/models" class="nav-link">Models</a>
+        <a href="/docs" class="nav-link active">Docs</a>
+        <a href="https://github.com/modshq-org/mods" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="docs-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <div class="sidebar-section">
+          <h4>Getting Started</h4>
+          <a href="#installation">Installation</a>
+          <a href="#quick-start">Quick Start</a>
+          <a href="#concepts">Concepts</a>
+        </div>
+        <div class="sidebar-section">
+          <h4>Commands</h4>
+          {commands.map(c => (
+            <a href={`#${c.name}`}>{c.name}</a>
+          ))}
+        </div>
+        <div class="sidebar-section">
+          <h4>Reference</h4>
+          <a href="#vram-selection">VRAM Selection</a>
+          <a href="#config-files">Config Files</a>
+          <a href="#supported-tools">Supported Tools</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+      <h1><span class="gradient-text">CLI Reference</span></h1>
+      <p class="page-subtitle">Everything you need to use mods effectively.</p>
+
+      <!-- Installation -->
+      <section id="installation">
+        <h2>Installation</h2>
+        <div class="code-block">
+          <code>curl -fsSL https://mods.sh/install | sh</code>
+        </div>
+        <p class="section-text">Or build from source:</p>
+        <div class="code-block">
+          <code>git clone https://github.com/modshq-org/mods && cd mods && cargo install --path .</code>
+        </div>
+      </section>
+
+      <!-- Quick Start -->
+      <section id="quick-start">
+        <h2>Quick Start</h2>
+        <div class="steps-list">
+          <div class="qs-step">
+            <div class="qs-number">1</div>
+            <div>
+              <h4>Set up mods</h4>
+              <div class="code-block"><code><span class="prompt">$</span> mods init</code></div>
+              <p>Auto-detects your ComfyUI / A1111 / InvokeAI installations.</p>
+            </div>
+          </div>
+          <div class="qs-step">
+            <div class="qs-number">2</div>
+            <div>
+              <h4>Adopt existing models (optional)</h4>
+              <div class="code-block"><code><span class="prompt">$</span> mods link --comfyui ~/ComfyUI</code></div>
+              <p>Moves recognized models into the store and replaces them with symlinks.</p>
+            </div>
+          </div>
+          <div class="qs-step">
+            <div class="qs-number">3</div>
+            <div>
+              <h4>Install models</h4>
+              <div class="code-block"><code><span class="prompt">$</span> mods install flux-dev</code></div>
+              <p>Downloads the model + all dependencies, symlinked to all your tools.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Concepts -->
+      <section id="concepts">
+        <h2>Concepts</h2>
+        {concepts.map(c => (
+          <div class="concept-card">
+            <h3>{c.title}</h3>
+            <p set:html={c.body} />
+          </div>
+        ))}
+      </section>
+
+      <!-- Commands -->
+      <section id="commands">
+        <h2>Commands</h2>
+        {commands.map(c => (
+          <div class="command-section" id={c.name}>
+            <h3>mods {c.name}</h3>
+            <p class="command-desc">{c.description}</p>
+
+            <div class="usage-block">
+              <span class="usage-label">Usage</span>
+              <code>{c.usage}</code>
+            </div>
+
+            {c.flags.length > 0 && (
+              <div class="flags-table">
+                <div class="flags-header">
+                  <span>Flag</span>
+                  <span>Description</span>
+                </div>
+                {c.flags.map(f => (
+                  <div class="flag-row">
+                    <code>{f.name}</code>
+                    <span>{f.desc}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {c.keys && (
+              <div class="flags-table">
+                <div class="flags-header">
+                  <span>Key</span>
+                  <span>Description</span>
+                </div>
+                {c.keys.map(k => (
+                  <div class="flag-row">
+                    <code>{k.name}</code>
+                    <span>{k.desc}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div class="examples">
+              <span class="examples-label">Examples</span>
+              {c.examples.map(e => (
+                <div class="example-row">
+                  <div class="code-block"><code><span class="prompt">$</span> {e.cmd}</code></div>
+                  <span class="example-desc">{e.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <!-- VRAM Selection -->
+      <section id="vram-selection">
+        <h2>VRAM Selection</h2>
+        <p class="section-text">Mods detects your GPU and picks the largest variant that fits. Override with <code>--variant</code> or set a manual VRAM value.</p>
+        <div class="vram-table">
+          <div class="vram-header">
+            <span>VRAM</span>
+            <span>Variant</span>
+            <span>Notes</span>
+          </div>
+          {vramTable.map(r => (
+            <div class="vram-row">
+              <span class="vram-size">{r.vram}</span>
+              <code>{r.variant}</code>
+              <span>{r.notes}</span>
+            </div>
+          ))}
+        </div>
+        <div class="code-block" style="margin-top: 16px;">
+          <code><span class="prompt">$</span> mods config gpu.vram_mb 24576 &nbsp;<span class="comment"># Manual override</span></code>
+        </div>
+      </section>
+
+      <!-- Config Files -->
+      <section id="config-files">
+        <h2>Config Files</h2>
+        {configFiles.map(f => (
+          <div class="config-file">
+            <h3><code>{f.path}</code></h3>
+            <p>{f.desc}</p>
+            {f.example && (
+              <div class="code-block config-example"><pre>{f.example}</pre></div>
+            )}
+          </div>
+        ))}
+      </section>
+
+      <!-- Supported Tools -->
+      <section id="supported-tools">
+        <h2>Supported Tools</h2>
+        <p class="section-text">Mods creates symlinks into the correct folder for each tool. Configure targets during <code>mods init</code> or with <code>mods link</code>.</p>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>ComfyUI</h3>
+            <p>Full support. Models placed in <code>models/checkpoints/</code>, LoRAs in <code>models/loras/</code>, etc.</p>
+            <div class="code-block"><code>mods link --comfyui ~/ComfyUI</code></div>
+          </div>
+          <div class="tool-card">
+            <h3>A1111 / SD WebUI</h3>
+            <p>Full support. Models in <code>models/Stable-diffusion/</code>, LoRAs in <code>models/Lora/</code>, etc.</p>
+            <div class="code-block"><code>mods link --a1111 ~/stable-diffusion-webui</code></div>
+          </div>
+          <div class="tool-card">
+            <h3>InvokeAI</h3>
+            <p>Supported via config. Uses InvokeAI's model directory structure.</p>
+          </div>
+          <div class="tool-card">
+            <h3>Custom</h3>
+            <p>Define arbitrary paths per asset type in <code>~/.mods/config.yaml</code>.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="gradient-text footer-logo">mods</span>
+          <p>Open source model manager for AI image generation.</p>
+        </div>
+        <div class="footer-links">
+          <a href="/models">Models</a>
+          <a href="/docs">Docs</a>
+          <a href="https://github.com/modshq-org/mods" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/modshq-org/mods-registry" target="_blank" rel="noopener">Registry</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Built with Rust. Licensed MIT.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-card-hover: #1a1a28;
+    --border: #1e1e2e;
+    --border-light: #2a2a3e;
+    --text: #e4e4ef;
+    --text-dim: #a0a0b8;
+    --text-dimmer: #6a6a82;
+    --accent: #7c3aed;
+    --accent-light: #a78bfa;
+    --success: #22c55e;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--accent-light), #c084fc, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Nav */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 24px; }
+
+  .nav-link {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--accent-light); }
+
+  /* Docs Layout */
+  .docs-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 48px;
+    min-height: calc(100vh - 60px);
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 200px;
+    min-width: 200px;
+    padding: 32px 0;
+  }
+
+  .sidebar-inner {
+    position: sticky;
+    top: 80px;
+  }
+
+  .sidebar-section {
+    margin-bottom: 28px;
+  }
+
+  .sidebar-section h4 {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dimmer);
+    margin-bottom: 10px;
+  }
+
+  .sidebar-section a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 3px 0;
+    transition: color 0.15s;
+  }
+
+  .sidebar-section a:hover {
+    color: var(--accent-light);
+  }
+
+  /* Main Content */
+  .content {
+    flex: 1;
+    min-width: 0;
+    padding: 48px 0 100px;
+  }
+
+  .content h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    color: var(--text-dim);
+    font-size: 1.15rem;
+    margin-bottom: 56px;
+  }
+
+  .content section {
+    margin-bottom: 64px;
+  }
+
+  .content h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: left;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-text {
+    color: var(--text-dim);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  .section-text code {
+    font-family: var(--font-mono);
+    color: var(--accent-light);
+    font-size: 0.85rem;
+  }
+
+  /* Code blocks */
+  .code-block {
+    padding: 12px 16px;
+    background: #0a0a12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    overflow-x: auto;
+    color: var(--accent-light);
+    margin-bottom: 12px;
+  }
+
+  .code-block pre {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .prompt { color: var(--success); }
+  .comment { color: var(--text-dimmer); }
+
+  /* Quick Start Steps */
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .qs-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .qs-number {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-top: 2px;
+  }
+
+  .qs-step h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .qs-step p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+
+  /* Concepts */
+  .concept-card {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    margin-bottom: 16px;
+  }
+
+  .concept-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .concept-card p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .concept-card code {
+    font-family: var(--font-mono);
+    color: var(--accent-light);
+    font-size: 0.82rem;
+  }
+
+  /* Command sections */
+  .command-section {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .command-section:last-child {
+    border-bottom: none;
+  }
+
+  .command-section h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--accent-light);
+    margin-bottom: 8px;
+  }
+
+  .command-desc {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* Usage block */
+  .usage-block {
+    margin-bottom: 16px;
+  }
+
+  .usage-label, .examples-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dimmer);
+    margin-bottom: 6px;
+  }
+
+  .usage-block code {
+    display: block;
+    padding: 10px 14px;
+    background: #0a0a12;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+
+  /* Flags table */
+  .flags-table {
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .flags-header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 8px 14px;
+    background: #0d0d14;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dimmer);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .flag-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .flag-row:last-child {
+    border-bottom: none;
+  }
+
+  .flag-row code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--accent-light);
+  }
+
+  .flag-row span {
+    color: var(--text-dim);
+  }
+
+  /* Examples */
+  .examples {
+    margin-top: 16px;
+  }
+
+  .example-row {
+    margin-bottom: 8px;
+  }
+
+  .example-desc {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-dimmer);
+    margin-top: 2px;
+    margin-left: 16px;
+  }
+
+  /* VRAM table */
+  .vram-table {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .vram-header {
+    display: grid;
+    grid-template-columns: 120px 100px 1fr;
+    padding: 8px 14px;
+    background: #0d0d14;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dimmer);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .vram-row {
+    display: grid;
+    grid-template-columns: 120px 100px 1fr;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+
+  .vram-row:last-child { border-bottom: none; }
+
+  .vram-size {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .vram-row code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--accent-light);
+  }
+
+  .vram-row span:last-child {
+    color: var(--text-dim);
+  }
+
+  /* Config files */
+  .config-file {
+    margin-bottom: 24px;
+  }
+
+  .config-file h3 {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .config-file h3 code {
+    font-family: var(--font-mono);
+    color: var(--accent-light);
+    font-weight: 600;
+  }
+
+  .config-file p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .config-example {
+    margin-bottom: 0;
+  }
+
+  /* Tools grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .tool-card {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+  }
+
+  .tool-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .tool-card p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .tool-card code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--accent-light);
+  }
+
+  /* Footer */
+  footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .footer-logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .footer-brand p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent-light); }
+
+  .footer-bottom {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .docs-layout { gap: 0; }
+    .content h1 { font-size: 2rem; }
+    .flags-header, .flag-row { grid-template-columns: 140px 1fr; }
+    .vram-header, .vram-row { grid-template-columns: 80px 80px 1fr; font-size: 0.82rem; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .footer-content { flex-direction: column; gap: 24px; }
+  }
+</style>
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('.content section[id], .command-section[id]');
+  const sidebarLinks = document.querySelectorAll('.sidebar-section a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sidebarLinks.forEach(link => link.classList.remove('active'));
+        const active = document.querySelector(`.sidebar-section a[href="#${entry.target.id}"]`);
+        if (active) active.style.color = 'var(--accent-light)';
+      }
+    });
+  }, { rootMargin: '-80px 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
