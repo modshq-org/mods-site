@@ -157,7 +157,7 @@ const vramTable = [
             <div>
               <h4>Set up mods</h4>
               <div class="code-block"><code><span class="prompt">$</span> mods init</code></div>
-              <p>Auto-detects your ComfyUI / A1111 / InvokeAI installations.</p>
+              <p>Auto-detects ComfyUI and A1111 installations, configures storage.</p>
             </div>
           </div>
           <div class="qs-step">
@@ -289,12 +289,12 @@ const vramTable = [
             <div class="code-block"><code>mods link --a1111 ~/stable-diffusion-webui</code></div>
           </div>
           <div class="tool-card">
-            <h3>InvokeAI</h3>
-            <p>Supported via config. Uses InvokeAI's model directory structure.</p>
+            <h3>InvokeAI <span class="badge-planned">Planned</span></h3>
+            <p>InvokeAI uses its own model database internally. Integration is on the roadmap.</p>
           </div>
           <div class="tool-card">
-            <h3>Custom</h3>
-            <p>Define arbitrary paths per asset type in <code>~/.mods/config.yaml</code>.</p>
+            <h3>Other tools</h3>
+            <p>Want to add support for another tool? Contributions welcome — see <a href="https://github.com/modshq-org/mods/blob/main/CONTRIBUTING.md" class="inline-link">CONTRIBUTING.md</a> for how to add a folder layout mapping.</p>
           </div>
         </div>
       </section>
@@ -802,6 +802,31 @@ const vramTable = [
     font-family: var(--font-mono);
     font-size: 0.82rem;
     color: var(--accent-light);
+  }
+
+  .badge-planned {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+
+  .inline-link {
+    color: var(--accent-light);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .inline-link:hover {
+    border-bottom-color: var(--accent-light);
   }
 
   /* Footer */
