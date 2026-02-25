@@ -221,6 +221,13 @@
       "usage": "mods import <path>"
     },
     {
+      "args": [],
+      "description": "Update mods CLI to the latest release",
+      "flags": [],
+      "name": "upgrade",
+      "usage": "mods upgrade"
+    },
+    {
       "args": [
         {
           "description": "Filter by asset type",
