@@ -21,6 +21,41 @@ const commands = cli.commands.map(cmd => {
   };
 });
 
+// Group commands by prefix for accordion rendering
+const groupDefs: Record<string, { description: string; commands: typeof commands }> = {
+  model: { description: 'Manage models, LoRAs, VAEs, and other assets', commands: [] },
+  train: { description: 'Train LoRAs with managed runtime', commands: [] },
+  dataset: { description: 'Manage datasets for training', commands: [] },
+  runtime: { description: 'Manage embedded Python runtime', commands: [] },
+};
+const standaloneCommands: typeof commands = [];
+
+for (const cmd of commands) {
+  const prefix = Object.keys(groupDefs).find(p => cmd.name === p || cmd.name.startsWith(p + ' '));
+  if (prefix) {
+    groupDefs[prefix].commands.push(cmd);
+  } else {
+    standaloneCommands.push(cmd);
+  }
+}
+
+// Ordered render plan — matches `mods --help` order
+const renderSections: Array<
+  | { type: 'cmd'; cmd: typeof commands[0] }
+  | { type: 'group'; key: string; description: string; commands: typeof commands }
+> = [
+  { type: 'cmd', cmd: standaloneCommands.find(c => c.name === 'init')! },
+  { type: 'group', key: 'model', ...groupDefs.model },
+  { type: 'cmd', cmd: standaloneCommands.find(c => c.name === 'generate')! },
+  { type: 'group', key: 'train', ...groupDefs.train },
+  { type: 'group', key: 'dataset', ...groupDefs.dataset },
+  { type: 'group', key: 'runtime', ...groupDefs.runtime },
+  { type: 'cmd', cmd: standaloneCommands.find(c => c.name === 'doctor')! },
+  { type: 'cmd', cmd: standaloneCommands.find(c => c.name === 'config')! },
+  { type: 'cmd', cmd: standaloneCommands.find(c => c.name === 'auth')! },
+  { type: 'cmd', cmd: standaloneCommands.find(c => c.name === 'upgrade')! },
+].filter(s => s.type === 'group' ? (s as any).commands.length > 0 : (s as any).cmd);
+
 const concepts = [
   {
     title: "Content-Addressed Storage",
@@ -119,9 +154,16 @@ const vramTable = [
         </div>
         <div class="sidebar-section">
           <h4>Commands</h4>
-          {commands.map(c => (
-            <a href={`#${c.name}`}>{c.name}</a>
-          ))}
+          <a href="#init">init</a>
+          <a href="#model" class="sidebar-group-link">model</a>
+          <a href="#generate">generate</a>
+          <a href="#train" class="sidebar-group-link">train</a>
+          <a href="#dataset" class="sidebar-group-link">dataset</a>
+          <a href="#runtime" class="sidebar-group-link">runtime</a>
+          <a href="#doctor">doctor</a>
+          <a href="#config">config</a>
+          <a href="#auth">auth</a>
+          <a href="#upgrade">upgrade</a>
         </div>
         <div class="sidebar-section">
           <h4>Reference</h4>
@@ -166,7 +208,7 @@ const vramTable = [
             <div class="qs-number">2</div>
             <div>
               <h4>Adopt existing models (optional)</h4>
-              <div class="code-block"><code><span class="prompt">$</span> mods link --comfyui ~/ComfyUI</code></div>
+              <div class="code-block"><code><span class="prompt">$</span> mods model link --comfyui ~/ComfyUI</code></div>
               <p>Moves recognized models into the store and replaces them with symlinks.</p>
             </div>
           </div>
@@ -174,7 +216,7 @@ const vramTable = [
             <div class="qs-number">3</div>
             <div>
               <h4>Install models</h4>
-              <div class="code-block"><code><span class="prompt">$</span> mods install flux-dev</code></div>
+              <div class="code-block"><code><span class="prompt">$</span> mods model pull flux-dev</code></div>
               <p>Downloads the model + all dependencies, symlinked to all your tools.</p>
             </div>
           </div>
@@ -192,48 +234,89 @@ const vramTable = [
         ))}
       </section>
 
-      <!-- Commands (auto-generated from cli.json) -->
+      <!-- Commands (auto-generated from cli.json, accordion layout) -->
       <section id="commands">
         <h2>Commands</h2>
-        {commands.map(c => (
-          <div class="command-section" id={c.name}>
-            <h3>mods {c.name}</h3>
-            <p class="command-desc">{c.description}</p>
 
-            <div class="usage-block">
-              <span class="usage-label">Usage</span>
-              <code>{c.usage}</code>
+        {renderSections.map(section => section.type === 'cmd' ? (
+          <details class="cmd-accordion" id={section.cmd.name}>
+            <summary>
+              <span class="cmd-summary-name">mods {section.cmd.name}</span>
+              <span class="cmd-summary-desc">{section.cmd.description}</span>
+              <svg class="cmd-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 4l4 4-4 4" /></svg>
+            </summary>
+            <div class="cmd-body">
+              <div class="usage-block">
+                <span class="usage-label">Usage</span>
+                <code>{section.cmd.usage}</code>
+              </div>
+              {section.cmd.args && section.cmd.args.length > 0 && (
+                <div class="flags-table">
+                  <div class="flags-header"><span>Argument</span><span>Description</span></div>
+                  {section.cmd.args.map(a => (
+                    <div class="flag-row">
+                      <code>{a.required ? `<${a.name}>` : `[${a.name}]`}</code>
+                      <span>{a.description}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {section.cmd.flags.length > 0 && (
+                <div class="flags-table">
+                  <div class="flags-header"><span>Flag</span><span>Description</span></div>
+                  {section.cmd.flags.map(f => (
+                    <div class="flag-row">
+                      <code>{f.name}</code>
+                      <span>{f.desc}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-
-            {c.args && c.args.length > 0 && (
-              <div class="flags-table">
-                <div class="flags-header">
-                  <span>Argument</span>
-                  <span>Description</span>
-                </div>
-                {c.args.map(a => (
-                  <div class="flag-row">
-                    <code>{a.required ? `<${a.name}>` : `[${a.name}]`}</code>
-                    <span>{a.description}</span>
+          </details>
+        ) : (
+          <div class="cmd-group" id={section.key}>
+            <div class="cmd-group-header">
+              <h3><span class="gradient-text">mods {section.key}</span></h3>
+              <p>{section.description}</p>
+            </div>
+            {section.commands.map(c => (
+              <details class="cmd-accordion" id={`cmd-${c.name.replace(/\s+/g, '-')}`}>
+                <summary>
+                  <span class="cmd-summary-name">{c.name === section.key ? `mods ${c.name}` : c.name.replace(section.key + ' ', '')}</span>
+                  <span class="cmd-summary-desc">{c.description}</span>
+                  <svg class="cmd-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 4l4 4-4 4" /></svg>
+                </summary>
+                <div class="cmd-body">
+                  <div class="usage-block">
+                    <span class="usage-label">Usage</span>
+                    <code>{c.usage}</code>
                   </div>
-                ))}
-              </div>
-            )}
-
-            {c.flags.length > 0 && (
-              <div class="flags-table">
-                <div class="flags-header">
-                  <span>Flag</span>
-                  <span>Description</span>
+                  {c.args && c.args.length > 0 && (
+                    <div class="flags-table">
+                      <div class="flags-header"><span>Argument</span><span>Description</span></div>
+                      {c.args.map(a => (
+                        <div class="flag-row">
+                          <code>{a.required ? `<${a.name}>` : `[${a.name}]`}</code>
+                          <span>{a.description}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {c.flags.length > 0 && (
+                    <div class="flags-table">
+                      <div class="flags-header"><span>Flag</span><span>Description</span></div>
+                      {c.flags.map(f => (
+                        <div class="flag-row">
+                          <code>{f.name}</code>
+                          <span>{f.desc}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {c.flags.map(f => (
-                  <div class="flag-row">
-                    <code>{f.name}</code>
-                    <span>{f.desc}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+              </details>
+            ))}
           </div>
         ))}
       </section>
@@ -635,29 +718,113 @@ const vramTable = [
     font-size: 0.82rem;
   }
 
-  /* Command sections */
-  .command-section {
-    padding: 28px 0;
+  /* Command groups */
+  .cmd-group {
+    margin-bottom: 32px;
+  }
+
+  .cmd-group-header {
+    padding: 20px 0 12px;
     border-bottom: 1px solid var(--border);
-  }
-
-  .command-section:last-child {
-    border-bottom: none;
-  }
-
-  .command-section h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    font-family: var(--font-mono);
-    color: var(--accent-light);
     margin-bottom: 8px;
   }
 
-  .command-desc {
+  .cmd-group-header h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    margin-bottom: 4px;
+  }
+
+  .cmd-group-header p {
     color: var(--text-dim);
     font-size: 0.95rem;
-    line-height: 1.7;
-    margin-bottom: 16px;
+  }
+
+  /* Command accordion (details/summary) */
+  .cmd-accordion {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cmd-accordion:last-child {
+    border-bottom: none;
+  }
+
+  .cmd-accordion summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 4px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: background 0.15s;
+    border-radius: 6px;
+  }
+
+  .cmd-accordion summary::-webkit-details-marker { display: none; }
+
+  .cmd-accordion summary:hover {
+    background: rgba(167, 139, 250, 0.05);
+  }
+
+  .cmd-summary-name {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
+  .cmd-summary-desc {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cmd-chevron {
+    flex-shrink: 0;
+    color: var(--text-dimmer);
+    transition: transform 0.2s;
+    width: 16px;
+    height: 16px;
+  }
+
+  .cmd-accordion[open] .cmd-chevron {
+    transform: rotate(90deg);
+  }
+
+  .cmd-body {
+    padding: 4px 4px 20px 16px;
+  }
+
+  /* Standalone command accordions (outside groups) */
+  section#commands > .cmd-accordion {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    padding: 0 12px;
+  }
+
+  section#commands > .cmd-accordion summary {
+    padding: 12px 4px;
+  }
+
+  section#commands > .cmd-accordion .cmd-body {
+    padding: 0 4px 16px 16px;
+  }
+
+  /* Sidebar group links */
+  .sidebar-group-link::before {
+    content: '›';
+    display: inline-block;
+    margin-right: 4px;
+    color: var(--text-dimmer);
+    font-weight: 700;
   }
 
   /* Usage block */
@@ -979,14 +1146,16 @@ const vramTable = [
 
 <script>
   // Highlight active sidebar link on scroll
-  const sections = document.querySelectorAll('.content section[id], .command-section[id]');
+  const sections = document.querySelectorAll('.content section[id], .cmd-group[id], .cmd-accordion[id]');
   const sidebarLinks = document.querySelectorAll('.sidebar-section a');
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        sidebarLinks.forEach(link => link.classList.remove('active'));
-        const active = document.querySelector(`.sidebar-section a[href="#${entry.target.id}"]`);
+        sidebarLinks.forEach(link => link.style.color = '');
+        const id = entry.target.id;
+        // Match prefix group ids too (e.g., id="model" matches sidebar href="#model")
+        const active = document.querySelector(`.sidebar-section a[href="#${id}"]`);
         if (active) active.style.color = 'var(--accent-light)';
       }
     });

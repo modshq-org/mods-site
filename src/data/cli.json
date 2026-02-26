@@ -2,7 +2,7 @@
   "commands": [
     {
       "args": [],
-      "description": "Interactive first-run setup — detect tools, configure storage",
+      "description": "Interactive first-run setup \u2014 detect tools, configure storage",
       "flags": [],
       "name": "init",
       "usage": "mods init"
@@ -15,7 +15,7 @@
           "required": true
         }
       ],
-      "description": "Install a model, LoRA, VAE, or other asset (with dependency resolution)",
+      "description": "Download a model, LoRA, VAE, or other asset (with dependency resolution)",
       "flags": [
         {
           "description": "Force a specific variant (e.g., fp16, fp8, gguf-q4)",
@@ -33,13 +33,13 @@
           "name": "--force"
         }
       ],
-      "name": "install",
-      "usage": "mods install <id> [flags]"
+      "name": "model pull",
+      "usage": "mods model pull <id> [flags]"
     },
     {
       "args": [
         {
-          "description": "Model ID to uninstall",
+          "description": "Model ID to remove",
           "name": "id",
           "required": true
         }
@@ -52,8 +52,8 @@
           "name": "--force"
         }
       ],
-      "name": "uninstall",
-      "usage": "mods uninstall <id> [flags]"
+      "name": "model rm",
+      "usage": "mods model rm <id> [flags]"
     },
     {
       "args": [],
@@ -66,8 +66,8 @@
           "short": "-t"
         }
       ],
-      "name": "list",
-      "usage": "mods list [flags]"
+      "name": "model ls",
+      "usage": "mods model ls [flags]"
     },
     {
       "args": [
@@ -79,8 +79,8 @@
       ],
       "description": "Show detailed info about a model",
       "flags": [],
-      "name": "info",
-      "usage": "mods info <id>"
+      "name": "model info",
+      "usage": "mods model info <id>"
     },
     {
       "args": [
@@ -114,15 +114,319 @@
           "name": "--min-rating"
         }
       ],
-      "name": "search",
-      "usage": "mods search <query> [flags]"
+      "name": "model search",
+      "usage": "mods model search <query> [flags]"
+    },
+    {
+      "args": [
+        {
+          "description": "Filter by asset type",
+          "name": "type",
+          "required": false
+        }
+      ],
+      "description": "Show popular/trending models",
+      "flags": [
+        {
+          "description": "Filter by compatible base model",
+          "is_bool": false,
+          "name": "--for"
+        },
+        {
+          "default": "week",
+          "description": "Time period: day, week, month",
+          "is_bool": false,
+          "name": "--period"
+        }
+      ],
+      "name": "model popular",
+      "usage": "mods model popular [type] [flags]"
+    },
+    {
+      "args": [],
+      "description": "Link an existing tool's model folder into mods",
+      "flags": [
+        {
+          "description": "Path to ComfyUI installation",
+          "is_bool": false,
+          "name": "--comfyui"
+        },
+        {
+          "description": "Path to A1111 installation",
+          "is_bool": false,
+          "name": "--a1111"
+        }
+      ],
+      "name": "model link",
+      "usage": "mods model link [flags]"
+    },
+    {
+      "args": [],
+      "description": "Fetch latest registry index",
+      "flags": [],
+      "name": "model update",
+      "usage": "mods model update"
     },
     {
       "args": [],
       "description": "Show disk usage breakdown",
       "flags": [],
-      "name": "space",
-      "usage": "mods space"
+      "name": "model space",
+      "usage": "mods model space"
+    },
+    {
+      "args": [],
+      "description": "Garbage collect \u2014 remove unreferenced files from the store",
+      "flags": [],
+      "name": "model gc",
+      "usage": "mods model gc"
+    },
+    {
+      "args": [],
+      "description": "Export installed state to a lock file",
+      "flags": [],
+      "name": "model export",
+      "usage": "mods model export"
+    },
+    {
+      "args": [
+        {
+          "description": "Path to mods.lock file",
+          "name": "path",
+          "required": true
+        }
+      ],
+      "description": "Import and install from a lock file",
+      "flags": [],
+      "name": "model import",
+      "usage": "mods model import <path>"
+    },
+    {
+      "args": [],
+      "description": "Prepare managed training dependencies (ai-toolkit + torch stack)",
+      "flags": [
+        {
+          "description": "Force re-install of training dependencies",
+          "is_bool": true,
+          "name": "--reinstall"
+        }
+      ],
+      "name": "train setup",
+      "usage": "mods train setup [flags]"
+    },
+    {
+      "args": [],
+      "description": "Train a LoRA with managed runtime",
+      "flags": [
+        {
+          "description": "Dataset name or directory path",
+          "is_bool": false,
+          "name": "--dataset"
+        },
+        {
+          "description": "Base model id (e.g. flux-schnell, flux-dev)",
+          "is_bool": false,
+          "name": "--base"
+        },
+        {
+          "description": "Output LoRA name",
+          "is_bool": false,
+          "name": "--name"
+        },
+        {
+          "description": "Trigger word used during training",
+          "is_bool": false,
+          "name": "--trigger"
+        },
+        {
+          "description": "Training preset: quick, standard, advanced",
+          "is_bool": false,
+          "name": "--preset"
+        },
+        {
+          "description": "Override training steps",
+          "is_bool": false,
+          "name": "--steps"
+        },
+        {
+          "description": "Load a full TrainJobSpec YAML (escape hatch)",
+          "is_bool": false,
+          "name": "--config"
+        },
+        {
+          "description": "Generate spec and print it without executing",
+          "is_bool": true,
+          "name": "--dry-run"
+        }
+      ],
+      "name": "train",
+      "usage": "mods train [flags]"
+    },
+    {
+      "args": [
+        {
+          "description": "Text prompt for image generation",
+          "name": "prompt",
+          "required": true
+        }
+      ],
+      "description": "Generate images using diffusers",
+      "flags": [
+        {
+          "description": "Base model to use (default: flux-schnell)",
+          "is_bool": false,
+          "name": "--base"
+        },
+        {
+          "description": "LoRA name or path to apply",
+          "is_bool": false,
+          "name": "--lora"
+        },
+        {
+          "description": "Random seed for reproducibility",
+          "is_bool": false,
+          "name": "--seed"
+        },
+        {
+          "default": "1:1",
+          "description": "Image size preset (1:1, 16:9, 9:16, 4:3, 3:4) or WxH",
+          "is_bool": false,
+          "name": "--size"
+        },
+        {
+          "description": "Number of inference steps",
+          "is_bool": false,
+          "name": "--steps"
+        },
+        {
+          "description": "Guidance scale",
+          "is_bool": false,
+          "name": "--guidance"
+        },
+        {
+          "default": "1",
+          "description": "Number of images to generate",
+          "is_bool": false,
+          "name": "--count"
+        }
+      ],
+      "name": "generate",
+      "usage": "mods generate <prompt> [flags]"
+    },
+    {
+      "args": [
+        {
+          "description": "Name for the dataset",
+          "name": "name",
+          "required": true
+        }
+      ],
+      "description": "Create a managed dataset from a directory of images",
+      "flags": [
+        {
+          "description": "Source directory containing images (jpg/jpeg/png)",
+          "is_bool": false,
+          "name": "--from"
+        }
+      ],
+      "name": "dataset create",
+      "usage": "mods dataset create <name> [flags]"
+    },
+    {
+      "args": [],
+      "description": "List all managed datasets",
+      "flags": [],
+      "name": "dataset ls",
+      "usage": "mods dataset ls"
+    },
+    {
+      "args": [
+        {
+          "description": "Dataset name or path to validate",
+          "name": "name_or_path",
+          "required": true
+        }
+      ],
+      "description": "Validate a dataset directory",
+      "flags": [],
+      "name": "dataset validate",
+      "usage": "mods dataset validate <name_or_path>"
+    },
+    {
+      "args": [],
+      "description": "Install managed runtime profile",
+      "flags": [
+        {
+          "description": "Runtime profile to install",
+          "is_bool": false,
+          "name": "--profile"
+        },
+        {
+          "description": "Runtime channel: stable or beta",
+          "is_bool": false,
+          "name": "--channel"
+        }
+      ],
+      "name": "runtime install",
+      "usage": "mods runtime install [flags]"
+    },
+    {
+      "args": [],
+      "description": "Show runtime installation status",
+      "flags": [],
+      "name": "runtime status",
+      "usage": "mods runtime status"
+    },
+    {
+      "args": [],
+      "description": "Run runtime health checks",
+      "flags": [],
+      "name": "runtime doctor",
+      "usage": "mods runtime doctor"
+    },
+    {
+      "args": [],
+      "description": "Bootstrap managed profile environment and install dependencies",
+      "flags": [
+        {
+          "description": "Runtime profile to bootstrap",
+          "is_bool": false,
+          "name": "--profile"
+        },
+        {
+          "description": "Runtime channel: stable or beta",
+          "is_bool": false,
+          "name": "--channel"
+        }
+      ],
+      "name": "runtime bootstrap",
+      "usage": "mods runtime bootstrap [flags]"
+    },
+    {
+      "args": [],
+      "description": "Upgrade runtime profile to latest channel-compatible version",
+      "flags": [
+        {
+          "description": "Runtime channel: stable or beta",
+          "is_bool": false,
+          "name": "--channel"
+        }
+      ],
+      "name": "runtime upgrade",
+      "usage": "mods runtime upgrade [flags]"
+    },
+    {
+      "args": [],
+      "description": "Reset runtime state",
+      "flags": [
+        {
+          "description": "Also remove wheel/manifests cache",
+          "is_bool": true,
+          "name": "--purge-cache"
+        }
+      ],
+      "name": "runtime reset",
+      "usage": "mods runtime reset [flags]"
     },
     {
       "args": [],
@@ -156,31 +460,6 @@
       "usage": "mods config [key] [value]"
     },
     {
-      "args": [],
-      "description": "Garbage collect — remove unreferenced files from the store",
-      "flags": [],
-      "name": "gc",
-      "usage": "mods gc"
-    },
-    {
-      "args": [],
-      "description": "Link an existing tool's model folder into mods",
-      "flags": [
-        {
-          "description": "Path to ComfyUI installation",
-          "is_bool": false,
-          "name": "--comfyui"
-        },
-        {
-          "description": "Path to A1111 installation",
-          "is_bool": false,
-          "name": "--a1111"
-        }
-      ],
-      "name": "link",
-      "usage": "mods link [flags]"
-    },
-    {
       "args": [
         {
           "description": "Auth provider: huggingface or civitai",
@@ -195,63 +474,11 @@
     },
     {
       "args": [],
-      "description": "Fetch latest registry index",
-      "flags": [],
-      "name": "update",
-      "usage": "mods update"
-    },
-    {
-      "args": [],
-      "description": "Export installed state to a lock file",
-      "flags": [],
-      "name": "export",
-      "usage": "mods export"
-    },
-    {
-      "args": [
-        {
-          "description": "Path to mods.lock file",
-          "name": "path",
-          "required": true
-        }
-      ],
-      "description": "Import and install from a lock file",
-      "flags": [],
-      "name": "import",
-      "usage": "mods import <path>"
-    },
-    {
-      "args": [],
       "description": "Update mods CLI to the latest release",
       "flags": [],
       "name": "upgrade",
       "usage": "mods upgrade"
-    },
-    {
-      "args": [
-        {
-          "description": "Filter by asset type",
-          "name": "type",
-          "required": false
-        }
-      ],
-      "description": "Show popular/trending models",
-      "flags": [
-        {
-          "description": "Filter by compatible base model",
-          "is_bool": false,
-          "name": "--for"
-        },
-        {
-          "default": "week",
-          "description": "Time period: day, week, month",
-          "is_bool": false,
-          "name": "--period"
-        }
-      ],
-      "name": "popular",
-      "usage": "mods popular [type] [flags]"
     }
   ],
-  "version": "0.1.0"
+  "version": "0.1.3"
 }

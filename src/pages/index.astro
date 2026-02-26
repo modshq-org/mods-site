@@ -2,37 +2,86 @@
 import registry from '../data/registry.json';
 const modelCount = registry.items.length;
 
-const features = [
+// The three pillars — the core story
+const pillars = [
   {
-    icon: "📦",
-    title: "One Command Install",
-    description: "Install any model with a single command. Dependencies resolve automatically."
+    step: "1",
+    verb: "Pull",
+    title: "Install any model",
+    description: "One command gets checkpoints, LoRAs, VAEs, text encoders — with automatic dependency resolution. Content-addressed storage means zero duplicates across tools.",
+    terminal: [
+      { type: 'cmd', text: '$ mods model pull flux-dev' },
+      { type: 'out', text: '→ Resolving dependencies...' },
+      { type: 'out', text: '  ↓ FLUX.1 Dev (diffusion_model) [fp16] 23.80 GiB' },
+      { type: 'out', text: '  ↓ CLIP-L (text_encoder) 246.14 MiB' },
+      { type: 'out', text: '  ↓ T5-XXL (text_encoder) [fp16] 9.79 GiB' },
+      { type: 'out', text: '  ↓ FLUX VAE (vae) 167.67 MiB' },
+      { type: 'out', text: '  ✓ Installed flux-dev + 3 deps' },
+    ],
+    color: "#7c3aed",
   },
+  {
+    step: "2",
+    verb: "Train",
+    title: "Train custom LoRAs",
+    description: "Point mods at a folder of images and it handles the rest — managed Python runtime, ai-toolkit, opinionated presets. One command from photos to LoRA.",
+    terminal: [
+      { type: 'cmd', text: '$ mods dataset create products --from ~/photos/' },
+      { type: 'out', text: '  ✓ 24 images → ~/.mods/datasets/products/' },
+      { type: 'cmd', text: '$ mods train --dataset products --base flux-dev --name product-v1' },
+      { type: 'out', text: '  ▸ Step 1600/2000  loss=0.042  lr=1.0e-4' },
+      { type: 'out', text: '  ✓ Saved product-v1.safetensors (86 MiB)' },
+    ],
+    color: "#f59e0b",
+  },
+  {
+    step: "3",
+    verb: "Generate",
+    title: "Generate images",
+    description: "Run inference straight from the terminal. LoRA loading, size presets, seed control, batch generation — all built in. No notebooks, no node graphs.",
+    terminal: [
+      { type: 'cmd', text: '$ mods generate "a photo of OHWX on marble" --lora product-v1' },
+      { type: 'out', text: '  ▸ Loading flux-dev + product-v1...' },
+      { type: 'out', text: '  ▸ Generating ████████████████ 28/28 steps' },
+      { type: 'out', text: '  ✓ Generated 1 image:' },
+      { type: 'out', text: '    ~/.mods/outputs/2026-02-26/001.png' },
+    ],
+    color: "#22c55e",
+  },
+];
+
+// Technical differentiators
+const techFeatures = [
   {
     icon: "🔗",
     title: "Content-Addressed Storage",
-    description: "Models stored once, symlinked everywhere. No duplicates across ComfyUI, A1111, or InvokeAI."
+    description: "Models stored by hash, symlinked into ComfyUI, A1111, or any tool. One file on disk, used everywhere."
   },
   {
     icon: "⚡",
-    title: "Smart Variant Selection",
-    description: "Automatically picks the right fp16/fp8/GGUF variant for your GPU's VRAM."
+    title: "Smart VRAM Selection",
+    description: "Detects your GPU and picks the right fp16/fp8/GGUF variant automatically. Override anytime."
   },
   {
     icon: "🔄",
     title: "Dependency Resolution",
-    description: "Install a ControlNet and its base model, text encoder, and VAE all come along."
+    description: "Install a checkpoint — the VAE, text encoders, and ControlNets come along. Transitive deps handled."
   },
   {
-    icon: "🔍",
-    title: "Search & Discover",
-    description: `Browse ${modelCount} models and growing. Filter by type, architecture, and tags.`
+    icon: "🐍",
+    title: "Managed Python Runtime",
+    description: "No venv juggling. Mods manages its own Python 3.11 + CUDA + torch stack. Isolated from your system."
   },
   {
     icon: "🩺",
     title: "Health Checks",
-    description: "mods doctor finds broken symlinks, missing deps, and corrupt files instantly."
-  }
+    description: "mods doctor finds broken symlinks, missing deps, hash mismatches, and corrupt files in seconds."
+  },
+  {
+    icon: "🔍",
+    title: `${modelCount}+ Model Registry`,
+    description: "Curated, versioned manifests with variant selection. Search by type, architecture, or tags."
+  },
 ];
 
 // Featured model families — hero cards
@@ -42,28 +91,28 @@ const families = [
     tagline: "State-of-the-art image generation",
     color: "#7c3aed",
     models: ["FLUX.2 Dev", "FLUX.2 Klein 4B", "FLUX.2 Klein 9B", "FLUX.1 Kontext Dev", "FLUX.1 Dev", "FLUX.1 Schnell", "FLUX Fill Dev", "FLUX Canny Dev", "FLUX Redux Dev"],
-    install: "mods install flux2-dev",
+    install: "mods model pull flux2-dev",
   },
   {
     name: "Qwen",
     tagline: "Multimodal editing & generation",
     color: "#3b82f6",
     models: ["Qwen Image", "Qwen Image Edit", "Qwen Image Edit Lightning LoRA"],
-    install: "mods install qwen-image",
+    install: "mods model pull qwen-image",
   },
   {
     name: "Wan",
     tagline: "Video generation & editing",
     color: "#14b8a6",
     models: ["Wan 2.1 VACE 14B", "Wan 2.2 TI2V 5B", "Wan 2.2 T2V 14B", "Wan 2.2 I2V 14B"],
-    install: "mods install wan21-vace-14b",
+    install: "mods model pull wan21-vace-14b",
   },
   {
     name: "LTX-Video",
     tagline: "Fast video generation",
     color: "#f59e0b",
     models: ["LTX-Video 2B", "LTX-Video 13B", "LTX-2 19B"],
-    install: "mods install ltx-video-2b",
+    install: "mods model pull ltx-video-2b",
   },
 ];
 
@@ -96,8 +145,8 @@ const typeColors: Record<string, string> = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>mods — Model Manager for AI Image Generation</title>
-  <meta name="description" content="The ollama for image generation. Install, manage, and share Stable Diffusion, FLUX, Wan 2.2, and LTX-Video models with a single command." />
+  <title>mods — The Image Generation Toolkit</title>
+  <meta name="description" content="The ollama for image generation. Pull models, train LoRAs, generate images — one CLI, no glue code. Open source, local-first, built with Rust." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3341W5L66B"></script>
@@ -128,13 +177,14 @@ const typeColors: Record<string, string> = {
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">Open Source Model Manager</div>
+      <div class="hero-badge">Open Source &middot; Local-First &middot; Rust + Python</div>
       <h1>
         <span class="gradient-text">mods</span>
       </h1>
       <p class="hero-subtitle">
-        The package manager for AI models.<br/>
-        Install checkpoints, LoRAs, VAEs, and ControlNets with a single command.
+        The image generation toolkit.<br/>
+        Pull models. Train LoRAs. Generate images.<br/>
+        <span class="hero-em">One CLI. No glue code.</span>
       </p>
       <div class="terminal">
         <div class="terminal-header">
@@ -143,19 +193,20 @@ const typeColors: Record<string, string> = {
             <span class="dot yellow"></span>
             <span class="dot green"></span>
           </div>
-          <span class="terminal-title">Terminal</span>
+          <span class="terminal-title">Your weekend with mods</span>
         </div>
         <div class="terminal-body">
-          <div class="line"><span class="prompt">$</span> <span class="cmd">mods install</span> <span class="arg">z-image-turbo</span> <span class="flag">--variant</span> <span class="arg">gguf-q4-k-m</span></div>
-          <div class="line output">→ Install plan for z-image-turbo:</div>
+          <div class="line"><span class="comment"># Friday evening — grab a model</span></div>
+          <div class="line"><span class="prompt">$</span> <span class="cmd">mods model pull</span> <span class="arg">flux-schnell</span></div>
+          <div class="line output"><span class="success">✓</span> Installed flux-schnell + 3 deps</div>
           <div class="line output">&nbsp;</div>
-          <div class="line output">  <span class="success">↓</span> Z-Image Text Encoder (text_encoder) [bf16] 8.04 GiB</div>
-          <div class="line output">  <span class="success">↓</span> Z-Image VAE (vae) 335.00 MiB</div>
-          <div class="line output">  <span class="success">↓</span> Z-Image-Turbo (diffusion_model) [gguf-q4-k-m] 4.98 GiB</div>
+          <div class="line"><span class="comment"># Saturday — train your own LoRA</span></div>
+          <div class="line"><span class="prompt">$</span> <span class="cmd">mods train</span> <span class="flag">--dataset</span> <span class="arg">products</span> <span class="flag">--base</span> <span class="arg">flux-schnell</span> <span class="flag">--name</span> <span class="arg">my-style-v1</span></div>
+          <div class="line output"><span class="success">✓</span> Saved my-style-v1.safetensors (86 MiB)</div>
           <div class="line output">&nbsp;</div>
-          <div class="line output">  Total download: <span class="highlight">5.31 GiB</span></div>
-          <div class="line output">&nbsp;</div>
-          <div class="line output"><span class="success">✓</span> Installed z-image-turbo successfully.</div>
+          <div class="line"><span class="comment"># Sunday — generate</span></div>
+          <div class="line"><span class="prompt">$</span> <span class="cmd">mods generate</span> <span class="arg">"a photo of OHWX in morning light"</span> <span class="flag">--lora</span> <span class="arg">my-style-v1</span></div>
+          <div class="line output"><span class="success">✓</span> ~/.mods/outputs/2026-02-26/001.png</div>
         </div>
       </div>
       <div class="hero-actions">
@@ -166,6 +217,40 @@ const typeColors: Record<string, string> = {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Journey: Pull → Train → Generate -->
+  <section class="journey" id="journey">
+    <div class="container">
+      <h2>Photos to Generated Images in <span class="gradient-text">Three Commands</span></h2>
+      <p class="section-subtitle">No Python environments to configure. No config files to write. No node graphs to wire.</p>
+
+      <div class="pillars">
+        {pillars.map(p => (
+          <div class="pillar-card" style={`--pillar-color: ${p.color}`}>
+            <div class="pillar-step">{p.step}</div>
+            <div class="pillar-content">
+              <div class="pillar-verb">{p.verb}</div>
+              <h3>{p.title}</h3>
+              <p>{p.description}</p>
+              <div class="pillar-terminal">
+                {p.terminal.map(line => (
+                  <div class={`line ${line.type === 'out' ? 'output' : ''}`}>
+                    {line.type === 'cmd' ? (
+                      <Fragment>
+                        <span class="prompt">{line.text.substring(0, 1)}</span>{line.text.substring(1)}
+                      </Fragment>
+                    ) : (
+                      <span>{line.text}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -188,18 +273,21 @@ const typeColors: Record<string, string> = {
         <div class="install-step">
           <div class="install-step-number">2</div>
           <div class="install-step-body">
-            <h3>Link your tools</h3>
+            <h3>Set up &amp; link your tools</h3>
             <div class="code-block">
-              <code>mods link --comfyui ~/ComfyUI</code>
+              <code>mods init && mods model link --comfyui ~/ComfyUI</code>
             </div>
           </div>
         </div>
         <div class="install-step">
           <div class="install-step-number">3</div>
           <div class="install-step-body">
-            <h3>Start Installing Models</h3>
+            <h3>Pull, train, generate</h3>
             <div class="code-block">
-              <code>mods install sdxl-base-1.0</code>
+              <code>mods model pull flux-schnell && mods train --dataset ./photos --base flux-schnell --name my-v1</code>
+            </div>
+            <div class="code-block" style="margin-top: 8px;">
+              <code>mods generate "a photo of OHWX on a rooftop" --lora my-v1</code>
             </div>
           </div>
         </div>
@@ -207,13 +295,13 @@ const typeColors: Record<string, string> = {
     </div>
   </section>
 
-  <!-- Features -->
+  <!-- Under the Hood -->
   <section class="features" id="features">
     <div class="container">
-      <h2>Why <span class="gradient-text">mods</span>?</h2>
-      <p class="section-subtitle">Stop manually downloading models. Stop juggling folders. Start shipping.</p>
+      <h2>Under the Hood</h2>
+      <p class="section-subtitle">Rust CLI for speed and single-binary distribution. Managed Python runtime for training and inference. SQLite tracks everything.</p>
       <div class="features-grid">
-        {features.map(f => (
+        {techFeatures.map(f => (
           <div class="feature-card">
             <div class="feature-icon">{f.icon}</div>
             <h3>{f.title}</h3>
@@ -286,12 +374,12 @@ const typeColors: Record<string, string> = {
         <div class="comparison-card after">
           <h3>With mods</h3>
           <ul>
-            <li><code>mods search flux</code></li>
-            <li><code>mods install flux-dev</code> — deps included</li>
+            <li><code>mods model search flux</code></li>
+            <li><code>mods model pull flux-dev</code> — deps included</li>
             <li>Auto-placed in the right folders</li>
             <li>Symlinks share one copy across tools</li>
-            <li>Dependencies tracked automatically</li>
-            <li><code>mods gc</code> reclaims unused space</li>
+            <li><code>mods train --base flux-dev</code> for custom LoRAs</li>
+            <li><code>mods generate "a cat"</code> right from the CLI</li>
           </ul>
         </div>
       </div>
@@ -304,7 +392,7 @@ const typeColors: Record<string, string> = {
       <div class="footer-content">
         <div class="footer-brand">
           <span class="gradient-text footer-logo">mods</span>
-          <p>Open source model manager for AI image generation.</p>
+          <p>The open source image generation toolkit.</p>
         </div>
         <div class="footer-links">
           <a href="/#install">Install</a>
@@ -588,6 +676,123 @@ const typeColors: Record<string, string> = {
   .btn-secondary:hover {
     background: var(--bg-card-hover);
     border-color: #2e2e40;
+  }
+
+  .hero-em {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .comment {
+    color: #4a4a62;
+  }
+
+  /* Journey: Pull → Train → Generate */
+  .journey {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .pillar-card {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    padding: 36px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+  }
+
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--pillar-color);
+    opacity: 0.7;
+  }
+
+  .pillar-card:hover {
+    border-color: color-mix(in srgb, var(--pillar-color) 30%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .pillar-step {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--pillar-color) 15%, transparent);
+    color: var(--pillar-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-top: 4px;
+  }
+
+  .pillar-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pillar-verb {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--pillar-color);
+    margin-bottom: 4px;
+  }
+
+  .pillar-content h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .pillar-content p {
+    color: var(--text-dim);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .pillar-terminal {
+    padding: 14px 18px;
+    background: #0a0a12;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+
+  .pillar-terminal .prompt {
+    color: var(--success);
+  }
+
+  .pillar-terminal .output {
+    color: var(--text-dim);
+  }
+
+  .pillar-terminal .success {
+    color: var(--success);
   }
 
   /* Features */
@@ -969,9 +1174,11 @@ const typeColors: Record<string, string> = {
     .hero { padding: 80px 0 60px; }
     .hero h1 { font-size: 4rem; }
     .terminal-body { font-size: 0.75rem; overflow-x: auto; }
+    .pillar-card { flex-direction: column; gap: 16px; padding: 24px; }
+    .pillar-step { width: 40px; height: 40px; font-size: 1.1rem; }
     .comparison-grid { grid-template-columns: 1fr; }
     .families-grid { grid-template-columns: 1fr; }
     .footer-content { flex-direction: column; gap: 24px; }
-    .features, .models, .install-section, .comparison { padding: 64px 0; }
+    .features, .models, .install-section, .comparison, .journey { padding: 64px 0; }
   }
 </style>
